@@ -1,22 +1,24 @@
-﻿#z::Run "https://www.autohotkey.com" ; Win+Z
+﻿; A script for all your ARK needs by Lil xD
 
 arkWindowName := "ARK: Survival Evolved"
 arkProcessName := "ShooterGame.exe"
 ; Used as lag compensation
 longWait := 750
 mediumWait := 500
+smediumWait := 350
 smallWait := 200
-autoClickInterval := 1000 ; milliseconds
+autoClickInterval := 50 ; milliseconds
 
 stoneStr := "Stone"
 flintStr := "flint"
 berries := "rr"
-
 searchRawMeat := "Raw"
 
 ; State for inventory UI positions
 inventory := {}
-inventory.toggle := "F"
+inventory.defecate := "'"
+inventory.otherInventoryToggle := "F"
+inventory.selfInventoryToggle := "R"
 inventory.selfSearchbar := {
   x: 190,
   y: 240
@@ -45,26 +47,88 @@ inventory.otherTakeAll := {
   x: 1900,
   y: 245
 }
-
-IsAutoClicking := false
+inventory.selfDropAll := {
+  x: 545,
+  y: 246
+}
+inventory.transferAllFromSelf := {
+  x: 480,
+  y: 240
+}
+inventory.flushButton := {
+  x: 1290,
+  y: 830
+}
 
 ;
 ; HOT KEYS
 ;
 
-F9:: { ; F9 - handle metal run item build-up
+; Drop all trash in metal run
+Numpad7::{
   HandleMetalRunItems()
 }
 
-F10:: { ; F10 - split raw meat
+; Split raw meat
+NumpadMult::{
   SplitRawMeat()
 }
 
-~capslock:: {
+; Take all from other inventory
+NumpadDiv::{
+  DropAllSelf()
+}
+
+; Take all from other inventory
+N::{
+  Click inventory.otherTakeAll.x, inventory.otherTakeAll.y
+  Sleep smediumWait
+  ToggleOtherInventory()
+}
+
+V::{
+  ToggleOtherInventory()
+  Sleep longWait
+  TransferAllToOther()
+  Sleep smediumWait  
+  ToggleOtherInventory()
+}
+
+; Normal Autoclick
+~capslock::{
   if getkeystate("capslock", "T") 
-    SetTimer(AutoClick, autoClickInterval)
+    SetTimer(Click, autoClickInterval)
   else
-    SetTimer(AutoClick, 0)
+    SetTimer(Click, 0)
+}
+
+; Autoclick with metal farm
+~NumLock::{
+  if getkeystate("numlock", "T") 
+    SetTimer(AutoClickMetalFarm, autoClickInterval)
+  else
+    SetTimer(AutoClickMetalFarm, 0)
+}
+
+F8::{
+  static on := false
+  if on := !on {
+    SetTimer(LoopDefecate, 1000)
+  }
+  else Reload
+}
+
+;
+; Helper Functions
+;
+
+LoopDefecate() {
+  static count := 0
+  if count++ < 250 {
+    FertilizerFarm()
+  } else {
+    Reload
+  }
 }
 
 ; Does not open or close inventory
@@ -84,11 +148,11 @@ SplitRawMeat() {
   }
 }
 
-AutoClick() {
+AutoClickMetalFarm() {
   ; Determines how many clicks must pass before
   ; automatic dropping of unwanted items occurs
   static
-  static clickThreshold := 5
+  static clickThreshold := 400 ; Every 20 seconds perform clean inventory
   static clicks := 0
 
   ; Drop unwanted items
@@ -103,7 +167,7 @@ AutoClick() {
 
 ; Opens the invent and takes flint while dropping stone * berries
 HandleMetalRunItems() {
-  ToggleInventory() ; open invent
+  ToggleOtherInventory() ; open invent
   Sleep longWait
   ; Filter and drop
   TakeAllOtherSearchedItems(flintStr)
@@ -113,7 +177,7 @@ HandleMetalRunItems() {
   Sleep smallWait
   DropAllOtherSearchedItems(stoneStr) 
   Sleep smallWait
-  ToggleInventory()
+  ToggleOtherInventory()
 }
 
 ; Focuses the searchbar and selects the filter word and deletes it
@@ -145,9 +209,14 @@ DropAllOtherSearchedItems(text) {
   ClickOtherDropAll()
 }
 
-; Opens or Closes the inventory, aka toggle
-ToggleInventory() {
-  ControlSend Format("{1}", inventory.toggle),, arkWindowName
+; Opens or closes another's inventory
+ToggleOtherInventory() {
+  ControlSend Format("{1}", inventory.otherInventoryToggle),, arkWindowName
+}
+
+; Opens or closes the player's inventory
+ToggleSelfInventory() {
+  ControlSend Format("{1}", inventory.selfInventoryToggle),, arkWindowName
 }
 
 ; Click the take all button in the other items inventory
@@ -163,4 +232,36 @@ ClickOtherDropAll() {
 ; Focus the search bar in the other entity's inventory
 FocusOtherSearchbar() {
   Click inventory.otherSearchbar.x, inventory.otherSearchbar.y
+}
+
+; Drops all of the player's items
+DropAllSelf() {
+  ToggleSelfInventory()
+  Sleep longWait
+  Click inventory.selfDropAll.x, inventory.selfDropAll.y
+  Sleep mediumWait
+  ToggleSelfInventory()
+}
+
+TransferAllToOther() {
+  Click inventory.transferAllFromSelf.x, inventory.transferAllFromSelf.y
+}
+
+Defecate() {
+  ControlSend Format("{1}", inventory.defecate),, arkWindowName
+}
+
+FlushToilet() {
+  Click inventory.flushButton.x, inventory.flushButton.y
+}
+
+FertilizerFarm() {
+  Defecate()
+  Sleep smallWait
+  ToggleOtherInventory()
+  Sleep mediumWait
+  FlushToilet()
+  Sleep smallWait
+  ToggleOtherInventory()
+  Sleep mediumWait
 }
