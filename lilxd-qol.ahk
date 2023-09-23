@@ -9,6 +9,10 @@ smediumWait := 350
 smallWait := 200
 autoClickInterval := 50 ; milliseconds
 
+respawnSearchbarLoc := { x: 412, y: 1305 }
+; NOTE: Spawn button can be inaccessible when bed selection is active
+respawnBtnLoc := { x: 1145, y: 1303 }
+
 stoneStr := "Stone"
 flintStr := "flint"
 berries := "rr"
@@ -102,6 +106,7 @@ V::{
     SetTimer(Click, 0)
 }
 
+
 ; Autoclick with metal farm
 ~NumLock::{
   if getkeystate("numlock", "T") 
@@ -110,12 +115,46 @@ V::{
     SetTimer(AutoClickMetalFarm, 0)
 }
 
+; Fert Farm
 F8::{
   static on := false
   if on := !on {
     SetTimer(LoopDefecate, 1000)
   }
   else Reload
+}
+
+; Self Meat Farm
+; NOTE: Enable at spawn screen
+F9::{
+  static on := false
+  if on := !on {
+    SetTimer Respawn, 1000
+  }
+  else Reload
+}
+
+Respawn() {
+  ; Grab a color from the top left of the screen
+  ; Check pixel color that only exist when dead
+  ;color := PixelGetColor(50, 50)
+  px := 0
+  py := 0
+  ; Search the area of the "S" of "Spawn Region" for a color match with allowed color variation of 2
+  if (PixelSearch(&px, &py, 1936, 125, 1957, 167, 0x67FFFF, 2)) {
+    ; Focus the respawn searchbar
+    Click respawnSearchbarLoc.x, respawnSearchbarLoc.y
+    Sleep mediumWait
+    ControlSendText "meet my meat",, arkWindowName
+    Sleep mediumWait
+    ; Click on beds    
+    Click 637, 672
+    Sleep mediumWait
+    ; Spawn
+    Click respawnBtnLoc.x, respawnBtnLoc.y
+    ; Wait five seconds before scanning again
+    Sleep 5000
+  }
 }
 
 ;
