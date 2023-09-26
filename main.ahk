@@ -1,12 +1,15 @@
 ﻿; This application is not designed to work with more than one:
 ; - SelfInfo
 ; - OtherInfo
-; - LilxDTool created and being used at one time
+; - LilxDController created and being used at one time
+
+#Requires AutoHotkey v2.0
 
 #Include "LilxDHotkey.ahk"
-#Include "LilxDTool.ahk"
+#Include "LilxDController.ahk"
 #Include "SelfInfo.ahk"
 #Include "OtherInfo.ahk"
+#Include "UI.ahk"
 
 ctx := {
   arkWindowName: "ARK: Survival Evolved",
@@ -54,7 +57,8 @@ other := OtherInfo(
   { x: 1900, y: 245 } ; Transfer all *(take all)
 )
 
-controller := LilxDTool(
+; Create the hotkey controller
+controller := LilxDController(
   ctx,
   self,
   other,
@@ -63,6 +67,9 @@ controller := LilxDTool(
   LilxDHotkey("F9"), ; Auto Self Meat Farm
   LilxDHotkey("F8") ; Auto Fertilizer Farm
 )
+
+; Create the user interface that uses the controller
+myUI := UI(controller)
 
 ; MsgBox "Test", test.searchbarPos
 

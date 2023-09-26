@@ -1,4 +1,4 @@
-class LilxDTool {
+class LilxDController {
   __New(
   ctx,
   self,
@@ -13,28 +13,30 @@ class LilxDTool {
     this.self := self
     this.other := other
 
+    this.autoClickHotkey := autoClickHotkey
+
     ; Setup map of hotkeys to their object for later use
-    this.hotkeys := Map()
-    this.hotkeys[autoClickHotkey.toString()] := autoClickHotkey
-    this.hotkeys[autoMetalFarmHotkey.toString()] := autoMetalFarmHotkey
-    this.hotkeys[autoSelfMeatFarmHotkey.toString()] := autoSelfMeatFarmHotkey
-    this.hotkeys[autoFertFarmHotkey.toString()] := autoFertFarmHotkey
+    ; this.hotkeys := Map()
+    ; this.hotkeys[autoClickHotkey.toString()] := autoClickHotkey
+    ; this.hotkeys[autoMetalFarmHotkey.toString()] := autoMetalFarmHotkey
+    ; this.hotkeys[autoSelfMeatFarmHotkey.toString()] := autoSelfMeatFarmHotkey
+    ; this.hotkeys[autoFertFarmHotkey.toString()] := autoFertFarmHotkey
 
     ; MsgBox autoMetalFarmHotkey.toString(), this.hotkeys[autoMetalFarmHotkey.toString()].key
 
     ; this.metalFarmBound := this.AutoClickMetalFarm.bind(this)
 
     ; Setup hotkeys
-    Hotkey autoClickHotkey.toString(), this.AutoClick.bind(this)
+    Hotkey autoClickHotkey.toString(), this.AutoClickHotkey_Clicked.bind(this)
     Hotkey autoMetalFarmHotkey.toString(), this.AutoMetalFarm.bind(this)
     Hotkey autoSelfMeatFarmHotkey.toString(), this.SelfMeatFarm.bind(this)
     HotKey autoFertFarmHotkey.toString(), this.AutoFertFarm.bind(this)
   }
 
   ; Plain auto-clicker
-  AutoClick(hotkey) {
-    ; Run if hotkey detected
-    if getkeystate(this.hotkeys[hotkey].key, "T")
+  AutoClickHotkey_Clicked(hotkey) {
+     ; Run if hotkey detected
+     if getkeystate(this.autoClickHotkey.key, "T")
       SetTimer(Click, this.ctx.autoClickInterval)
     else
       SetTimer(Click, 0)
