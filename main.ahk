@@ -3,73 +3,33 @@
 ; - OtherInfo
 ; - LilxDController created and being used at one time
 
-#Requires AutoHotkey v2.0
+#requires AutoHotkey v2.0
 
-#Include "LilxDHotkey.ahk"
-#Include "LilxDController.ahk"
-#Include "SelfInfo.ahk"
-#Include "OtherInfo.ahk"
-#Include "UI.ahk"
+#include "LilxDHotkey.ahk"
+#include "LilxDController.ahk"
+#include "GameUser.ahk"
+#include "ui/ui.ahk"
 
-ctx := {
-  arkWindowName: "ARK: Survival Evolved",
-  arkProcessName: "ShooterGame.exe",
-  longWait: 750,
-  mediumWait: 500,
-  smediumWait: 350,
-  smallWait: 200,
-  autoClickInterval: 50, ; milliseconds
-  stoneStr: "Stone",
-  flintStr: "flint",
-  berries: "rr",
-  searchRawMeat: "Raw",
-  bedSearchColor: 0x00B2B2, ; Color used when scanning for available beds
-  regionTextColorWhenDead: 0x68FFFF, ; Color of the "Region" text when on death screen
-  regionTextColorWhenFastTraveling: 0x0, ; Color of the "Region" text when on fast travel screen
-  ; deathMarkerColor: 0xFF7D7C ; Color of the death marker
-}
+;#include "_JXON.ahk"
 
-; Provide information about using your own inventory
-self := SelfInfo(
-  ctx,
-  "R", ; Toggle inventory
-  "'", ; Defecate
-  { x: 190, y: 240}, ; Searchbar
-  { x: 545, y: 246 }, ; Drop all
-  { x: 222, y: 364 }, ; First slot
-  { x: 236, y: 620 }, ; Split stacks
-  { x: 358, y: 700 }, ; Split all
-  { x: 480, y: 240 }, ; Transfer all *(give all)
-  { x: 1290, y: 830 }, ; Flush toilet
-  { x: 412, y: 1305 }, ; Respawn Search bar
-  { x: 1145, y: 1303 }, ; Respawn Button
-  ; Bounding Box of "Region" text on fast-travel and respawn screens
-  { left: 2105, top: 120, right: 135, bottom: 170 },
-  { x: 635, y: 670 } ; Spawn Location for self meat farm
-)
+; Get configs
+cfg := Config()
 
-; Provide Information about using another entity's inventory
-other := OtherInfo(
-  ctx,
-  "F", ; Toggle inventory
-  { x: 1686, y: 242 }, ; Searchbar
-  { x: 1960, y: 250 }, ; Drop all
-  { x: 1900, y: 245 } ; Transfer all *(take all)
+; Get user object
+user := GameUser(
+  cfg
 )
 
 ; Create the hotkey controller
 controller := LilxDController(
-  ctx,
-  self,
-  other,
-  LilxDHotkey("capslock", "~"), ; Autoclick
-  LilxDHotkey("numlock", "~"), ; Auto Metal Farm
-  LilxDHotkey("F9"), ; Auto Self Meat Farm
-  LilxDHotkey("F8") ; Auto Fertilizer Farm
+  cfg,
+  user
+  ; LilxDHotkey("capslock", "~"), ; Autoclick
+  ; LilxDHotkey("numlock", "~"), ; Auto Metal Farm
 )
 
 ; Create the user interface that uses the controller
-myUI := UI(controller)
+makeGui(controller)
 
 ; MsgBox "Test", test.searchbarPos
 

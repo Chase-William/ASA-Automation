@@ -1,11 +1,40 @@
 class LilxDHotkey {
-  __New(key, mod?) {
-    this.key := key
-    if IsSet(mod)
-      this.mod := mod
-    else
-      this.mod := ""
+  __New(configKey, actionCallback) {
+    this.m_configKey := configKey
+    this.m_actionCallback := actionCallback
+
+    this.m_hotkeyStr := Config.GetHotkey(this.m_configKey)
+    this.Key := this.m_hotkeyStr
   }
 
-  toString() => Format("{1}{2}", this.mod, this.key)
+  ; Stores the hotkey as a string, does not enable or disabled the hotkey itself
+  HotkeyStr {
+    get => this.m_hotkeyStr
+    set {
+      Config.SetHotkey(this.m_configKey, value)
+      this.m_hotkeyStr := value
+      ; Update the isolated key info
+      this.Key := value
+    }
+  }
+
+  Key {
+    get {
+      if (!IsSet(m_hotkeyStr)) {
+        Error("Property 'Key' should never be accessed before 'HotkeyStr' is initialized.")
+      }
+      return this.m_key
+    }
+    ; Should only be called from within this class
+    set {
+      dataArray := StrSplit(value, ["#", "!", "^", "+", "&", "<", ">", "<^>!", "*", "~", "$", "UP"],)
+      key := dataArray[dataArray.Length]
+      ; MsgBox "Test", key
+      this.m_key := key
+    }
+  }
+
+  RegisterHotkey() {
+    Hotkey this.HotkeyStr, this.m_actionCallback
+  }
 }
