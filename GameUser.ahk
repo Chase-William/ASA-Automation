@@ -1,11 +1,15 @@
 #include "Config.ahk"
 
+; config.ini mappings
 SELF_INVENTORY_SEARCHBAR_CONFIG_KEY := "selfInventorySearchbar"
 SELF_DROP_ALL_CONFIG_KEY := "selfDropAll"
 SELF_FIRST_SLOT_CONFIG_KEY := "selfFirstSlot"
 SELF_SPLIT_STACKS_CONFIG_KEY := "selfSplitStacks"
 SELF_SPLIT_ALL_CONFIG_KEY := "selfSplitAll"
 SELF_TRANSFER_ALL_CONFIG_KEY := "selfTransferAll"
+SELF_HEALTH_THRESHOLD_CONFIG_KEY := "selfHealthThreshold"
+SELF_FOOD_THRESHOLD_CONFIG_KEY := "selfFoodThreshold"
+SELF_WATER_THRESHOLD_CONFIG_KEY := "selfWaterThreshold"
 FLUSH_TOILET_CONFIG_KEY := "flushToilet"
 SPAWN_SEARCHBAR_CONFIG_KEY := "spawnSearchBar"
 SPAWN_BUTTON_CONFIG_KEY := "spawnButton"
@@ -13,235 +17,179 @@ MEAT_FARM_SPAWN_CONFIG_KEY := "meatFarmSpawn"
 OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY := "otherInventorySearchBar"
 OTHER_DROP_ALL_CONFIG_KEY := "otherDropAll"
 OTHER_TRANSFER_ALL_CONFIG_KEY := "otherTransferAll"
-
 SELF_INVENTORY_TOGGLE_CONFIG_KEY := "toggleSelfInventory"
 OTHER_INVENTORY_TOGGLE_CONFIG_KEY := "toggleOtherInventory"
 DEFECATE_CONFIG_KEY := "defecate"
-
 SPAWN_REGION_TEXT_REGION_CONFIG_KEY := "spawnRegionTextRegion"
+
+SELF_HEAL_ACTIVATION_KEYBIND_CONFIG_KEY := "heal"
+SELF_EAT_ACTIVATION_KEYBIND_CONFIG_KEY := "eat"
+SELF_DRINK_ACTIVATION_KEYBIND_CONFIG_KEY := "drink"
+
+; field names
+SELF_INVENTORY_SEARCHBAR_FIELD_NAME := "selfInventorySearchbar"
+SELF_DROP_ALL_FIELD_NAME := "m_selfDropAll"
+SELF_FIRST_SLOT_FIELD_NAME := "m_selfFirstSlot"
+SELF_SPLIT_STACKS_FIELD_NAME := "m_selfSplitStacks"
+SELF_SPLIT_ALL_FIELD_NAME := "m_selfSplitAll"
+SELF_TRANSFER_ALL_FIELD_NAME := "m_selfTransferAll"
+SELF_HEALTH_THRESHOLD_FIELD_NAME := "m_selfHealthThreshold"
+SELF_FOOD_THRESHOLD_FIELD_NAME := "m_selfFoodThreshold"
+SELF_WATER_THRESHOLD_FIELD_NAME := "m_selfWaterThreshold"
+FLUSH_TOILET_FIELD_NAME := "m_flushToilet"
+SPAWN_SEARCHBAR_FIELD_NAME := "m_spawnSearchBar"
+SPAWN_BUTTON_FIELD_NAME := "m_spawnButton"
+MEAT_FARM_SPAWN_FIELD_NAME := "m_meatFarmSpawn"
+OTHER_INVENTORY_SEARCHBAR_FIELD_NAME := "m_otherInventorySearchBar"
+OTHER_DROP_ALL_FIELD_NAME := "m_otherDropAll"
+OTHER_TRANSFER_ALL_FIELD_NAME := "m_otherTransferAll"
+SELF_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleSelfInventory"
+OTHER_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleOtherInventory"
+DEFECATE_FIELD_NAME := "m_defecate"
+SPAWN_REGION_TEXT_REGION_FIELD_NAME := "m_spawnRegionTextRegion"
+
+SELF_HEAL_ACTIVATION_KEYBIND_FIELD_NAME := "m_heal"
+SELF_EAT_ACTIVATION_KEYBIND_FIELD_NAME := "m_eat"
+SELF_DRINK_ACTIVATION_KEYBIND_FIELD_NAME := "m_drink"
 
 class GameUser {
   __New(cfg) {
     this.cfg := cfg
   }
 
+  ; Regions
+
   SpawnRegionTextRegion {
-    get {
-      if (!IsSet(m_spawnRegionTextRegion)) {
-        this.m_spawnRegionTextRegion := Config.GetRegion(SPAWN_REGION_TEXT_REGION_CONFIG_KEY)
-      }
-      return this.m_spawnRegionTextRegion
-    }
-    set {      
-      Config.SetRegion(SPAWN_REGION_TEXT_REGION_CONFIG_KEY, value)
-      this.m_spawnRegionTextRegion := value
-    }
+    get => this.Get(Config.GetRegion, SPAWN_REGION_TEXT_REGION_FIELD_NAME, SPAWN_REGION_TEXT_REGION_CONFIG_KEY)
+    set => this.Set(Config.SetRegion, SPAWN_REGION_TEXT_REGION_FIELD_NAME, SPAWN_REGION_TEXT_REGION_CONFIG_KEY, value)
   }
 
+  ; Keybinds
+
   DefecateKeybind {
-    get {
-      if (!IsSet(m_defecate)) {
-        this.m_defecate := Config.GetKeybind(DEFECATE_CONFIG_KEY)
-      }
-      return this.m_defecate
-    }
-    set {      
-      Config.SetKeybind(DEFECATE_CONFIG_KEY, value)
-      this.m_defecate := value
-    }
+    get => this.Get(Config.GetKeybind, DEFECATE_FIELD_NAME, DEFECATE_CONFIG_KEY)
+    set => this.Set(Config.SetKeybind, DEFECATE_FIELD_NAME, DEFECATE_CONFIG_KEY, value)
   }
 
   OtherInventoryToggleKeybind {
-    get {
-      if (!IsSet(m_otherInventoryToggle)) {
-        this.m_otherInventoryToggle := Config.GetKeybind(OTHER_INVENTORY_TOGGLE_CONFIG_KEY)
-      }
-      return this.m_otherInventoryToggle
-    }
-    set {      
-      Config.SetKeybind(OTHER_INVENTORY_TOGGLE_CONFIG_KEY, value)
-      this.m_otherInventoryToggle := value
-    }
+    get => this.Get(Config.GetKeybind, OTHER_INVENTORY_TOGGLE_FIELD_NAME, OTHER_INVENTORY_TOGGLE_CONFIG_KEY)
+    set => this.Set(Config.SetKeybind, OTHER_INVENTORY_TOGGLE_FIELD_NAME, OTHER_INVENTORY_TOGGLE_CONFIG_KEY, value)
   }
 
   SelfInventoryToggleKeybind {
-    get {
-      if (!IsSet(m_selfInventoryToggle)) {
-        this.m_selfInventoryToggle := Config.GetKeybind(SELF_INVENTORY_TOGGLE_CONFIG_KEY)
-      }
-      return this.m_selfInventoryToggle
-    }
-    set {      
-      Config.SetKeybind(SELF_INVENTORY_TOGGLE_CONFIG_KEY, value)
-      this.m_selfInventoryToggle := value
-    }
+    get => this.Get(Config.GetKeybind, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_TOGGLE_CONFIG_KEY)
+    set => this.Set(Config.SetKeybind, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_TOGGLE_CONFIG_KEY, value)
   }
 
+  SelfHealKeybind {
+    get => this.Get(Config.GetKeybind, SELF_HEAL_ACTIVATION_KEYBIND_FIELD_NAME, SELF_HEAL_ACTIVATION_KEYBIND_CONFIG_KEY)
+    set => this.Set(Config.SetKeybind, SELF_HEAL_ACTIVATION_KEYBIND_FIELD_NAME, SELF_HEAL_ACTIVATION_KEYBIND_CONFIG_KEY, value)
+  }
+
+  SelfEatKeybind {
+    get => this.Get(Config.GetKeybind, SELF_EAT_ACTIVATION_KEYBIND_FIELD_NAME, SELF_EAT_ACTIVATION_KEYBIND_CONFIG_KEY)
+    set => this.Set(Config.SetKeybind, SELF_EAT_ACTIVATION_KEYBIND_FIELD_NAME, SELF_EAT_ACTIVATION_KEYBIND_CONFIG_KEY, value)
+  }
+
+  SelfDrinkKeybind {
+    get => this.Get(Config.GetKeybind, SELF_DRINK_ACTIVATION_KEYBIND_FIELD_NAME, SELF_DRINK_ACTIVATION_KEYBIND_CONFIG_KEY)
+    set => this.Set(Config.SetKeybind, SELF_DRINK_ACTIVATION_KEYBIND_FIELD_NAME, SELF_DRINK_ACTIVATION_KEYBIND_CONFIG_KEY, value)
+  }
+
+  ; Positions
+
   SelfInventorySearchbarPosition {
-    get {
-      if (!IsSet(m_selfInventorySearchbar)) {
-        this.m_selfInventorySearchbar := Config.GetPosition(SELF_INVENTORY_SEARCHBAR_CONFIG_KEY)
-      }
-      return this.m_selfInventorySearchbar
-    }
-    set {      
-      Config.SetPosition(SELF_INVENTORY_SEARCHBAR_CONFIG_KEY, value)
-      this.m_selfInventorySearchbar := value
-    }
+    get => this.Get(Config.GetPosition, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_SEARCHBAR_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_SEARCHBAR_CONFIG_KEY, value)
   }
 
   SelfDropAllPosition {
-    get {
-      if (!IsSet(m_selfDropAll)) {
-        this.m_selfDropAll := Config.GetPosition(SELF_DROP_ALL_CONFIG_KEY)
-      }
-      return this.m_selfDropAll
-    }
-    set {
-      Config.SetPosition(SELF_DROP_ALL_CONFIG_KEY, value)
-      this.m_selfDropAll := value
-    }
+    get => this.Get(Config.GetPosition, SELF_DROP_ALL_FIELD_NAME, SELF_DROP_ALL_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SELF_DROP_ALL_FIELD_NAME, SELF_DROP_ALL_CONFIG_KEY, value)
   }
 
   SelfFirstSlotPosition {
-    get {
-      if (!IsSet(m_selfFirstSlot)) {
-        this.m_selfFirstSlot := Config.GetPosition(SELF_FIRST_SLOT_CONFIG_KEY)
-      }
-      return this.m_selfFirstSlot
-    }
-    set {
-      Config.SetPosition(SELF_FIRST_SLOT_CONFIG_KEY, value)
-      this.m_selfFirstSlot := value
-    }
+    get => this.Get(Config.GetPosition, SELF_FIRST_SLOT_FIELD_NAME, SELF_FIRST_SLOT_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SELF_FIRST_SLOT_FIELD_NAME, SELF_FIRST_SLOT_CONFIG_KEY, value)
   }
 
   SplitStacksPosition {
-    get {
-      if (!IsSet(m_splitStacks)) {
-        this.m_splitStacks := Config.GetPosition(SELF_SPLIT_STACKS_CONFIG_KEY)
-      }
-      return this.m_splitStacks
-    }
-    set {
-      Config.SetPosition(SELF_SPLIT_STACKS_CONFIG_KEY, value)
-      this.m_splitStacks := value
-    }
+    get => this.Get(Config.GetPosition, SELF_SPLIT_STACKS_FIELD_NAME, SELF_SPLIT_STACKS_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SELF_SPLIT_STACKS_FIELD_NAME, SELF_SPLIT_STACKS_CONFIG_KEY, value)
   }
 
   SplitAllPosition {
-    get {
-      if (!IsSet(m_splitAll)) {
-        this.m_splitAll := Config.GetPosition(SELF_SPLIT_ALL_CONFIG_KEY)
-      }
-      return this.m_splitAll
-    }
-    set {
-      Config.SetPosition(SELF_SPLIT_ALL_CONFIG_KEY, value)
-      this.m_splitAll := value
-    }
+    get => this.Get(Config.GetPosition, SELF_SPLIT_ALL_FIELD_NAME, SELF_SPLIT_ALL_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SELF_SPLIT_ALL_FIELD_NAME, SELF_SPLIT_ALL_CONFIG_KEY, value)
   }
 
   SelfTransferAllPosition {
-    get {
-      if (!IsSet(m_selfTransferAll)) {
-        this.m_selfTransferAll := Config.GetPosition(SELF_TRANSFER_ALL_CONFIG_KEY)
-      }
-      return this.m_selfTransferAll
-    }
-    set {
-      Config.SetPosition(SELF_TRANSFER_ALL_CONFIG_KEY, value)
-      this.m_selfTransferAll := value
-    }
+    get => this.Get(Config.GetPosition, SELF_TRANSFER_ALL_FIELD_NAME, SELF_TRANSFER_ALL_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SELF_TRANSFER_ALL_FIELD_NAME, SELF_TRANSFER_ALL_CONFIG_KEY, value)
+  }
+
+  SelfHealthThresholdPosition {
+    get => this.Get(Config.GetPosition, SELF_HEALTH_THRESHOLD_FIELD_NAME, SELF_HEALTH_THRESHOLD_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SELF_HEALTH_THRESHOLD_FIELD_NAME, SELF_HEALTH_THRESHOLD_CONFIG_KEY, value)
+  }
+
+  SelfFoodThresholdPosition {
+    get => this.Get(Config.GetPosition, SELF_FOOD_THRESHOLD_FIELD_NAME, SELF_FOOD_THRESHOLD_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SELF_FOOD_THRESHOLD_FIELD_NAME, SELF_FOOD_THRESHOLD_CONFIG_KEY, value)
+  }
+
+  SelfWaterThresholdPosition {
+    get => this.Get(Config.GetPosition, SELF_WATER_THRESHOLD_FIELD_NAME, SELF_WATER_THRESHOLD_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SELF_WATER_THRESHOLD_FIELD_NAME, SELF_WATER_THRESHOLD_CONFIG_KEY, value)
   }
 
   FlushToiletPosition {
-    get {
-      if (!IsSet(m_flushToilet)) {
-        this.m_flushToilet := Config.GetPosition(FLUSH_TOILET_CONFIG_KEY)
-      }
-      return this.m_flushToilet
-    }
-    set {
-      Config.SetPosition(FLUSH_TOILET_CONFIG_KEY, value)
-      this.m_flushToilet := value
-    }
+    get => this.Get(Config.GetPosition, FLUSH_TOILET_FIELD_NAME, FLUSH_TOILET_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, FLUSH_TOILET_FIELD_NAME, FLUSH_TOILET_CONFIG_KEY, value)
   }
 
   SpawnSearchbarPosition {
-    get {
-      if (!IsSet(m_spawnSearchbar)) {
-        this.m_spawnSearchbar := Config.GetPosition(SPAWN_SEARCHBAR_CONFIG_KEY)
-      }
-      return this.m_spawnSearchbar
-    }
-    set {
-      Config.SetPosition(SPAWN_SEARCHBAR_CONFIG_KEY, value)
-      this.m_spawnSearchbar := value
-    }
+    get => this.Get(Config.GetPosition, SPAWN_SEARCHBAR_FIELD_NAME, SPAWN_SEARCHBAR_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SPAWN_SEARCHBAR_FIELD_NAME, SPAWN_SEARCHBAR_CONFIG_KEY, value)
   }
 
   SpawnButtonPosition {
-    get {
-      if (!IsSet(m_spawnButton)) {
-        this.m_spawnButton := Config.GetPosition(SPAWN_BUTTON_CONFIG_KEY)
-      }
-      return this.m_spawnButton
-    }
-    set {
-      Config.SetPosition(SPAWN_BUTTON_CONFIG_KEY, value)
-      this.m_spawnButton := value
-    }
+    get => this.Get(Config.GetPosition, SPAWN_BUTTON_FIELD_NAME, SPAWN_BUTTON_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, SPAWN_BUTTON_FIELD_NAME, SPAWN_BUTTON_CONFIG_KEY, value)
   }
 
   MeatFarmSpawnPosition {
-    get {
-      if (!IsSet(m_meatFarmSpawn)) {
-        this.m_meatFarmSpawn := Config.GetPosition(MEAT_FARM_SPAWN_CONFIG_KEY)
-      }
-      return this.m_meatFarmSpawn
-    }
-    set {
-      Config.SetPosition(MEAT_FARM_SPAWN_CONFIG_KEY, value)
-      this.m_meatFarmSpawn := value
-    }
+    get => this.Get(Config.GetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY, value)
   }
 
   OtherInventorySearchbarPosition {
-    get {
-      if (!IsSet(m_otherInventorySearchbar)) {
-        this.m_otherInventorySearchbar := Config.GetPosition(OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY)
-      }
-      return this.m_otherInventorySearchbar
-    }
-    set {
-      Config.SetPosition(OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY, value)
-      this.m_otherInventorySearchbar := value
-    }
+    get => this.Get(Config.GetPosition, OTHER_INVENTORY_SEARCHBAR_FIELD_NAME, OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, OTHER_INVENTORY_SEARCHBAR_FIELD_NAME, OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY, value)
   }
 
   OtherDropAllPosition {
-    get {
-      if (!IsSet(m_otherDropAll)) {
-        this.m_otherDropAll := Config.GetPosition(OTHER_DROP_ALL_CONFIG_KEY)
-      }
-      return this.m_otherDropAll
-    }
-    set {
-      Config.SetPosition(OTHER_DROP_ALL_CONFIG_KEY, value)
-    }
+    get => this.Get(Config.GetPosition, OTHER_DROP_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, OTHER_DROP_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY, value)
   }
 
   OtherTransferAllPosition {
-    get {
-      if (!IsSet(m_otherTransferAll)) {
-        this.m_otherTransferAll := Config.GetPosition(OTHER_TRANSFER_ALL_CONFIG_KEY)
-      }
-      return this.m_otherTransferAll
+    get => this.Get(Config.GetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY)
+    set => this.Set(Config.SetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY, value)
+  }
+
+  ; Used as the getter for properties
+  Get(getter, memberName, configKey) {
+    if (!IsSet(%memberName%)) {
+      this.%memberName% := getter(this, configKey)
     }
-    set {
-      Config.SetPosition(OTHER_TRANSFER_ALL_CONFIG_KEY, value)
-    }
+    return this.%memberName%
+  }
+
+  ; Used as the setter for properties
+  Set(setter, memberName, configKey, value) {
+    setter(this, configKey, value)
+    this.%memberName% := value
   }
 
   ; Clicks the respawn button on death screen.
@@ -311,18 +259,6 @@ class GameUser {
   FocusOtherSearchbar() {
     Click this.OtherInventorySearchbarPosition.x, this.OtherInventorySearchbarPosition.y
   }
-
-  ;
-  ;
-  ;
-  ; Sure would be nice to have abstract properties so we
-  ; can get our data in respect to the derived type, therefore,
-  ; preventing us from writing almost duplicate methods in the 
-  ; derived classes.
-  ;
-  ;
-  ;
-
 
   ; Give all from your inventory
   GiveAll() {

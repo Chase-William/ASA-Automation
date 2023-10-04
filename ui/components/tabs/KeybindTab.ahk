@@ -16,6 +16,18 @@ class KeybindTab {
     this.defecate := myGui.AddHotkey("x+m", controller.user.DefecateKeybind)
     this.defecate.OnEvent("Change", onChangeClosure)
 
+    myGui.AddText("w200 XS Section", "Heal")
+    this.heal := myGui.AddHotkey("x+m", controller.user.SelfHealKeybind)
+    this.heal.OnEvent("Change", onChangeClosure)
+
+    myGui.AddText("w200 XS Section", "Eat")
+    this.eat := myGui.AddHotkey("x+m", controller.user.SelfEatKeybind)
+    this.eat.OnEvent("Change", onChangeClosure)
+
+    myGui.AddText("w200 XS Section", "Drink")
+    this.drink := myGui.AddHotkey("x+m", controller.user.SelfDrinkKeybind)
+    this.drink.OnEvent("Change", onChangeClosure)
+
     this.saveBtn := myGui.AddButton("XS y+m w80", "Save")
     this.saveBtn.OnEvent("Click", this.SaveKeybindsBtn_OnClick.bind(this))
     this.saveBtn.Visible := false
@@ -26,6 +38,9 @@ class KeybindTab {
     controller.user.SelfInventoryToggleKeybind := this.selfInvent.Value
     controller.user.OtherInventoryToggleKeybind := this.otherInvent.Value
     controller.user.DefecateKeybind := this.defecate.Value
+    controller.user.SelfHealKeybind := this.heal.Value
+    controller.user.SelfEatKeybind := this.eat.Value
+    controller.user.SelfDrinkKeybind := this.drink.Value
     this.saveBtn.Visible := false
   }
 

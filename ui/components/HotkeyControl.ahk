@@ -1,20 +1,16 @@
 #Requires AutoHotkey v2.0
 
 class HotkeyControl {
-  __New(myGui, title, myHotkey, allowCheckbox := false, XS := true) {
+  __New(myGui, title, myHotkey, XS := true) {
     this.m_hotkeyStr := myHotkey.HotkeyStr
     this.m_myHotkey := myHotkey    
 
-    if (allowCheckbox) {
-      myGui.AddCheckbox("w200 " (XS ? "XS " : "") "Section", title)      
-    } else {
-      myGui.AddText("w200 " (XS ? "XS " : "") "Section", title)
-      hotkeyGui := myGui.AddHotkey("x+m", myHotkey.HotkeyStr)
-      hotkeyGui.OnEvent("Change", this.Hotkey_OnChanged.bind(this))
-      
-      this.setBtn := myGui.AddButton("x+m w80 Hidden", "Set") 
-      this.setBtn.OnEvent("Click", this.SetBtn_OnClick.bind(this))
-    }     
+    myGui.AddText("w200 " (XS ? "XS " : "") "Section", title)
+    hotkeyGui := myGui.AddHotkey("x+m", myHotkey.HotkeyStr)
+    hotkeyGui.OnEvent("Change", this.Hotkey_OnChanged.bind(this))
+    
+    this.setBtn := myGui.AddButton("x+m w80 Hidden", "Set") 
+    this.setBtn.OnEvent("Click", this.SetBtn_OnClick.bind(this))
   }
 
   HotkeyStr {

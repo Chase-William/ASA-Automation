@@ -14,6 +14,15 @@ makeGui(controller) {
   height := "h450"
   ; Create root gui object
   myGui := Gui(, windowTitle,)
+  ; MyGui.BackColor := "313338"
+  
+  ; WinSetTransColor("FFFFFF", MyGui)
+  ; MyGui.Opt("-Caption")
+
+  ; Closing logic
+  myGui.OnEvent("Close", (*) => ExitApp())
+  myGui.OnEvent("Escape", (*) => ExitApp())
+
   ; Create tabs
   myTabs := myGui.AddTab3("x0 y0 " width " " height, [
     "Hotkeys",
@@ -49,7 +58,6 @@ makeGui(controller) {
   ; Present content
   myGui.Show(width " " height)
 }
-
   ; AddToolsTab(myGui, myTabs) {
   ;   ; Use "Toggles Tab"
   ;   myTabs.UseTab(1)

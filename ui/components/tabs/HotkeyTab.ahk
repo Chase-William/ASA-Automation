@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #include "../HotkeyControl.ahk"
+#include "../ToggleControl.ahk"
 
 class HotkeyTab {
   __New(myGui, controller) {
@@ -22,8 +23,24 @@ class HotkeyTab {
     
     HotkeyControl(myGui, "Auto Clicker:", this.controller.AutoClickHotkey,,,)
     HotkeyControl(myGui, "Auto Metal Farm", this.controller.AutoMetalFarmHotkey,,,)
-    HotkeyControl(myGui, "Drop Metal Farm Junk:", this.controller.DropMetalFarmJunkHotkey,,,)
-    HotkeyControl(myGui, "Auto Self Meat Farm", this.controller.AutoSuicideMeatFarmHotkey, true,,)
+    HotkeyControl(myGui, "Handle Metal Farm Junk:", this.controller.DropMetalFarmJunkHotkey,,,)
+    ToggleControl(myGui, "Auto Self Meat Farm", (*) => this.controller.AutoSuicideMeatFarmToggle(), "Section XS")
+    ToggleControl(myGui, "Auto Brew", (*) => this.controller.AutoBrewToggle(), "Section XS")
+    ToggleControl(myGui, "Auto Eat", (*) => {}, "x+m")
+    ToggleControl(myGui, "Auto Eat", (*) => {}, "x+m")
+    
+    ToggleControl(myGui, "Auto Fish", (*) => this.controller.AutoFishToggle(), "Section XS")
+    autoRecast := myGui.AddCheckbox("x+m", "Auto Recast")
+    autoRecast.OnEvent("Click", this.AutoRecastCheckbox_OnClick.bind(this))
+    
+
+    ; ToggleControl(myGui, "Auto Eat", this.controller., true,,)
+    ; ToggleControl(myGui, "Auto Drink", this.controller., true,,)
+  }
+
+  AutoRecastCheckbox_OnClick(sender, info) {
+    ; Toggle recast
+    this.controller.fishing.AutoRecast := sender.Value
   }
 
   ; Handles check for keeping the tool window above all others

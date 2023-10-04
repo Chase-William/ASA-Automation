@@ -35,6 +35,6 @@ class LilxDHotkey {
   }
 
   RegisterHotkey() {
-    Hotkey this.HotkeyStr, this.m_actionCallback
+    Hotkey(this.HotkeyStr, this.m_actionCallback)
   }
 }

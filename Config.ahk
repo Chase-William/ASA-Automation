@@ -353,5 +353,9 @@ class Config {
   }
   static SetRegion(key, value) {
     IniWrite(value.ToString(), CONFIG_FILE, REGION_SECTION, key)
-  } 
+  }
+
+  static Get(key, section) {
+    return IniRead(CONFIG_FILE, section, key)
+  }
 }

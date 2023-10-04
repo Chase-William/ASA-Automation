@@ -1,21 +1,30 @@
 #include "LilxDHotkey.ahk"
+#include "Util.ahk"
+#include "FishingController.ahk"
 
 AUTO_CLICK_HOTKEY_CONFIG_KEY := "autoClick"
 DROP_METAL_FARM_JUNK_CONFIG_KEY := "dropMetalFarmJunk"
 AUTO_METAL_FARM_CONFIG_KEY := "autoMetalFarm"
-AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY := "autoSuicideMeatFarm"
+; AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY := "autoSuicideMeatFarm"
 
 class LilxDController {
   __New(
   cfg,
   user
-  ; autoClickHotkey,
-  ; autoMetalFarmHotkey
   ) {
     ; Set instance variables
     this.cfg := cfg
     this.user := user
-    
+    this.fishing := FishingController(cfg, user)
+
+    ; Allows other functions to see state of other functions
+    this.isAutoClickerOn := false
+    this.isAutoMetalFarmOn := false
+
+    ; Allow other functions to temporarily silence other functions
+    this.silenceAutoClicker := false
+    this.silenceAutoMetalFarm := false
+
     ; autoclicker
     this.m_autoClickHotkey := LilxDHotkey(AUTO_CLICK_HOTKEY_CONFIG_KEY, this.AutoClickHotkey_Clicked.bind(this))
     this.m_autoClickHotkey.RegisterHotkey()
@@ -29,25 +38,8 @@ class LilxDController {
     this.m_dropMetalFarmJunkHotkey.RegisterHotkey()
 
     ; auto suicide meat farm
-    this.m_autoSuicideMeatFarm := LilxDHotkey(AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY, this.AutoSuicideMeatFarm_Clicked.bind(this))
-    this.m_autoSuicideMeatFarm.RegisterHotkey()
-
-    ; Setup map of hotkeys to their object for later use
-    ; this.hotkeys := Map()
-    ; this.hotkeys[autoClickHotkey.toString()] := autoClickHotkey
-    ; this.hotkeys[autoMetalFarmHotkey.toString()] := autoMetalFarmHotkey
-    ; this.hotkeys[autouserMeatFarmHotkey.toString()] := autouserMeatFarmHotkey
-    ; this.hotkeys[autoFertFarmHotkey.toString()] := autoFertFarmHotkey
-
-    ; MsgBox autoMetalFarmHotkey.toString(), this.hotkeys[autoMetalFarmHotkey.toString()].key
-
-    ; this.metalFarmBound := this.AutoClickMetalFarm.bind(this)
-
-    ; Setup hotkeys
-    ;Hotkey autoClickHotkey.toString(), this.AutoClickHotkey_Clicked.bind(this)
-    ;Hotkey autoMetalFarmHotkey.toString(), this.AutoMetalFarm.bind(this)
-    ; Hotkey autouserMeatFarmHotkey.toString(), this.userMeatFarm.bind(this)
-    ; HotKey autoFertFarmHotkey.toString(), this.AutoFertFarm.bind(this)
+    ; this.m_autoSuicideMeatFarm := LilxDHotkey(AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY, this.AutoSuicideMeatFarm_Clicked.bind(this))
+    ; this.m_autoSuicideMeatFarm.RegisterHotkey()
   }
 
   AutoClickHotkey {
@@ -65,36 +57,74 @@ class LilxDController {
     set => this.m_dropMetalFarmJunkHotkey := value
   }
 
-  AutoSuicideMeatFarmHotkey {
-    get => this.m_autoSuicideMeatFarm
-    set => this.m_autoSuicideMeatFarm := value
+  ; AutoSuicideMeatFarmHotkey {
+  ;   get => this.m_autoSuicideMeatFarm
+  ;   set => this.m_autoSuicideMeatFarm := value
+  ; }
+
+  AutoEat() {
+
+  }
+
+  AutoDrink() {
+
   }
 
   ; Plain auto-clicker
   AutoClickHotkey_Clicked(hotkey) {
-     ; Run if hotkey detectedS
-     static on := false
-     if on := !on {
-      SetTimer(Click, this.cfg.delay.autoClickInterval)
-     } else {
-      SetTimer(Click, 0)
-     }
+    ; Run if hotkey detected     
+    this.AutoClicker()
+  }
+
+  AutoClicker() {
+    ; Static variable for holding instance bound callback
+    static autoClickCallback
+    ; Bind callback if not already
+    if !IsSet(autoClickCallback) { 
+      autoClickCallback := this.SilenceableClick.bind(this)
+    }
+
+    ; Run if hotkey detected     
+    if this.isAutoClickerOn := !this.isAutoClickerOn {
+      SetTimer(autoClickCallback, this.cfg.delay.autoClickInterval)
+    } else {
+      SetTimer(autoClickCallback, 0)
+    }
+  }
+
+  SilenceableClick() {
+    if (!this.silenceAutoClicker) {
+      Click()
+    }    
   }
 
   DropMetalFarmJunkHotkey_Clicked(hotkey) {
+    ; SILENCE EXISTING AUTOCLICKERS IF RUNNING AND RESUME AFTER
+    if (this.isAutoClickerOn) {
+      this.silenceAutoClicker := true
+    }
+    else if (this.isAutoMetalFarmOn) {
+      this.silenceAutoMetalFarm := true
+    } 
 
-      
-    ;
-    ;
-    ; PAUSE EXISTING AUTOCLICKERS IF RUNNING AND RESUME AFTER
-    ;
-    ;
-
-
+    ; Perform drop
     this.HandleMetalRunItems()
+    Sleep this.cfg.delay.sw
+
+    ; Unsilence silenced functions
+    if (this.silenceAutoClicker) {
+      this.silenceAutoClicker := false
+    }
+    else if (this.silenceAutoMetalFarm) {
+      this.silenceAutoMetalFarm := false
+    }
   }
 
-  AutoMetalFarm_Clicked(hotkey) {
+  AutoMetalFarm_Clicked(hotkey?) {
+    this.AutoMetalFarm()
+  }
+
+  AutoMetalFarm() {
     ; Static variable for holding instance bound callback
     static metalFarmCallback
     ; Bind callback if not already
@@ -102,8 +132,8 @@ class LilxDController {
       metalFarmCallback := this.AutoClickMetalFarm.bind(this)
     }
 
-    static on := false
-    if on := !on {
+    ; static on := false
+    if this.isAutoMetalFarmOn := !this.isAutoMetalFarmOn {
       SetTimer(metalFarmCallback, this.cfg.delay.autoClickInterval)
     } else {
       SetTimer(metalFarmCallback, 0) 
@@ -124,7 +154,22 @@ class LilxDController {
   ;     SetTimer(metalFarmCallback, 0) 
   ; }
 
-  AutoSuicideMeatFarm_Clicked(hotkey) {
+  ; AutoSuicideMeatFarm_Clicked(hotkey) {
+  ;   ; Static variable for holding instance bound callback
+  ;   static respawnCallback
+  ;   ; Bind callback if not already
+  ;   if !IsSet(respawnCallback) { 
+  ;     respawnCallback := this.Respawn.bind(this)
+  ;   }
+  ;   ; Static variable to toggle with
+  ;   static on := false
+  ;   if on := !on {
+  ;     SetTimer respawnCallback, 1000
+  ;   }
+  ;   else Reload
+  ;   }
+
+  AutoSuicideMeatFarmToggle() {
     ; Static variable for holding instance bound callback
     static respawnCallback
     ; Bind callback if not already
@@ -134,10 +179,60 @@ class LilxDController {
     ; Static variable to toggle with
     static on := false
     if on := !on {
-      SetTimer respawnCallback, 1000
+      SetTimer(respawnCallback, this.cfg.delay.xlw)
+    } else {
+      Settimer(respawnCallback, 0)
+    }    
+  }
+
+  AutoBrewToggle() {
+    ; Static variable for holding instance bound callback
+    static autoBrewCallback
+    ; Bind callback if not already
+    if !IsSet(autoBrewCallback) { 
+      autoBrewCallback := this.MaybeDrinkBrew.bind(this)
     }
-    else Reload
+    ; Static variable to toggle with
+    static on := false
+    if on := !on {
+      SetTimer(autoBrewCallback, this.cfg.delay._3xlw)
+    } else {
+      Settimer(autoBrewCallback, 0)
+    }   
+  }
+
+  MaybeDrinkBrew() {
+    pixel := PixelGetColor(this.user.SelfHealthThresholdPosition.X, this.user.SelfHealthThresholdPosition.Y)
+    ; MsgBox pixel, pixel
+    ; Parse hex color to rbg components
+
+    red := SubStr(pixel, 3, 2)
+    green := SubStr(pixel,5, 2)
+    blue := SubStr(pixel, 7, 2)
+
+    ; MsgBox "Test", Format("{1} {2} {3}", this.HexToDec(red), this.HexToDec(green), this.HexToDec(blue))
+
+    red := HexToDec(red)
+    green := HexToDec(green)
+    blue := HexToDec(blue)
+
+    rg := Abs(green - red)
+    gb := Abs(blue - green)
+    rb := Abs(blue - red)
+
+    maskTotal := rg + gb + rb
+
+    ; Range for health had
+    if (maskTotal > 300 AND maskTotal < 360) {
+      ; Health high, no need to med brew
+      
+    } 
+    ; Range for health lost
+    else if (maskTotal > 20 AND maskTotal < 80) {
+      ; Health low, need to med brew
+      ControlSend Format("{1}", this.user.SelfHealKeybind),, this.cfg.process.windowTitle
     }
+  }
 
   AutoFertFarm(hotkey) {
     ; Static variable for holding instance bound callback
@@ -181,7 +276,7 @@ class LilxDController {
       this.user.SelectMeatFarmBeds()
       Sleep this.cfg.delay.smw
       this.user.Respawn() 
-      Sleep 5000
+      Sleep this.cfg.delay.5xlw
     }
   }
 
@@ -219,4 +314,87 @@ class LilxDController {
     ; Close Inventory
     this.user.ToggleOtherInventory()
   }
+
+  AutoFishToggle() {
+    ; Static variable for holding instance bound callback
+    static autoFishCallback
+    ; Bind callback if not already
+    if !IsSet(autoFishCallback) { 
+      autoFishCallback := (*) => this.fishing.AutoFish()
+    }
+    ; Static variable to toggle with
+    static on := false
+    if on := !on {
+      SetTimer(autoFishCallback, this.cfg.delay.mw)
+    } else {
+      Settimer(autoFishCallback, 0)
+    }
+  }
+
+  ; AutoFish() {
+  ;   this.fishing.AutoFish()
+  ; }
+
+  ; AutoFish() {
+  ;   ; Load images once
+  ;   static imgA := LoadPicture("assets/fishing/2560_1440_A_EDIT.png")
+  ;   static imgC := LoadPicture("assets/fishing/2560_1440_C_EDIT.png")
+  ;   static imgD := LoadPicture("assets/fishing/2560_1440_D_EDIT.png")
+  ;   static imgE := LoadPicture("assets/fishing/2560_1440_E_EDIT.png")
+  ;   static imgQ := LoadPicture("assets/fishing/2560_1440_Q_EDIT.png")
+  ;   static imgS := LoadPicture("assets/fishing/2560_1440_S_EDIT.png")
+  ;   static imgW := LoadPicture("assets/fishing/2560_1440_W_EDIT.png")
+  ;   static imgX := LoadPicture("assets/fishing/2560_1440_X_EDIT.png")
+  ;   static imgZ := LoadPicture("assets/fishing/2560_1440_Z_EDIT.png")
+
+  ;   outX := 0
+  ;   outY := 0
+  ;   static windowWidth := 0
+  ;   static windowHeight := 0
+  ;   ; Only get window dimensions once since this program expects fullscreen or windowed fullscreen
+  ;   if (windowWidth == 0) {
+  ;     ; Get Width/Height of Window
+  ;     WinGetPos(,, &windowWidth, &windowHeight, this.cfg.process.windowTitle)
+  ;   }
+
+  ;   static left := windowWidth / 2
+  ;   static top := windowHeight / 2.2
+  ;   static right := windowWidth / 1.2
+  ;   static bottom := windowHeight
+
+  ;   ; MsgBox Format("{1},left:{2},top:{3},right:{4},bottom:{5},outX:{6},outY:{7},img:{8}", windowHeight, left, top, right, bottom, outX, outY, imgA), Format("{1}", windowWidth)
+
+  ;   search := (image) => ImageSearch(&outX, &outY, left, top, right, bottom, "*TransBlack *20 HBITMAP:*" image)
+
+  ;   if (search(imgA)) {
+  ;     ControlSend "a",, this.cfg.process.windowTitle
+  ;   } 
+  ;   else if (search(imgC)) {
+  ;     ControlSend "c",, this.cfg.process.windowTitle
+  ;   }
+  ;   else if (search(imgD)) {
+  ;     ControlSend "d",, this.cfg.process.windowTitle
+  ;   }
+  ;   else if (search(imgE)) {
+  ;     ControlSend "e",, this.cfg.process.windowTitle
+  ;   }
+  ;   else if (search(imgQ)) {
+  ;     ControlSend "q",, this.cfg.process.windowTitle
+  ;   }
+  ;   else if (search(imgS)) {
+  ;     ControlSend "s",, this.cfg.process.windowTitle
+  ;   }
+  ;   else if (search(imgW)) {
+  ;     ControlSend "w",, this.cfg.process.windowTitle
+  ;   }
+  ;   else if (search(imgX)) {
+  ;     ControlSend "x",, this.cfg.process.windowTitle
+  ;   }
+  ;   else if (search(imgZ)) {
+  ;     ControlSend "z",, this.cfg.process.windowTitle
+  ;   } 
+  ;   else {
+  ;     ; MsgBox "No image found", "Test"
+  ;   }
+  ; }
 }
