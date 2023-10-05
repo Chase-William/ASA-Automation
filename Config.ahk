@@ -31,11 +31,15 @@ STONE_STR_CONFIG_KEY := "stone"
 FLINT_STR_CONFIG_KEY := "flint"
 BERRY_STR_CONFIG_KEY := "berry"
 RAW_MEAT_STR_CONFIG_KEY := "rawMeat"
+NURTURE_FILTER_STR_CONFIG_KEY := "nurtureFilter"
+
+NURTURE_FILTER_STR_FIELD_NAME := "m_nurtureFilter"
 
 SPAWN_SCREEN_BED_CONFIG_KEY := "spawnScreenBedColor"
 REGION_TEXT_WHEN_DEAD_COLOR_CONFIG_KEY := "regionTextWhenDeadColor"
 
 ; SPAWN_REGION_TEXT_REGION_CONFIG_KEY := "spawnRegionTextRegion"
+
 
 class Config {
   __New() {
@@ -165,6 +169,10 @@ class Config {
         Config.SetFilter(RAW_MEAT_STR_CONFIG_KEY, value)
         this.m_rawMeat := value
       }
+    }
+    NurtureFilter {
+      get => Config.GetMember(this, Config.GetFilter, NURTURE_FILTER_STR_FIELD_NAME, NURTURE_FILTER_STR_CONFIG_KEY)
+      set => Config.SetMember(this, Config.SetFilter, NURTURE_FILTER_STR_FIELD_NAME, NURTURE_FILTER_STR_CONFIG_KEY, value)
     }
   }
 
@@ -357,5 +365,19 @@ class Config {
 
   static Get(key, section) {
     return IniRead(CONFIG_FILE, section, key)
+  }
+
+  ; Used as the getter for properties
+  static GetMember(self, getter, memberName, configKey) {
+    if (!IsSet(%memberName%)) {
+      self.%memberName% := getter(this, configKey)
+    }
+    return self.%memberName%
+  }
+
+  ; Used as the setter for properties
+  static SetMember(self, setter, memberName, configKey, value) {
+    setter(self, configKey, value)
+    self.%memberName% := value
   }
 }

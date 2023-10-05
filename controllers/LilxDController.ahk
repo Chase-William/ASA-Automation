@@ -1,11 +1,13 @@
-#include "LilxDHotkey.ahk"
-#include "Util.ahk"
+#include "../LilxDHotkey.ahk"
+#include "../Util.ahk"
 #include "FishingController.ahk"
+#include "DinoNutureController.ahk"
 
 AUTO_CLICK_HOTKEY_CONFIG_KEY := "autoClick"
 DROP_METAL_FARM_JUNK_CONFIG_KEY := "dropMetalFarmJunk"
 AUTO_METAL_FARM_CONFIG_KEY := "autoMetalFarm"
 ; AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY := "autoSuicideMeatFarm"
+AUTO_NURTURE_DINO_CONFIG_KEY := "autoNurtureDino"
 
 class LilxDController {
   __New(
@@ -16,6 +18,7 @@ class LilxDController {
     this.cfg := cfg
     this.user := user
     this.fishing := FishingController(cfg, user)
+    this.dinoNurturer := DinoNutureController(cfg, user)
 
     ; Allows other functions to see state of other functions
     this.isAutoClickerOn := false
@@ -37,6 +40,10 @@ class LilxDController {
     this.m_dropMetalFarmJunkHotkey := LilxDHotkey(DROP_METAL_FARM_JUNK_CONFIG_KEY, this.DropMetalFarmJunkHotkey_Clicked.bind(this))
     this.m_dropMetalFarmJunkHotkey.RegisterHotkey()
 
+    ; Auto transfer filtered contents to dino
+    this.m_autoNurtureDinoHotkey := LilxDHotkey(AUTO_NURTURE_DINO_CONFIG_KEY, this.AutoNutureDinoHotkey_Clicked.bind(this))
+    this.m_autoNurtureDinoHotkey.RegisterHotkey()
+
     ; auto suicide meat farm
     ; this.m_autoSuicideMeatFarm := LilxDHotkey(AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY, this.AutoSuicideMeatFarm_Clicked.bind(this))
     ; this.m_autoSuicideMeatFarm.RegisterHotkey()
@@ -55,6 +62,15 @@ class LilxDController {
   DropMetalFarmJunkHotkey {
     get => this.m_dropMetalFarmJunkHotkey
     set => this.m_dropMetalFarmJunkHotkey := value
+  }
+
+  NurtureDinoHotkey {
+    get => this.m_autoNurtureDinoHotkey
+    set => this.m_autoNurtureDinoHotkey := value
+  }
+
+  AutoNutureDinoHotkey_Clicked(hotkey) {
+    this.dinoNurturer.Nurture()
   }
 
   ; AutoSuicideMeatFarmHotkey {

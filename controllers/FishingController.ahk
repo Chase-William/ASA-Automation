@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#include "Config.ahk"
-#include "Util.ahk"
+#include "../Config.ahk"
+#include "../Util.ahk"
 
 FISHING_SECTION := "fishing"
 
@@ -36,13 +36,13 @@ class FishingController {
     this.m_c := ParseFishingArray(FISHING_LETTER_C_CONFIG_KEY)
     this.m_x := ParseFishingArray(FISHING_LETTER_X_CONFIG_KEY)
 
-    this.m_autoRecast := false
+    ; this.m_autoRecast := false
   }
 
-  AutoRecast {
-    get => this.m_autoRecast
-    set => this.m_autoRecast := value
-  }
+  ; AutoRecast {
+  ;   get => this.m_autoRecast
+  ;   set => this.m_autoRecast := value
+  ; }
 
   AutoFish() {
     static centerX := 0
@@ -55,19 +55,19 @@ class FishingController {
     }
 
     ; Check to recast if enabled
-    if (this.AutoRecast) {
-      rgb := HexToDecArray(PixelGetColor(centerX, centerY))
-      if (rgb[RED_INDEX] < 15 AND
-          rgb[GREEN_INDEX] > 205 AND rgb[GREEN_INDEX] < 235 AND
-          rgb[BLUE_INDEX] > 205 AND rgb[BLUE_INDEX] < 235
-        ) {
-          Sleep this.cfg.delay._2xlw
-          Click
-          Sleep this.cfg.delay._2xlw
-          Click
-          return
-      }
-    }
+    ; if (this.AutoRecast) {
+    ;   rgb := HexToDecArray(PixelGetColor(centerX, centerY))
+    ;   if (rgb[RED_INDEX] < 15 AND
+    ;       rgb[GREEN_INDEX] > 205 AND rgb[GREEN_INDEX] < 235 AND
+    ;       rgb[BLUE_INDEX] > 205 AND rgb[BLUE_INDEX] < 235
+    ;     ) {
+    ;       Sleep this.cfg.delay._2xlw
+    ;       Click
+    ;       Sleep this.cfg.delay._2xlw
+    ;       Click
+    ;       return
+    ;   }
+    ; }
 
     ; Test each character in a specific order
     if (this.TestPixelColor(this.m_q)) {

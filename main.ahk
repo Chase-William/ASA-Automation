@@ -6,7 +6,7 @@
 #requires AutoHotkey v2.0
 
 #include "LilxDHotkey.ahk"
-#include "LilxDController.ahk"
+#include "controllers/LilxDController.ahk"
 #include "GameUser.ahk"
 #include "ui/ui.ahk"
 

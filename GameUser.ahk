@@ -60,136 +60,122 @@ class GameUser {
   ; Regions
 
   SpawnRegionTextRegion {
-    get => this.Get(Config.GetRegion, SPAWN_REGION_TEXT_REGION_FIELD_NAME, SPAWN_REGION_TEXT_REGION_CONFIG_KEY)
-    set => this.Set(Config.SetRegion, SPAWN_REGION_TEXT_REGION_FIELD_NAME, SPAWN_REGION_TEXT_REGION_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetRegion, SPAWN_REGION_TEXT_REGION_FIELD_NAME, SPAWN_REGION_TEXT_REGION_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetRegion, SPAWN_REGION_TEXT_REGION_FIELD_NAME, SPAWN_REGION_TEXT_REGION_CONFIG_KEY, value)
   }
 
   ; Keybinds
 
   DefecateKeybind {
-    get => this.Get(Config.GetKeybind, DEFECATE_FIELD_NAME, DEFECATE_CONFIG_KEY)
-    set => this.Set(Config.SetKeybind, DEFECATE_FIELD_NAME, DEFECATE_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetKeybind, DEFECATE_FIELD_NAME, DEFECATE_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetKeybind, DEFECATE_FIELD_NAME, DEFECATE_CONFIG_KEY, value)
   }
 
   OtherInventoryToggleKeybind {
-    get => this.Get(Config.GetKeybind, OTHER_INVENTORY_TOGGLE_FIELD_NAME, OTHER_INVENTORY_TOGGLE_CONFIG_KEY)
-    set => this.Set(Config.SetKeybind, OTHER_INVENTORY_TOGGLE_FIELD_NAME, OTHER_INVENTORY_TOGGLE_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetKeybind, OTHER_INVENTORY_TOGGLE_FIELD_NAME, OTHER_INVENTORY_TOGGLE_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetKeybind, OTHER_INVENTORY_TOGGLE_FIELD_NAME, OTHER_INVENTORY_TOGGLE_CONFIG_KEY, value)
   }
 
   SelfInventoryToggleKeybind {
-    get => this.Get(Config.GetKeybind, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_TOGGLE_CONFIG_KEY)
-    set => this.Set(Config.SetKeybind, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_TOGGLE_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetKeybind, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_TOGGLE_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetKeybind, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_TOGGLE_CONFIG_KEY, value)
   }
 
   SelfHealKeybind {
-    get => this.Get(Config.GetKeybind, SELF_HEAL_ACTIVATION_KEYBIND_FIELD_NAME, SELF_HEAL_ACTIVATION_KEYBIND_CONFIG_KEY)
-    set => this.Set(Config.SetKeybind, SELF_HEAL_ACTIVATION_KEYBIND_FIELD_NAME, SELF_HEAL_ACTIVATION_KEYBIND_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetKeybind, SELF_HEAL_ACTIVATION_KEYBIND_FIELD_NAME, SELF_HEAL_ACTIVATION_KEYBIND_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetKeybind, SELF_HEAL_ACTIVATION_KEYBIND_FIELD_NAME, SELF_HEAL_ACTIVATION_KEYBIND_CONFIG_KEY, value)
   }
 
   SelfEatKeybind {
-    get => this.Get(Config.GetKeybind, SELF_EAT_ACTIVATION_KEYBIND_FIELD_NAME, SELF_EAT_ACTIVATION_KEYBIND_CONFIG_KEY)
-    set => this.Set(Config.SetKeybind, SELF_EAT_ACTIVATION_KEYBIND_FIELD_NAME, SELF_EAT_ACTIVATION_KEYBIND_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetKeybind, SELF_EAT_ACTIVATION_KEYBIND_FIELD_NAME, SELF_EAT_ACTIVATION_KEYBIND_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetKeybind, SELF_EAT_ACTIVATION_KEYBIND_FIELD_NAME, SELF_EAT_ACTIVATION_KEYBIND_CONFIG_KEY, value)
   }
 
   SelfDrinkKeybind {
-    get => this.Get(Config.GetKeybind, SELF_DRINK_ACTIVATION_KEYBIND_FIELD_NAME, SELF_DRINK_ACTIVATION_KEYBIND_CONFIG_KEY)
-    set => this.Set(Config.SetKeybind, SELF_DRINK_ACTIVATION_KEYBIND_FIELD_NAME, SELF_DRINK_ACTIVATION_KEYBIND_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetKeybind, SELF_DRINK_ACTIVATION_KEYBIND_FIELD_NAME, SELF_DRINK_ACTIVATION_KEYBIND_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetKeybind, SELF_DRINK_ACTIVATION_KEYBIND_FIELD_NAME, SELF_DRINK_ACTIVATION_KEYBIND_CONFIG_KEY, value)
   }
 
   ; Positions
 
   SelfInventorySearchbarPosition {
-    get => this.Get(Config.GetPosition, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_SEARCHBAR_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_SEARCHBAR_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_SEARCHBAR_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SELF_INVENTORY_SEARCHBAR_FIELD_NAME, SELF_INVENTORY_SEARCHBAR_CONFIG_KEY, value)
   }
 
   SelfDropAllPosition {
-    get => this.Get(Config.GetPosition, SELF_DROP_ALL_FIELD_NAME, SELF_DROP_ALL_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SELF_DROP_ALL_FIELD_NAME, SELF_DROP_ALL_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SELF_DROP_ALL_FIELD_NAME, SELF_DROP_ALL_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SELF_DROP_ALL_FIELD_NAME, SELF_DROP_ALL_CONFIG_KEY, value)
   }
 
   SelfFirstSlotPosition {
-    get => this.Get(Config.GetPosition, SELF_FIRST_SLOT_FIELD_NAME, SELF_FIRST_SLOT_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SELF_FIRST_SLOT_FIELD_NAME, SELF_FIRST_SLOT_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SELF_FIRST_SLOT_FIELD_NAME, SELF_FIRST_SLOT_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SELF_FIRST_SLOT_FIELD_NAME, SELF_FIRST_SLOT_CONFIG_KEY, value)
   }
 
   SplitStacksPosition {
-    get => this.Get(Config.GetPosition, SELF_SPLIT_STACKS_FIELD_NAME, SELF_SPLIT_STACKS_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SELF_SPLIT_STACKS_FIELD_NAME, SELF_SPLIT_STACKS_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SELF_SPLIT_STACKS_FIELD_NAME, SELF_SPLIT_STACKS_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SELF_SPLIT_STACKS_FIELD_NAME, SELF_SPLIT_STACKS_CONFIG_KEY, value)
   }
 
   SplitAllPosition {
-    get => this.Get(Config.GetPosition, SELF_SPLIT_ALL_FIELD_NAME, SELF_SPLIT_ALL_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SELF_SPLIT_ALL_FIELD_NAME, SELF_SPLIT_ALL_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SELF_SPLIT_ALL_FIELD_NAME, SELF_SPLIT_ALL_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SELF_SPLIT_ALL_FIELD_NAME, SELF_SPLIT_ALL_CONFIG_KEY, value)
   }
 
   SelfTransferAllPosition {
-    get => this.Get(Config.GetPosition, SELF_TRANSFER_ALL_FIELD_NAME, SELF_TRANSFER_ALL_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SELF_TRANSFER_ALL_FIELD_NAME, SELF_TRANSFER_ALL_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SELF_TRANSFER_ALL_FIELD_NAME, SELF_TRANSFER_ALL_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SELF_TRANSFER_ALL_FIELD_NAME, SELF_TRANSFER_ALL_CONFIG_KEY, value)
   }
 
   SelfHealthThresholdPosition {
-    get => this.Get(Config.GetPosition, SELF_HEALTH_THRESHOLD_FIELD_NAME, SELF_HEALTH_THRESHOLD_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SELF_HEALTH_THRESHOLD_FIELD_NAME, SELF_HEALTH_THRESHOLD_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SELF_HEALTH_THRESHOLD_FIELD_NAME, SELF_HEALTH_THRESHOLD_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SELF_HEALTH_THRESHOLD_FIELD_NAME, SELF_HEALTH_THRESHOLD_CONFIG_KEY, value)
   }
 
   SelfFoodThresholdPosition {
-    get => this.Get(Config.GetPosition, SELF_FOOD_THRESHOLD_FIELD_NAME, SELF_FOOD_THRESHOLD_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SELF_FOOD_THRESHOLD_FIELD_NAME, SELF_FOOD_THRESHOLD_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SELF_FOOD_THRESHOLD_FIELD_NAME, SELF_FOOD_THRESHOLD_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SELF_FOOD_THRESHOLD_FIELD_NAME, SELF_FOOD_THRESHOLD_CONFIG_KEY, value)
   }
 
   SelfWaterThresholdPosition {
-    get => this.Get(Config.GetPosition, SELF_WATER_THRESHOLD_FIELD_NAME, SELF_WATER_THRESHOLD_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SELF_WATER_THRESHOLD_FIELD_NAME, SELF_WATER_THRESHOLD_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SELF_WATER_THRESHOLD_FIELD_NAME, SELF_WATER_THRESHOLD_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SELF_WATER_THRESHOLD_FIELD_NAME, SELF_WATER_THRESHOLD_CONFIG_KEY, value)
   }
 
   FlushToiletPosition {
-    get => this.Get(Config.GetPosition, FLUSH_TOILET_FIELD_NAME, FLUSH_TOILET_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, FLUSH_TOILET_FIELD_NAME, FLUSH_TOILET_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, FLUSH_TOILET_FIELD_NAME, FLUSH_TOILET_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, FLUSH_TOILET_FIELD_NAME, FLUSH_TOILET_CONFIG_KEY, value)
   }
 
   SpawnSearchbarPosition {
-    get => this.Get(Config.GetPosition, SPAWN_SEARCHBAR_FIELD_NAME, SPAWN_SEARCHBAR_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SPAWN_SEARCHBAR_FIELD_NAME, SPAWN_SEARCHBAR_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SPAWN_SEARCHBAR_FIELD_NAME, SPAWN_SEARCHBAR_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SPAWN_SEARCHBAR_FIELD_NAME, SPAWN_SEARCHBAR_CONFIG_KEY, value)
   }
 
   SpawnButtonPosition {
-    get => this.Get(Config.GetPosition, SPAWN_BUTTON_FIELD_NAME, SPAWN_BUTTON_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, SPAWN_BUTTON_FIELD_NAME, SPAWN_BUTTON_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, SPAWN_BUTTON_FIELD_NAME, SPAWN_BUTTON_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, SPAWN_BUTTON_FIELD_NAME, SPAWN_BUTTON_CONFIG_KEY, value)
   }
 
   MeatFarmSpawnPosition {
-    get => this.Get(Config.GetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY, value)
   }
 
   OtherInventorySearchbarPosition {
-    get => this.Get(Config.GetPosition, OTHER_INVENTORY_SEARCHBAR_FIELD_NAME, OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, OTHER_INVENTORY_SEARCHBAR_FIELD_NAME, OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, OTHER_INVENTORY_SEARCHBAR_FIELD_NAME, OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, OTHER_INVENTORY_SEARCHBAR_FIELD_NAME, OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY, value)
   }
 
   OtherDropAllPosition {
-    get => this.Get(Config.GetPosition, OTHER_DROP_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, OTHER_DROP_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, OTHER_DROP_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, OTHER_DROP_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY, value)
   }
 
   OtherTransferAllPosition {
-    get => this.Get(Config.GetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY)
-    set => this.Set(Config.SetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY, value)
-  }
-
-  ; Used as the getter for properties
-  Get(getter, memberName, configKey) {
-    if (!IsSet(%memberName%)) {
-      this.%memberName% := getter(this, configKey)
-    }
-    return this.%memberName%
-  }
-
-  ; Used as the setter for properties
-  Set(setter, memberName, configKey, value) {
-    setter(this, configKey, value)
-    this.%memberName% := value
+    get => Config.GetMember(this, Config.GetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY, value)
   }
 
   ; Clicks the respawn button on death screen.
@@ -291,10 +277,18 @@ class GameUser {
   ; Automatically focues the searchbarPos, queries and performs a drop all.
   SearchOtherAndDropAll(text) {
     this.FocusOtherSearchbar()
-    Sleep this.cfg.delay.mw
+    Sleep this.cfg.delay.lw
     ControlSendText text,, this.cfg.process.windowTitle
-    Sleep this.cfg.delay.mw
+    Sleep this.cfg.delay.lw
     this.OtherDropAll()
+  }
+
+  SearchSelfAndGiveAll(text) {
+    this.FocusSelfSearchbar()
+    Sleep this.cfg.delay.lw
+    ControlSendText text,, this.cfg.process.windowTitle
+    Sleep this.cfg.delay.lw
+    this.GiveAll()
   }
 
   ; Focuses the searchbar, queries for a specific bed name, searches the screen's pixels

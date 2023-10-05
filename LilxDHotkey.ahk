@@ -27,6 +27,10 @@ class LilxDHotkey {
     }
     ; Should only be called from within this class
     set {
+      ; if (StrLen(value) == 0) {
+      ;   this.m_key := ""
+      ;   return
+      ; }
       dataArray := StrSplit(value, ["#", "!", "^", "+", "&", "<", ">", "<^>!", "*", "~", "$", "UP"],)
       key := dataArray[dataArray.Length]
       ; MsgBox "Test", key
