@@ -13,14 +13,16 @@ SELF_WATER_THRESHOLD_CONFIG_KEY := "selfWaterThreshold"
 FLUSH_TOILET_CONFIG_KEY := "flushToilet"
 SPAWN_SEARCHBAR_CONFIG_KEY := "spawnSearchBar"
 SPAWN_BUTTON_CONFIG_KEY := "spawnButton"
-MEAT_FARM_SPAWN_CONFIG_KEY := "meatFarmSpawn"
 OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY := "otherInventorySearchBar"
 OTHER_DROP_ALL_CONFIG_KEY := "otherDropAll"
 OTHER_TRANSFER_ALL_CONFIG_KEY := "otherTransferAll"
+OTHER_FIRST_SLOT_CONFIG_KEY := "otherFirstSlot"
 SELF_INVENTORY_TOGGLE_CONFIG_KEY := "toggleSelfInventory"
 OTHER_INVENTORY_TOGGLE_CONFIG_KEY := "toggleOtherInventory"
 DEFECATE_CONFIG_KEY := "defecate"
 SPAWN_REGION_TEXT_REGION_CONFIG_KEY := "spawnRegionTextRegion"
+MEAT_FARM_SPAWN_CONFIG_KEY := "meatFarmSpawn"
+AFK_CHAMBER_SPAWN_CONFIG_KEY := "afkChamberSpawn"
 
 SELF_HEAL_ACTIVATION_KEYBIND_CONFIG_KEY := "heal"
 SELF_EAT_ACTIVATION_KEYBIND_CONFIG_KEY := "eat"
@@ -39,14 +41,16 @@ SELF_WATER_THRESHOLD_FIELD_NAME := "m_selfWaterThreshold"
 FLUSH_TOILET_FIELD_NAME := "m_flushToilet"
 SPAWN_SEARCHBAR_FIELD_NAME := "m_spawnSearchBar"
 SPAWN_BUTTON_FIELD_NAME := "m_spawnButton"
-MEAT_FARM_SPAWN_FIELD_NAME := "m_meatFarmSpawn"
 OTHER_INVENTORY_SEARCHBAR_FIELD_NAME := "m_otherInventorySearchBar"
 OTHER_DROP_ALL_FIELD_NAME := "m_otherDropAll"
 OTHER_TRANSFER_ALL_FIELD_NAME := "m_otherTransferAll"
+OTHER_FIRST_SLOT_FIELD_NAME := "m_otherFirstSlot"
 SELF_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleSelfInventory"
 OTHER_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleOtherInventory"
 DEFECATE_FIELD_NAME := "m_defecate"
 SPAWN_REGION_TEXT_REGION_FIELD_NAME := "m_spawnRegionTextRegion"
+MEAT_FARM_SPAWN_FIELD_NAME := "m_meatFarmSpawn"
+AFK_CHAMBER_SPAWN_FIELD_NAME := "m_afkChamberSpawn"
 
 SELF_HEAL_ACTIVATION_KEYBIND_FIELD_NAME := "m_heal"
 SELF_EAT_ACTIVATION_KEYBIND_FIELD_NAME := "m_eat"
@@ -158,11 +162,6 @@ class GameUser {
     set => Config.SetMember(this, Config.SetPosition, SPAWN_BUTTON_FIELD_NAME, SPAWN_BUTTON_CONFIG_KEY, value)
   }
 
-  MeatFarmSpawnPosition {
-    get => Config.GetMember(this, Config.GetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY)
-    set => Config.SetMember(this, Config.SetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY, value)
-  }
-
   OtherInventorySearchbarPosition {
     get => Config.GetMember(this, Config.GetPosition, OTHER_INVENTORY_SEARCHBAR_FIELD_NAME, OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY)
     set => Config.SetMember(this, Config.SetPosition, OTHER_INVENTORY_SEARCHBAR_FIELD_NAME, OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY, value)
@@ -174,26 +173,51 @@ class GameUser {
   }
 
   OtherTransferAllPosition {
-    get => Config.GetMember(this, Config.GetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY)
-    set => Config.SetMember(this, Config.SetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_DROP_ALL_CONFIG_KEY, value)
+    get => Config.GetMember(this, Config.GetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_TRANSFER_ALL_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_TRANSFER_ALL_CONFIG_KEY, value)
+  }
+
+  MeatFarmSpawnPosition {
+    get => Config.GetMember(this, Config.GetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY, value)
+  }
+
+  AFKChamberSpawnPosition {
+    get => Config.GetMember(this, Config.GetPosition, AFK_CHAMBER_SPAWN_FIELD_NAME, AFK_CHAMBER_SPAWN_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, AFK_CHAMBER_SPAWN_FIELD_NAME, AFK_CHAMBER_SPAWN_CONFIG_KEY, value)
+  }
+
+  ;
+  ;
+  ; Needs to be added to UI!
+  ;
+  ;
+  OtherFirstSlotPosition {
+    get => Config.GetMember(this, Config.GetPosition, OTHER_FIRST_SLOT_FIELD_NAME, OTHER_FIRST_SLOT_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, OTHER_FIRST_SLOT_FIELD_NAME, OTHER_FIRST_SLOT_CONFIG_KEY, value)
   }
 
   ; Clicks the respawn button on death screen.
-  Respawn() {
-    Click this.respawnButtonPos.x, this.respawnSearchbarPos.y
+  Spawn() {
+    Click this.SpawnButtonPosition.x, this.SpawnButtonPosition.y
   }
 
   ; Focuses the respawn screen's searchbar.
-  FocusRespawnSearchbar() {
-    Click this.respawnSearchbarPos.x, this.respawnSearchbarPos.y
+  FocusSpawnSearchbar() {
+    Click this.SpawnSearchbarPosition.x, this.SpawnSearchbarPosition.y
   }
 
   ; Focuses the searchbar, queries for a specific bed name.
   SearchBeds(text) {
-    this.FocusRespawnSearchbar()
+    this.FocusSpawnSearchbar()
     Sleep this.cfg.delay.smw
     ; Enter bed name
     ControlSendText text,, this.cfg.process.windowTitle
+  }
+
+  ; Presses E
+  Use() {
+    ControlSend("{E}",, this.cfg.process.windowTitle)
   }
 
   ; Returns a boolean indicating if the respawn screen is available for interaction.
@@ -215,26 +239,30 @@ class GameUser {
 
   ; Selects the pre-determined self meat farm beds.
   SelectMeatFarmBeds() {
-    Click this.MeatFarmSpawnPosition.x, this.MeatFarmSpawnPosition.y
+    Click(this.MeatFarmSpawnPosition.x, this.MeatFarmSpawnPosition.y)
+  }
+
+  SelectAFKChamberBeds() {
+    Click(this.AFKChamberSpawnPosition.x, this.AFKChamberSpawnPosition.y)
   }
 
   ; Flushes the toilet.
   FlushToilet() {
-    Click this.FlushToiletPosition.x, this.FlushToiletPosition.y
+    Click(this.FlushToiletPosition.x, this.FlushToiletPosition.y)
   }
 
   ; Triggers character defecation.
   Defecate() {
-    ControlSend Format("{1}", this.DefecateKeybind),, this.cfg.process.windowTitle
+    ControlSend(Format("{1}", this.DefecateKeybind),, this.cfg.process.windowTitle)
   }
 
   ; Toggles the inventory open or close.
   ToggleSelfInventory() {
-    ControlSend Format("{1}", this.SelfInventoryToggleKeybind),, this.cfg.process.windowTitle
+    ControlSend(Format("{1}", this.SelfInventoryToggleKeybind),, this.cfg.process.windowTitle)
   }
 
   ToggleOtherInventory() {
-    ControlSend Format("{1}", this.OtherInventoryToggleKeybind),, this.cfg.process.windowTitle
+    ControlSend(Format("{1}", this.OtherInventoryToggleKeybind),, this.cfg.process.windowTitle)
   }
 
   ; Focuses the searchbarPos; commonly used before text entry.
@@ -265,28 +293,46 @@ class GameUser {
     Click this.OtherDropAllPosition.x, this.OtherDropAllPosition.y
   }
 
-  ; Automatically focuses the searchbarPos, queries and performs a take all.
-  SearchAndTakeAll(text) {
+  TakeOtherFirstSlot() {
+    Click(this.OtherFirstSlotPosition.x, this.OtherFirstSlotPosition.y)
+    Sleep this.cfg.delay.sw
+    ControlSend("{T}",, this.cfg.process.windowTitle)    
+  }
+
+  GiveSelfFirstSlot() {
+    Click(this.SelfFirstSlotPosition.x, this.SelfFirstSlotPosition.y)
+    Sleep this.cfg.delay.sw
+    ControlSend("{T}",, this.cfg.process.windowTitle)   
+  }
+
+  SearchOtherInventory(text) {
     this.FocusOtherSearchbar()
     Sleep this.cfg.delay.lw
     ControlSendText text,, this.cfg.process.windowTitle
+  }
+
+  SearchSelfInventory(text) {
+    this.FocusSelfSearchbar()
+    Sleep this.cfg.delay.lw
+    ControlSendText text,, this.cfg.process.windowTitle
+  }
+
+  ; Automatically focuses the searchbarPos, queries and performs a take all.
+  SearchOtherAndTakeAll(text) {
+    this.SearchOtherInventory(text)
     Sleep this.cfg.delay.lw
     this.TakeAll()
   }  
 
   ; Automatically focues the searchbarPos, queries and performs a drop all.
   SearchOtherAndDropAll(text) {
-    this.FocusOtherSearchbar()
-    Sleep this.cfg.delay.lw
-    ControlSendText text,, this.cfg.process.windowTitle
+    this.SearchOtherInventory(text)
     Sleep this.cfg.delay.lw
     this.OtherDropAll()
   }
 
   SearchSelfAndGiveAll(text) {
-    this.FocusSelfSearchbar()
-    Sleep this.cfg.delay.lw
-    ControlSendText text,, this.cfg.process.windowTitle
+    this.SearchSelfInventory(text)
     Sleep this.cfg.delay.lw
     this.GiveAll()
   }

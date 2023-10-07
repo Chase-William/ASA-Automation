@@ -8,6 +8,6 @@ class ToggleControl {
   }
 
   ToggleCheckbox_OnClick(sender, info) {
-    this.function()
+    this.function(sender, info)
   }
 }

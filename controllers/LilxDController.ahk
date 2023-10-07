@@ -1,13 +1,23 @@
 #include "../LilxDHotkey.ahk"
 #include "../Util.ahk"
 #include "FishingController.ahk"
-#include "DinoNutureController.ahk"
+#include "TransferController.ahk"
+#include "MovementController.ahk"
+#include "PasteFarmController.ahk"
+#include "AFKController.ahk"
+#include "../structures/Event.ahk"
 
 AUTO_CLICK_HOTKEY_CONFIG_KEY := "autoClick"
 DROP_METAL_FARM_JUNK_CONFIG_KEY := "dropMetalFarmJunk"
 AUTO_METAL_FARM_CONFIG_KEY := "autoMetalFarm"
 ; AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY := "autoSuicideMeatFarm"
-AUTO_NURTURE_DINO_CONFIG_KEY := "autoNurtureDino"
+GIVE_ALL_CONFIG_KEY := "giveAll"
+TAKE_ALL_CONFIG_KEY := "takeAll"
+
+AUTO_CLICKER_STATE_CHANGED := "AutoClicker"
+AUTO_BREW_STATE_CHANGED := "AutoBrew"
+AUTO_EAT_STATE_CHANGED := "AutoEat"
+AUTO_DRINK_STATE_CHANGED := "AutoDrink"
 
 class LilxDController {
   __New(
@@ -18,15 +28,24 @@ class LilxDController {
     this.cfg := cfg
     this.user := user
     this.fishing := FishingController(cfg, user)
-    this.dinoNurturer := DinoNutureController(cfg, user)
+    this.transfer := TransferController(cfg, user)
+    this.movement := MovementController(cfg, user)
+    this.afk := AFKController(cfg, user, this.movement)
+    this.pasteFarm := PasteFarmController(cfg, user, this.movement, this.afk)
 
     ; Allows other functions to see state of other functions
-    this.isAutoClickerOn := false
-    this.isAutoMetalFarmOn := false
+    this.m_isAutoClickerOn := false
+    this.m_isAutoMetalFarmOn := false
+    this.m_isAutoBrewOn := false
+    this.m_isAutoEatOn := false
+    this.m_isAutoDrinkOn := false
 
     ; Allow other functions to temporarily silence other functions
-    this.silenceAutoClicker := false
-    this.silenceAutoMetalFarm := false
+    this.m_silenceAutoClicker := false
+    this.m_silenceAutoMetalFarm := false
+
+    ; Event informing UI of changes
+    this.m_stateChangedEvent := Event(this)
 
     ; autoclicker
     this.m_autoClickHotkey := LilxDHotkey(AUTO_CLICK_HOTKEY_CONFIG_KEY, this.AutoClickHotkey_Clicked.bind(this))
@@ -40,13 +59,54 @@ class LilxDController {
     this.m_dropMetalFarmJunkHotkey := LilxDHotkey(DROP_METAL_FARM_JUNK_CONFIG_KEY, this.DropMetalFarmJunkHotkey_Clicked.bind(this))
     this.m_dropMetalFarmJunkHotkey.RegisterHotkey()
 
-    ; Auto transfer filtered contents to dino
-    this.m_autoNurtureDinoHotkey := LilxDHotkey(AUTO_NURTURE_DINO_CONFIG_KEY, this.AutoNutureDinoHotkey_Clicked.bind(this))
-    this.m_autoNurtureDinoHotkey.RegisterHotkey()
+    ; Give all from self to other
+    this.m_giveAll := LilxDHotkey(GIVE_ALL_CONFIG_KEY, this.GiveAllHotkey_Clicked.bind(this))
+    this.m_giveAll.RegisterHotkey()
+
+    ; Take all from other and give to self
+    this.m_takeAll := LilxDHotkey(TAKE_ALL_CONFIG_KEY, this.TakeAllHotkey_Clicked.bind(this))
+    this.m_takeAll.RegisterHotkey()
 
     ; auto suicide meat farm
     ; this.m_autoSuicideMeatFarm := LilxDHotkey(AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY, this.AutoSuicideMeatFarm_Clicked.bind(this))
     ; this.m_autoSuicideMeatFarm.RegisterHotkey()
+  }
+
+  ; Used to subscribe to events
+  OnEvent(name, handler) {
+    this.m_stateChangedEvent.Subscribe(name, handler)
+  }
+
+  IsAutoClickerOn {
+    get => this.m_isAutoClickerOn
+    set {
+      this.m_isAutoClickerOn := value
+      this.m_stateChangedEvent.Invoke(AUTO_CLICKER_STATE_CHANGED, value)
+    }
+  }
+  
+  IsAutoBrewOn {
+    get => this.m_isAutoBrewOn
+    set {
+      this.m_isAutoBrewOn := value
+      this.m_stateChangedEvent.Invoke(AUTO_BREW_STATE_CHANGED, value)
+    }
+  }
+
+  IsAutoEatOn {
+    get => this.m_isAutoEatOn
+    set {
+      this.m_isAutoEatOn := value
+      this.m_stateChangedEvent.Invoke(AUTO_EAT_STATE_CHANGED, value)
+    }
+  }
+
+  IsAutoDrinkOn {
+    get => this.m_isAutoDrinkOn
+    set {
+      this.m_isAutoDrinkOn := value
+      this.m_stateChangedEvent.Invoke(AUTO_DRINK_STATE_CHANGED, value)
+    }
   }
 
   AutoClickHotkey {
@@ -64,13 +124,22 @@ class LilxDController {
     set => this.m_dropMetalFarmJunkHotkey := value
   }
 
-  NurtureDinoHotkey {
-    get => this.m_autoNurtureDinoHotkey
-    set => this.m_autoNurtureDinoHotkey := value
+  GiveAllHotkey {
+    get => this.m_giveAll
+    set => this.m_giveAll := value
   }
 
-  AutoNutureDinoHotkey_Clicked(hotkey) {
-    this.dinoNurturer.Nurture()
+  TakeAllHotkey {
+    get => this.m_takeAll
+    set => this.m_takeAll := value
+  }
+
+  GiveAllHotkey_Clicked(hotkey) {
+    this.transfer.GiveAll()
+  }
+
+  TakeAllHotkey_Clicked(hotkey) {
+    this.transfer.TakeAll()
   }
 
   ; AutoSuicideMeatFarmHotkey {
@@ -78,12 +147,20 @@ class LilxDController {
   ;   set => this.m_autoSuicideMeatFarm := value
   ; }
 
-  AutoEat() {
-
+  AutoEatToggle() {
+    if this.IsAutoEatOn := !this.IsAutoEatOn {
+      ; SetTimer(autoBrewCallback, this.cfg.delay._3xlw)
+    } else {
+      ; Settimer(autoBrewCallback, 0)
+    }  
   }
 
-  AutoDrink() {
-
+  AutoDrinkToggle() {
+    if this.IsAutoDrinkOn := !this.IsAutoDrinkOn {
+      ; SetTimer(autoBrewCallback, this.cfg.delay._3xlw)
+    } else {
+      ; Settimer(autoBrewCallback, 0)
+    }  
   }
 
   ; Plain auto-clicker
@@ -101,7 +178,7 @@ class LilxDController {
     }
 
     ; Run if hotkey detected     
-    if this.isAutoClickerOn := !this.isAutoClickerOn {
+    if this.IsAutoClickerOn := !this.IsAutoClickerOn {
       SetTimer(autoClickCallback, this.cfg.delay.autoClickInterval)
     } else {
       SetTimer(autoClickCallback, 0)
@@ -109,18 +186,18 @@ class LilxDController {
   }
 
   SilenceableClick() {
-    if (!this.silenceAutoClicker) {
+    if (!this.m_silenceAutoClicker) {
       Click()
     }    
   }
 
   DropMetalFarmJunkHotkey_Clicked(hotkey) {
     ; SILENCE EXISTING AUTOCLICKERS IF RUNNING AND RESUME AFTER
-    if (this.isAutoClickerOn) {
-      this.silenceAutoClicker := true
+    if (this.IsAutoClickerOn) {
+      this.m_silenceAutoClicker := true
     }
-    else if (this.isAutoMetalFarmOn) {
-      this.silenceAutoMetalFarm := true
+    else if (this.m_isAutoMetalFarmOn) {
+      this.m_silenceAutoMetalFarm := true
     } 
 
     ; Perform drop
@@ -128,11 +205,11 @@ class LilxDController {
     Sleep this.cfg.delay.sw
 
     ; Unsilence silenced functions
-    if (this.silenceAutoClicker) {
-      this.silenceAutoClicker := false
+    if (this.m_silenceAutoClicker) {
+      this.m_silenceAutoClicker := false
     }
-    else if (this.silenceAutoMetalFarm) {
-      this.silenceAutoMetalFarm := false
+    else if (this.m_silenceAutoMetalFarm) {
+      this.m_silenceAutoMetalFarm := false
     }
   }
 
@@ -149,7 +226,7 @@ class LilxDController {
     }
 
     ; static on := false
-    if this.isAutoMetalFarmOn := !this.isAutoMetalFarmOn {
+    if this.m_isAutoMetalFarmOn := !this.m_isAutoMetalFarmOn {
       SetTimer(metalFarmCallback, this.cfg.delay.autoClickInterval)
     } else {
       SetTimer(metalFarmCallback, 0) 
@@ -208,9 +285,8 @@ class LilxDController {
     if !IsSet(autoBrewCallback) { 
       autoBrewCallback := this.MaybeDrinkBrew.bind(this)
     }
-    ; Static variable to toggle with
-    static on := false
-    if on := !on {
+
+    if this.IsAutoBrewOn := !this.IsAutoBrewOn {
       SetTimer(autoBrewCallback, this.cfg.delay._3xlw)
     } else {
       Settimer(autoBrewCallback, 0)
@@ -319,7 +395,7 @@ class LilxDController {
     this.user.ToggleOtherInventory()
     Sleep this.cfg.delay.lw
     ; Take Flint
-    this.user.SearchAndTakeAll(this.cfg.filter.FlintStr)
+    this.user.SearchOtherAndTakeAll(this.cfg.filter.FlintStr)
     Sleep this.cfg.delay.mw
     ; Filter and drop berries
     this.user.SearchOtherAndDropAll(this.cfg.filter.BerryStr)

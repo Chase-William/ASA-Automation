@@ -7,17 +7,60 @@
 
 LIL_XD_HELPER_TOOL_WINDOW_TITLE := "Lil xD's Helping Tools"
 
+WINDOW_WIDTH := 500
+WINDOW_HEIGHT := 450
+DEFAULT_MARGIN := 25
+
+makeOverlay(controller) {
+
+  centerY := A_ScreenHeight / 2
+
+  width := 200
+  height := 200
+
+  myOverlay := Gui()
+  
+  myOverlay.Opt("+AlwaysOnTop -Caption +ToolWindow")  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
+  myOverlay.BackColor := "000000"  ; Can be any RGB color (it will be made transparent below).
+  myOverlay.SetFont("q5 s12 w100", "Verdana")  ; Set a large font size (32-point).
+  ; CoordText := myOverlay.Add("Text", "cRed", "XXXXX YYYYY")  ; XX & YY serve to auto-size the window.
+  ; Make all pixels of this color transparent and make the text itself translucent (150):
+  WinSetTransColor(myOverlay.BackColor " 150", myOverlay)
+  ; myOverlay.AddText(, isOn ? "On" : "Off")
+  autoClickerText := myOverlay.AddText("Hidden cWhite", "Auto Clicker")
+  autoBrewText := myOverlay.AddText("Hidden cWhite", "Auto Brew")
+  autoEatText := myOverlay.AddText("Hidden cWhite", "Auto Eat")
+  autoDrinkText := myOverlay.AddText("Hidden cWhite", "Auto Drink")
+  controller.OnEvent(AUTO_CLICKER_STATE_CHANGED, (sender, isOn) => autoClickerText.Visible := isOn)
+  controller.OnEvent(AUTO_BREW_STATE_CHANGED, (sender, isOn) => autoBrewText.Visible := isOn)
+  controller.OnEvent(AUTO_EAT_STATE_CHANGED, (sender, isOn) => autoEatText.Visible := isOn)
+  controller.OnEvent(AUTO_DRINK_STATE_CHANGED, (sender, isOn) => autoDrinkText.Visible := isOn)
+  
+  ; SetTimer(UpdateOSD, 200)
+  ; UpdateOSD()  ; Make the first update immediate rather than waiting for the timer.
+  myOverlay.Show("x5 y" centerY - height / 2 " w" width " h" height " NoActivate")  ; NoActivate avoids deactivating the currently active window.
+
+  ; Must move after Show()
+  ; myOverlay.Move(5, centerY - height / 2, width, height)
+  ; UpdateOSD(*)
+  ; {
+  ;   MouseGetPos &MouseX, &MouseY
+  ;   CoordText.Value := "X" MouseX ", Y" MouseY
+  ; }
+}
+
 makeGui(controller) {
   windowTitle := LIL_XD_HELPER_TOOL_WINDOW_TITLE
 
-  width := "w500"
-  height := "h450"
+  width := "w" WINDOW_WIDTH
+  height := "h" WINDOW_HEIGHT
   ; Create root gui object
   myGui := Gui(, windowTitle,)
   ; MyGui.BackColor := "313338"
   
   ; WinSetTransColor("FFFFFF", MyGui)
-  ; MyGui.Opt("-Caption")
+  ; MyGui.Opt("ToolWindow")
+  MyGui.SetFont("q5", "Verdana")
 
   ; Closing logic
   myGui.OnEvent("Close", (*) => ExitApp())
@@ -27,8 +70,8 @@ makeGui(controller) {
   myTabs := myGui.AddTab3("x0 y0 " width " " height, [
     "Hotkeys",
     "In-Game Keybinds",
-    "Your Inventory Positions",
-    "Other's Inventory Positions"
+    "Your Invent Pos",
+    "Other's Invent Pos"
   ])
   ; Needed for some reason to prevent tabs for rendering vertically
   myTabs.UseTab()
@@ -57,6 +100,8 @@ makeGui(controller) {
 
   ; Present content
   myGui.Show(width " " height)
+
+  makeOverlay(controller)
 }
   ; AddToolsTab(myGui, myTabs) {
   ;   ; Use "Toggles Tab"

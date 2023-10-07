@@ -1,15 +1,15 @@
 #Requires AutoHotkey v2.0
 
 class HotkeyControl {
-  __New(myGui, title, myHotkey, hotKeyOptions := "", btnOptions := "") {
+  __New(myGui, title, myHotkey, labelOptions := "", hotKeyOptions := "", btnOptions := "") {
     this.m_hotkeyStr := myHotkey.HotkeyStr
     this.m_myHotkey := myHotkey    
 
-    myGui.AddText("w200 " hotKeyOptions " Section", title)
-    hotkeyGui := myGui.AddHotkey("x+m", myHotkey.HotkeyStr)
+    myGui.AddText(labelOptions, title)
+    hotkeyGui := myGui.AddHotkey(hotKeyOptions, myHotkey.HotkeyStr)
     hotkeyGui.OnEvent("Change", this.Hotkey_OnChanged.bind(this))
     
-    this.setBtn := myGui.AddButton("x+m w80 Hidden " btnOptions, "Set") 
+    this.setBtn := myGui.AddButton("Hidden " btnOptions, "Set") 
     this.setBtn.OnEvent("Click", this.SetBtn_OnClick.bind(this))
   }
 

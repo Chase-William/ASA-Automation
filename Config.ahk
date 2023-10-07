@@ -26,14 +26,18 @@ MW_CONFIG_KEY := "mw"
 SMW_CONFIG_KEY := "smw"
 SW_CONFIG_KEY := "sw"
 AUTO_CLICK_INTERVAL_CONFIG_KEY := "autoClickInterval"
+PIVOT_CAMERA_90_DEGREES_CONFIG_KEY := "pivotCamera90Degrees"
 
 STONE_STR_CONFIG_KEY := "stone"
 FLINT_STR_CONFIG_KEY := "flint"
 BERRY_STR_CONFIG_KEY := "berry"
 RAW_MEAT_STR_CONFIG_KEY := "rawMeat"
-NURTURE_FILTER_STR_CONFIG_KEY := "nurtureFilter"
+GIVE_ALL_STR_CONFIG_KEY := "giveAll"
+TAKE_ALL_STR_CONFIG_KEY := "takeAll"
 
-NURTURE_FILTER_STR_FIELD_NAME := "m_nurtureFilter"
+GIVE_ALL_STR_FIELD_NAME := "m_giveAll"
+TAKE_ALL_STR_FIELD_NAME := "m_takeAll"
+PIVOT_CAMERA_90_DEGREES_FIELD_NAME := "m_pivotCamera90Degrees"
 
 SPAWN_SCREEN_BED_CONFIG_KEY := "spawnScreenBedColor"
 REGION_TEXT_WHEN_DEAD_COLOR_CONFIG_KEY := "regionTextWhenDeadColor"
@@ -170,9 +174,13 @@ class Config {
         this.m_rawMeat := value
       }
     }
-    NurtureFilter {
-      get => Config.GetMember(this, Config.GetFilter, NURTURE_FILTER_STR_FIELD_NAME, NURTURE_FILTER_STR_CONFIG_KEY)
-      set => Config.SetMember(this, Config.SetFilter, NURTURE_FILTER_STR_FIELD_NAME, NURTURE_FILTER_STR_CONFIG_KEY, value)
+    GiveAllFilter {
+      get => Config.GetMember(this, Config.GetFilter, GIVE_ALL_STR_FIELD_NAME, GIVE_ALL_STR_CONFIG_KEY)
+      set => Config.SetMember(this, Config.SetFilter, GIVE_ALL_STR_FIELD_NAME, GIVE_ALL_STR_CONFIG_KEY, value)
+    }
+    TakeAllFilter {
+      get => Config.GetMember(this, Config.GetFilter, TAKE_ALL_STR_FIELD_NAME, TAKE_ALL_STR_CONFIG_KEY)
+      set => Config.SetMember(this, Config.SetFilter, TAKE_ALL_STR_FIELD_NAME, TAKE_ALL_STR_CONFIG_KEY, value)    
     }
   }
 
@@ -296,6 +304,10 @@ class Config {
         Config.SetDelay(AUTO_CLICK_INTERVAL_CONFIG_KEY, value)
         this.m_autoClickInterval := value
       }
+    }
+    PivotCamera90Degrees {
+      get => Config.GetMember(this, Config.GetDelay, PIVOT_CAMERA_90_DEGREES_FIELD_NAME, PIVOT_CAMERA_90_DEGREES_CONFIG_KEY)
+      set => Config.SetMember(this, Config.SetDelay, PIVOT_CAMERA_90_DEGREES_FIELD_NAME, PIVOT_CAMERA_90_DEGREES_CONFIG_KEY, value)
     }
   }
 
