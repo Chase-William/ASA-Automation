@@ -14,6 +14,13 @@ class DropAllController {
   __New(cfg, user) {
     this.cfg := cfg
     this.user := user
+
+    this.m_isDropAllExecuting := false
+  }
+
+  IsDropAllExecuting {
+    get => this.m_isDropAllExecuting
+    set => this.m_isDropAllExecuting := value
   }
 
   UseSelfDropAllFilter {
@@ -37,6 +44,7 @@ class DropAllController {
   ; }
 
   SelfDropAll() {
+    this.IsDropAllExecuting := true
     this.user.ToggleSelfInventory()
     Sleep this.cfg.delay.mw
     if (this.UseSelfDropAllFilter) {
@@ -46,9 +54,11 @@ class DropAllController {
     }
     Sleep this.cfg.delay.mw
     this.user.ToggleSelfInventory()
+    this.IsDropAllExecuting := false
   }
 
   OtherDropAll() {
+    this.IsDropAllExecuting := true
     this.user.ToggleOtherInventory()
     Sleep this.cfg.delay.mw
     if (this.UseSelfDropAllFilter) {
@@ -58,5 +68,6 @@ class DropAllController {
     }
     Sleep this.cfg.delay.mw
     this.user.ToggleOtherInventory()
+    this.IsDropAllExecuting := false
   }
 }

@@ -7,9 +7,11 @@
 #include "TransferController.ahk"
 #include "MovementController.ahk"
 #include "PasteFarmController.ahk"
-#include "AFKController.ahk"
-#include "BotController.ahk"
+#include "FertFarmController.ahk"
+#include "bot/AFKController.ahk"
+#include "bot/BotController.ahk"
 #include "DropAllController.ahk"
+#include "SuicideFarmController.ahk"
 #include "../structures/Event.ahk"
 
 AUTO_CLICK_HOTKEY_CONFIG_KEY := "autoClick"
@@ -35,10 +37,10 @@ class MiddlewareController {
     this.cfg := cfg
     this.user := user
     this.autoClick := AutoClickController(cfg, user)
-    this.autoClick.base := Observable()
+    ; this.autoClick.base := Observable()
     this.metalFarm := MetalFarmController(cfg, user)
     this.consume := ConsumeController(cfg, user)
-    this.consume.base := Observable()
+    ; this.consume.base := Observable()
     this.fishing := FishingController(cfg, user)
     this.transfer := TransferController(cfg, user)
     this.drop := DropAllController(cfg, user)
@@ -46,6 +48,8 @@ class MiddlewareController {
     this.afk := AFKController(cfg, user, this.movement)
     this.paste := PasteFarmController(cfg, user, this.movement, this.afk)
     this.bot := BotController(cfg, this.afk, this.paste)
+    this.suicide := SuicideFarmController(cfg, this)
+    this.fert := FertFarmController(cfg, this)
 
     ; MsgBox "Test", this.autoClick.GetTest()
 
@@ -133,8 +137,55 @@ class MiddlewareController {
     set => this.m_otherDropAll := value
   }
 
+  ; Pauses the following functions if needed
+  ; 1. Auto Clicker
+  ; 2. Auto Brew
+  ; 3. Auto Eat
+  ; 4. Auto Drink
+  Interrupt(action) {
+    restoreAutoClicker := false
+    restoreAutoBrew := false
+    restoreAutoEat := false
+    restoreAutoDrink := false
+
+    ; Store data of interrupted to be restored
+    if (restoreAutoClicker := this.autoClick.IsAutoClickerOn) {
+      this.autoClick.AutoClickToggle()
+    }
+    ; Perform requested function
+    action()
+    ; Perform restore and remove stored data
+    if (restoreAutoClicker) {
+      this.AutoClick.AutoClickToggle()
+    }
+  }
+
+  ; Checks to see if one of the following uninterruptable functiona is already running
+  ; 1. Bot
+  ; 3. Paste Farm
+  ; 4. Suicide Farm
+  ; 5. Fert Farm
+  ; 6. Take All
+  ; 7. Give All
+  ; 8. Self Drop All
+  ; 9. Other Drop All
+  CanExecute() {
+    if (this.bot.IsBotOn ||
+        this.paste.IsPasteBotOn ||
+        this.suicide.IsSuicideFarmOn ||
+        this.fert.IsAutoFertFarmOn ||
+        this.transfer.IsTransferExecuting ||
+        this.drop.IsDropAllExecuting
+    ) {
+      return false
+    }
+    return true
+  }
+
   GiveAllHotkey_Clicked(hotkey) {
-    this.transfer.GiveAll()
+    if (this.CanExecute()) {
+      this.Interrupt(this.transfer.GiveAll.bind(this.transfer))
+    }
   }
 
   TakeAllHotkey_Clicked(hotkey) {

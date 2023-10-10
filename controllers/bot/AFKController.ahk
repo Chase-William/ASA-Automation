@@ -1,5 +1,12 @@
 #Requires AutoHotkey v2.0
 
+AWAITING_ORDERS_AFK_STATE := "awaiting"
+LEAVING_AFK_STATE := "leaving"
+ENTERING_AFK_STATE := "entering"
+NOT_IN_AFK_STATE := "notAfk"
+
+; Manages restoring the bot into an AFK state to await instructions
+; THIS CONTROLLER IS NOT TOGGLED DIRECTLY BY THE USER, ONLY BY THE BOT CONTROLLER
 class AFKController {
   __New(cfg, user, movement) {
     this.cfg := cfg
@@ -7,8 +14,13 @@ class AFKController {
     this.movement := movement
   }
 
+  AFKState {
+    
+  }
+
   ; Puts character in afk state
   BeginAFK() {
+    this.AFKState := ENTERING_AFK_STATE
     ; State begins at the spawn screen
     ; State ends resting peacefully in afk chamber chair
     this.user.SearchBeds("AFK Chamber")
@@ -55,10 +67,12 @@ class AFKController {
     this.user.Use()
     ; Ensure auto food and water are active
     ; Waiting
+    this.AFKState := AWAITING_ORDERS_AFK_STATE
   }
 
   ; Ends character afk state
   EndAFK() {
+    AFKState := LEAVING_AFK_STATE
     ; State begins in afk chamber chair
     ; State ends at spawn screen
 
@@ -76,6 +90,7 @@ class AFKController {
     this.movement.Look(LOOK_DOWN, this.cfg.delay._2xlw)
     this.user.Use()
     Sleep this.cfg.delay.lw
+    AFKState := NOT_IN_AFK_STATE
     ; Ready to teleport
   }
 }

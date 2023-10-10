@@ -22,7 +22,13 @@ class HotkeyTab {
     ; autoMetalFarmHotkey := myGui.AddHotkey("x+m")
     
     ; Auto Clicker
-    HotkeyControl(myGui, "Auto Clicker:", this.controller.AutoClickHotkey,"XS w150", "x+m w100", "x+m")
+    HotkeyControl(myGui, "Auto Clicker Hotkey:", this.controller.AutoClickHotkey,"XS w150", "x+m w100", "x+m")
+    myGui.AddText("x+m", "Keystroke:")
+    this.keystrokeHotkey := myGui.AddHotkey("x+m", "") ; this.controller.autoClick.AutoClickKey
+    keystrokeSetBtn := myGui.AddButton("x+m Hidden", "Set")
+    this.keystrokeHotkey.OnEvent("Change", (*) => keystrokeSetBtn.Visible := true)
+    keystrokeSetBtn.OnEvent("Click", this.AutoClickKeySetBtn_Clicked.bind(this))
+
     ; Auto Metal Farm
     HotkeyControl(myGui, "Auto Metal Farm", this.controller.AutoMetalFarmHotkey, "XS w150", "x+m w100", "x+m")
     ; Auto Metal Farm Drop Junk
@@ -47,7 +53,7 @@ class HotkeyTab {
     takeAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.transfer.UseTakeAllFilter := sender.Value)
 
     ; Drop All Functionality
-    MyGui.AddGroupBox("XS Section w" (WINDOW_WIDTH - DEFAULT_MARGIN) " h85", "Transfer Items")
+    MyGui.AddGroupBox("XS Section w" (WINDOW_WIDTH - DEFAULT_MARGIN) " h85", "Drop Items")
 
     ; Drop All Functionality
     HotkeyControl(myGui, "Player Drop All", this.controller.SelfDropAllHotkey, "XS x20 y245 w100", "x+m w90", "x+m")
@@ -85,6 +91,12 @@ class HotkeyTab {
 
     ; ToggleControl(myGui, "Auto Eat", this.controller., true,,)
     ; ToggleControl(myGui, "Auto Drink", this.controller., true,,)
+  }
+
+  AutoClickKeySetBtn_Clicked(sender, info) {
+    MsgBox "Test", this.keystrokeHotkey.Value
+    this.controller.autoClick.AutoClickKey := this.keystrokeHotkey.Value
+    sender.Visible := false
   }
 
   Test() {

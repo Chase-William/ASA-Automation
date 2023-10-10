@@ -2,6 +2,7 @@
 
 class Observable {
   __New() {
+    ; this.child := child
     this.m_stateChanged := Event(this)
   }
 

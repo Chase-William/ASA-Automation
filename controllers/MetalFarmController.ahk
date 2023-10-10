@@ -6,26 +6,23 @@ class MetalFarmController {
     this.user := user
 
     this.m_isAutoMetalFarmOn := false
-
+    this.metalFarmCallback := this.AutoClickMetalFarm.bind(this)
     ; Determines how many clicks must pass before
     ; automatic dropping of unwanted items occurs
     this.clickThreshold := 400 ; About every 20 seconds perform clean inventory
     this.clicks := 0
   }
 
-  AutoMetalFarmToggle() {
-    ; Static variable for holding instance bound callback
-    static metalFarmCallback
-    ; Bind callback if not already
-    if !IsSet(metalFarmCallback) { 
-      metalFarmCallback := this.AutoClickMetalFarm.bind(this)
-    }
+  IsAutoMetalFarmOn {
+    get => this.m_isAutoMetalFarmOn
+    set => this.m_isAutoMetalFarmOn := value
+  }
 
-    ; static on := false
-    if this.m_isAutoMetalFarmOn := !this.m_isAutoMetalFarmOn {
-      SetTimer(metalFarmCallback, this.cfg.delay.autoClickInterval)
+  AutoMetalFarmToggle() {
+    if this.IsAutoMetalFarmOn := !this.IsAutoMetalFarmOn {
+      SetTimer(this.metalFarmCallback, this.cfg.delay.autoClickInterval)
     } else {
-      SetTimer(metalFarmCallback, 0) 
+      SetTimer(this.metalFarmCallback, 0) 
     }
   }
 

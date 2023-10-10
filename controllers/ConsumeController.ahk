@@ -4,6 +4,8 @@
 
 class ConsumeController extends Observable {
   __New(cfg, user) {
+    this.base.base.__New()
+
     this.cfg := cfg
     this.user := user
 

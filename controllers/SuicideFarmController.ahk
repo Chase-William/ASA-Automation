@@ -11,15 +11,15 @@ class SuicideFarmController {
   }
 
   IsSuicideFarmOn {
-    get => m_isSuicideFarmOn
-    set => m_isSuicideFarmOn := value
+    get => this.m_isSuicideFarmOn
+    set => this.m_isSuicideFarmOn := value
   }
 
   AutoSuicideMeatFarmToggle() {
     if this.IsSuicideFarmOn := !this.IsSuicideFarmOn {
-      SetTimer(respawnCallback, this.cfg.delay.xlw)
+      SetTimer(this.respawnCallback, this.cfg.delay.xlw)
     } else {
-      Settimer(respawnCallback, 0)
+      Settimer(this.respawnCallback, 0)
     }    
   }
 

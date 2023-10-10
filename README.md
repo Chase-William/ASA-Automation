@@ -75,13 +75,47 @@ To change the auto click interval follow these steps:
 3. Replace the default *50* with your interval in milliseconds.
 
 
-
-
-
-
-#### Developer Notes
+## Developer Notes
 
 A function ending in `Safe` means it has built in mechanics to ensure the desired state is reached before returning.
+
+### Interrupt Logic
+To make functions easier to use, they should be interruptable, resumeable, and replaceable to allow long running processes and quick process to work together. Therefore, below is a map of rules all functions adhere to.
+
+#### Interruptible & Resumable Functions
+Functions that can be momentarily paused while another functions executes and later resumed afterwards automatically.
+
+1. Auto Clicker
+2. Metal Farm
+3. Auto Brew
+4. Auto Eat
+5. Auto Drink
+
+#### Interruptable & Replaceable Functions
+Functions that can be interrupted *(execution terminates)* and be replaced by another.
+
+1. Drop Metal Farm Junk
+
+#### Uninterruptable Functions
+Functions that cannot be interrupted by other functions and therefore, can only be enabled/disabled directly.
+
+1. Bot
+2. Paste Farm
+3. Suicide Farm
+4. Fert Farm
+5. Take All
+6. Give All
+7. Self Drop All
+8. Other Drop All
+   
+#### Catalyst Functions
+Functions that can interrupt other functions or fail to execute if an uninterruptable function is currently active.
+
+1. Take All
+2. Give All
+3. Self Drop All
+4. Other Drop All
+5. Drop Metal Farm Junk
 
 #### Process Stuff
 

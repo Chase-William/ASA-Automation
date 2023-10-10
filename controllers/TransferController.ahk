@@ -12,8 +12,15 @@ class TransferController {
     this.user := user
     this.m_useGiveAllFilter := false
     this.m_useTakeAllFilter := false
+
+    this.m_isTransferExecuting := false
   }
   
+  IsTransferExecuting {
+    get => this.m_isTransferExecuting
+    set => this.m_isTransferExecuting := value
+  }
+
   UseGiveAllFilter {
     get => Config.GetMember(this, Config.GetToggle, USE_GIVE_ALL_STR_FIELD_NAME, USE_GIVE_ALL_STR_CONFIG_KEY)
     set => Config.SetMember(this, Config.SetToggle, USE_GIVE_ALL_STR_FIELD_NAME, USE_GIVE_ALL_STR_CONFIG_KEY, value)
@@ -25,6 +32,7 @@ class TransferController {
   }
 
   GiveAll() {
+    this.IsTransferExecuting := true
     this.user.ToggleOtherInventory()
     Sleep this.cfg.delay.lw
     if (this.UseGiveAllFilter) {
@@ -34,9 +42,11 @@ class TransferController {
     }
     Sleep this.cfg.delay.lw
     this.user.ToggleOtherInventory()
+    this.IsTransferExecuting := false
   }
 
   TakeAll() {
+    this.IsTransferExecuting := true
     this.user.ToggleOtherInventory()
     Sleep this.cfg.delay.lw
     if (this.UseTakeAllFilter) {
@@ -46,5 +56,6 @@ class TransferController {
     }
     Sleep this.cfg.delay.lw
     this.user.ToggleOtherInventory()
+    this.IsTransferExecuting := false
   }
 }

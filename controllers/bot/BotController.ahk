@@ -6,13 +6,18 @@ class BotController {
     this.afk := afk
     this.paste := paste
 
-    this.isBotActive := false
+    this.m_isBotOn := false
 
     this.pasteFunc := (*) => this.RunTask(this.paste.Farm.bind(this.paste))
   }
 
+  IsBotOn {
+    get => this.m_isBotOn
+    set => this.m_isBotOn := value
+  }
+
   ActivateBot() {
-    this.isBotActive := true
+    this.IsBotOn := true
     ; MsgBox "Bot", "Enabled"
     SetTimer(this.pasteFunc, -2000)
 
@@ -20,7 +25,7 @@ class BotController {
   }
 
   DeactivateBot() {
-    this.isBotActive := false
+    this.IsBotOn := false
 
     SetTimer(this.pasteFunc, 0)
   }

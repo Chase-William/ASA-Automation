@@ -3,20 +3,23 @@
 SNAIL_GAPS_COUNT := 23
 PASTE_COLLECTION_FREQUENCY := 5400000 ; 90 Minutes
 
-;
-; Make aware if inventory is open or not
-;
-
-
 class PasteFarmController {
   __New(cfg, user, movement, afk) {
     this.cfg := cfg
     this.user := user
     this.movement := movement
     this.afk := afk
+
+    this.m_isPasteBotOn := false
+  }
+
+  IsPasteBotOn {
+    get => this.m_isPasteBotOn
+    set => this.m_isPasteBotOn := value
   }
 
   Farm() {
+    IsPasteBotOn := true
     this.user.SearchBeds("16119205611813")
     Sleep this.cfg.delay.mw
     Click(this.user.PasteFarmSpawnPosition.x, this.user.PasteFarmSpawnPosition.y)
@@ -72,5 +75,6 @@ class PasteFarmController {
     ; Open spawn screen via selecting bed below character
     this.user.Use()
     Sleep this.cfg.delay.lw
+    this.IsPasteBotOn := false
   }
 }

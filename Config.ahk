@@ -426,10 +426,10 @@ class Config {
 
   ; Functions for the "random" section
   static GetRandom(key) {
-    return IniRead(CONFIG_FILE, TOGGLE_SECTION, key)
+    return IniRead(CONFIG_FILE, RANDOM_SECTION, key)
   }
   static SetRandom(key, value) {
-    IniWrite(value, CONFIG_FILE, TOGGLE_SECTION, key)
+    IniWrite(value, CONFIG_FILE, RANDOM_SECTION, key)
   }
 
   static Get(key, section) {
