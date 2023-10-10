@@ -20,9 +20,12 @@ OTHER_FIRST_SLOT_CONFIG_KEY := "otherFirstSlot"
 SELF_INVENTORY_TOGGLE_CONFIG_KEY := "toggleSelfInventory"
 OTHER_INVENTORY_TOGGLE_CONFIG_KEY := "toggleOtherInventory"
 DEFECATE_CONFIG_KEY := "defecate"
-SPAWN_REGION_TEXT_REGION_CONFIG_KEY := "spawnRegionTextRegion"
 MEAT_FARM_SPAWN_CONFIG_KEY := "meatFarmSpawn"
 AFK_CHAMBER_SPAWN_CONFIG_KEY := "afkChamberSpawn"
+PASTE_FARM_SPAWN_CONFIG_KEY := "pasteFarmSpawn"
+
+SPAWN_REGION_TEXT_REGION_CONFIG_KEY := "spawnRegionTextRegion"
+DETECT_INVENTORY_OPEN_REGION_TEXT_CONFIG_KEY := "detectInventoryOpenTextRegion"
 
 SELF_HEAL_ACTIVATION_KEYBIND_CONFIG_KEY := "heal"
 SELF_EAT_ACTIVATION_KEYBIND_CONFIG_KEY := "eat"
@@ -48,9 +51,12 @@ OTHER_FIRST_SLOT_FIELD_NAME := "m_otherFirstSlot"
 SELF_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleSelfInventory"
 OTHER_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleOtherInventory"
 DEFECATE_FIELD_NAME := "m_defecate"
-SPAWN_REGION_TEXT_REGION_FIELD_NAME := "m_spawnRegionTextRegion"
 MEAT_FARM_SPAWN_FIELD_NAME := "m_meatFarmSpawn"
 AFK_CHAMBER_SPAWN_FIELD_NAME := "m_afkChamberSpawn"
+PASTE_FARM_SPAWN_FIELD_NAME := "m_pasteFarmSpawn"
+
+SPAWN_REGION_TEXT_REGION_FIELD_NAME := "m_spawnRegionTextRegion"
+DETECT_INVENTORY_OPEN_REGION_TEXT_FIELD_NAME := "m_detectInventoryOpenTextRegion"
 
 SELF_HEAL_ACTIVATION_KEYBIND_FIELD_NAME := "m_heal"
 SELF_EAT_ACTIVATION_KEYBIND_FIELD_NAME := "m_eat"
@@ -66,6 +72,11 @@ class GameUser {
   SpawnRegionTextRegion {
     get => Config.GetMember(this, Config.GetRegion, SPAWN_REGION_TEXT_REGION_FIELD_NAME, SPAWN_REGION_TEXT_REGION_CONFIG_KEY)
     set => Config.SetMember(this, Config.SetRegion, SPAWN_REGION_TEXT_REGION_FIELD_NAME, SPAWN_REGION_TEXT_REGION_CONFIG_KEY, value)
+  }
+
+  DetectInventoryOpenTextRegion {
+    get => Config.GetMember(this, Config.GetRegion, DETECT_INVENTORY_OPEN_REGION_TEXT_FIELD_NAME, DETECT_INVENTORY_OPEN_REGION_TEXT_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetRegion, DETECT_INVENTORY_OPEN_REGION_TEXT_FIELD_NAME, DETECT_INVENTORY_OPEN_REGION_TEXT_CONFIG_KEY, value)
   }
 
   ; Keybinds
@@ -187,6 +198,11 @@ class GameUser {
     set => Config.SetMember(this, Config.SetPosition, AFK_CHAMBER_SPAWN_FIELD_NAME, AFK_CHAMBER_SPAWN_CONFIG_KEY, value)
   }
 
+  PasteFarmSpawnPosition {
+    get => Config.GetMember(this, Config.GetPosition, PASTE_FARM_SPAWN_FIELD_NAME, PASTE_FARM_SPAWN_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, PASTE_FARM_SPAWN_FIELD_NAME, PASTE_FARM_SPAWN_CONFIG_KEY, value)
+  }
+
   ;
   ;
   ; Needs to be added to UI!
@@ -195,6 +211,16 @@ class GameUser {
   OtherFirstSlotPosition {
     get => Config.GetMember(this, Config.GetPosition, OTHER_FIRST_SLOT_FIELD_NAME, OTHER_FIRST_SLOT_CONFIG_KEY)
     set => Config.SetMember(this, Config.SetPosition, OTHER_FIRST_SLOT_FIELD_NAME, OTHER_FIRST_SLOT_CONFIG_KEY, value)
+  }
+
+  GiveHotbarFoodAndDrink() {
+    Click(1590, 1370)
+    Click(1590, 1370)
+    Sleep this.cfg.delay.lw
+    Click(1830, 1370)
+    Click(1830, 1370)
+    Sleep this.cfg.delay.smw
+    this.GiveAll()
   }
 
   ; Clicks the respawn button on death screen.
@@ -227,13 +253,32 @@ class GameUser {
     ; Search the area of the word "Region" of the "Spawn Region" message 
     ; for a color match
     return PixelSearch(
-    &px, &py, 
-    this.SpawnRegionTextRegion.left, ; need to fix this as it's currently a string
-    this.SpawnRegionTextRegion.top,
-    this.SpawnRegionTextRegion.right,
-    this.SpawnRegionTextRegion.bottom, 
-    this.cfg.color.RegionTextWhenDeadColor, 
-    2 ; variance of color permitted
+      &px, &py, 
+      this.SpawnRegionTextRegion.left,
+      this.SpawnRegionTextRegion.top,
+      this.SpawnRegionTextRegion.right,
+      this.SpawnRegionTextRegion.bottom, 
+      this.cfg.color.StandardUITextColor, 
+      2 ; variance of color permitted
+    )
+  }
+
+  IsInventoryOpen() {
+    px := 0
+    py := 0
+
+    ; WinActivate(this.cfg.process.windowTitle)
+    ; Sleep 1000
+    ; MsgBox(PixelGetColor(190, 166), "")
+
+    return PixelSearch(
+      &px, &py, 
+      this.DetectInventoryOpenTextRegion.left,
+      this.DetectInventoryOpenTextRegion.top,
+      this.DetectInventoryOpenTextRegion.right,
+      this.DetectInventoryOpenTextRegion.bottom, 
+      this.cfg.color.StandardUITextColor, 
+      10
     )
   }
 
@@ -274,6 +319,27 @@ class GameUser {
     Click this.OtherInventorySearchbarPosition.x, this.OtherInventorySearchbarPosition.y
   }
 
+  ClearSelfSearchbar(focus := true) {
+    if (focus) {
+      this.FocusSelfSearchbar()
+    }
+    this.ClearSearchbar()
+  }
+
+  ClearOtherSearchbar(focus := true) {
+    if (focus) {
+      this.FocusOtherSearchbar()
+    }
+    this.ClearSearchbar()
+  }
+
+  ClearSearchbar() {
+    Sleep this.cfg.delay.mw
+    ; SetKeyDelay(50)
+    SendEvent "^a{BackSpace}"
+    Sleep this.cfg.delay.sw
+  }
+
   ; Give all from your inventory
   GiveAll() {
     Click this.SelfTransferAllPosition.x, this.SelfTransferAllPosition.y
@@ -294,47 +360,93 @@ class GameUser {
   }
 
   TakeOtherFirstSlot() {
-    Click(this.OtherFirstSlotPosition.x, this.OtherFirstSlotPosition.y)
+    this.SelectOtherFirstSlot()
     Sleep this.cfg.delay.sw
     ControlSend("{T}",, this.cfg.process.windowTitle)    
   }
 
   GiveSelfFirstSlot() {
-    Click(this.SelfFirstSlotPosition.x, this.SelfFirstSlotPosition.y)
+    this.SelectSelfFirstSlot()
     Sleep this.cfg.delay.sw
     ControlSend("{T}",, this.cfg.process.windowTitle)   
   }
 
+  SelectSelfFirstSlot() {
+    Click(this.SelfFirstSlotPosition.x, this.SelfFirstSlotPosition.y)
+  }
+
+
+  SelectOtherFirstSlot() {
+    Click(this.OtherFirstSlotPosition.x, this.OtherFirstSlotPosition.y)
+  }
+
   SearchOtherInventory(text) {
     this.FocusOtherSearchbar()
-    Sleep this.cfg.delay.lw
+    Sleep this.cfg.delay._2xsw
     ControlSendText text,, this.cfg.process.windowTitle
   }
 
   SearchSelfInventory(text) {
     this.FocusSelfSearchbar()
-    Sleep this.cfg.delay.lw
+    Sleep this.cfg.delay._2xsw
     ControlSendText text,, this.cfg.process.windowTitle
   }
 
   ; Automatically focuses the searchbarPos, queries and performs a take all.
   SearchOtherAndTakeAll(text) {
     this.SearchOtherInventory(text)
-    Sleep this.cfg.delay.lw
+    Sleep this.cfg.delay._2xsw
     this.TakeAll()
   }  
+
+  SearchSelfAndDropAll(text) {
+    this.SearchSelfInventory(text)
+    Sleep this.cfg.delay._2xsw
+    this.SelfDropAll()
+  }
 
   ; Automatically focues the searchbarPos, queries and performs a drop all.
   SearchOtherAndDropAll(text) {
     this.SearchOtherInventory(text)
-    Sleep this.cfg.delay.lw
+    Sleep this.cfg.delay.mw
     this.OtherDropAll()
   }
 
   SearchSelfAndGiveAll(text) {
     this.SearchSelfInventory(text)
-    Sleep this.cfg.delay.lw
+    Sleep this.cfg.delay.mw
     this.GiveAll()
+  }
+
+  OpenOtherInventorySafe() {
+    this.LoopUntilTrue(this.ToggleOtherInventory.bind(this), this.IsInventoryOpen.bind(this))
+  }
+
+  CloseOtherInventorySafe() {
+    this.LoopUntilFalse(this.ToggleOtherInventory.bind(this), this.IsInventoryOpen.bind(this))
+  }
+
+  OpenSelfInventorySafe() {
+    this.LoopUntilTrue(this.ToggleSelfInventory.bind(this), this.IsInventoryOpen.bind(this))
+  }
+
+  CloseSelfInventorySafe() {
+    this.LoopUntilFalse(this.ToggleSelfInventory.bind(this), this.IsInventoryOpen.bind(this))
+  }
+
+  LoopUntilTrue(action, check) {
+    static delay := this.cfg.delay.mw
+    Loop {
+      action()
+      Sleep delay := delay * 2
+      ; delay := delay * 2 ; Each iteration double the wait time (helps with lag of operating in different locations)
+    } Until check()
+    ; Reset
+    delay := this.cfg.delay.xlw
+  }
+
+  LoopUntilFalse(action, check) {
+    this.LoopUntilTrue(action, () => !check())
   }
 
   ; Focuses the searchbar, queries for a specific bed name, searches the screen's pixels

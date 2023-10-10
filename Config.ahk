@@ -12,6 +12,8 @@ KEYBIND_SECTION := "keybind"
 HOTKEY_SECTION := "hotkey"
 COLOR_SECTION := "color"
 REGION_SECTION := "region"
+TOGGLE_SECTION := "toggle"
+RANDOM_SECTION := "random"
 
 PROCESS_NAME_CONFIG_KEY := "procName"
 WINDOW_TITLE_CONFIG_KEY := "windowTitle"
@@ -25,6 +27,9 @@ LW_CONFIG_KEY := "lw"
 MW_CONFIG_KEY := "mw"
 SMW_CONFIG_KEY := "smw"
 SW_CONFIG_KEY := "sw"
+XSW_CONFIG_KEY := "xsw"
+_2XSW_CONFIG_KEY := "2xsw"
+
 AUTO_CLICK_INTERVAL_CONFIG_KEY := "autoClickInterval"
 PIVOT_CAMERA_90_DEGREES_CONFIG_KEY := "pivotCamera90Degrees"
 
@@ -34,13 +39,17 @@ BERRY_STR_CONFIG_KEY := "berry"
 RAW_MEAT_STR_CONFIG_KEY := "rawMeat"
 GIVE_ALL_STR_CONFIG_KEY := "giveAll"
 TAKE_ALL_STR_CONFIG_KEY := "takeAll"
+SELF_DROP_ALL_STR_CONFIG_KEY := "selfDropAll"
+OTHER_DROP_ALL_STR_CONFIG_KEY := "otherDropAll"
 
 GIVE_ALL_STR_FIELD_NAME := "m_giveAll"
 TAKE_ALL_STR_FIELD_NAME := "m_takeAll"
+SELF_DROP_ALL_STR_FIELD_NAME := "m_selfDropAll"
+OTHER_DROP_ALL_STR_FIELD_NAME := "m_otherDropAll"
 PIVOT_CAMERA_90_DEGREES_FIELD_NAME := "m_pivotCamera90Degrees"
 
 SPAWN_SCREEN_BED_CONFIG_KEY := "spawnScreenBedColor"
-REGION_TEXT_WHEN_DEAD_COLOR_CONFIG_KEY := "regionTextWhenDeadColor"
+STANDARD_UI_TEXT_COLOR_CONFIG_KEY := "standardUITextColor"
 
 ; SPAWN_REGION_TEXT_REGION_CONFIG_KEY := "spawnRegionTextRegion"
 
@@ -83,16 +92,16 @@ class Config {
       }
     }
 
-    RegionTextWhenDeadColor {
+    StandardUITextColor {
       get {
-        if (!IsSet(m_regionTextWhenDeadColor)) {
-          this.m_regionTextWhenDeadColor := Config.GetColor(REGION_TEXT_WHEN_DEAD_COLOR_CONFIG_KEY)
+        if (!IsSet(m_standardUITextColor)) {
+          this.m_standardUITextColor := Config.GetColor(STANDARD_UI_TEXT_COLOR_CONFIG_KEY)
         }
-        return this.m_regionTextWhenDeadColor
+        return this.m_standardUITextColor
       }
       set {      
-        Config.SetColor(REGION_TEXT_WHEN_DEAD_COLOR_CONFIG_KEY, value)
-        this.m_regionTextWhenDeadColor := value
+        Config.SetColor(STANDARD_UI_TEXT_COLOR_CONFIG_KEY, value)
+        this.m_standardUITextColor := value
       }
     }
   }
@@ -181,6 +190,14 @@ class Config {
     TakeAllFilter {
       get => Config.GetMember(this, Config.GetFilter, TAKE_ALL_STR_FIELD_NAME, TAKE_ALL_STR_CONFIG_KEY)
       set => Config.SetMember(this, Config.SetFilter, TAKE_ALL_STR_FIELD_NAME, TAKE_ALL_STR_CONFIG_KEY, value)    
+    }
+    SelfDropAllFilter {
+      get => Config.GetMember(this, Config.GetFilter, SELF_DROP_ALL_STR_FIELD_NAME, SELF_DROP_ALL_STR_CONFIG_KEY)
+      set => Config.SetMember(this, Config.SetFilter, SELF_DROP_ALL_STR_FIELD_NAME, SELF_DROP_ALL_STR_CONFIG_KEY, value)
+    }
+    OtherDropAllFilter {
+      get => Config.GetMember(this, Config.GetFilter, OTHER_DROP_ALL_STR_FIELD_NAME, OTHER_DROP_ALL_STR_CONFIG_KEY)
+      set => Config.SetMember(this, Config.SetFilter, OTHER_DROP_ALL_STR_FIELD_NAME, OTHER_DROP_ALL_STR_CONFIG_KEY, value)
     }
   }
 
@@ -293,6 +310,30 @@ class Config {
         this.m_sw := value
       }
     }
+    xsw {
+      get {
+        if (!IsSet(m_xsw)) {
+          this.m_xsw := Config.GetDelay(XSW_CONFIG_KEY)
+        }
+        return this.m_xsw
+      }
+      set {      
+        Config.SetDelay(XSW_CONFIG_KEY, value)
+        this.m_xsw := value
+      }
+    }
+    _2xsw {
+      get {
+        if (!IsSet(m_2xsw)) {
+          this.m_2xsw := Config.GetDelay(_2XSW_CONFIG_KEY)
+        }
+        return this.m_2xsw
+      }
+      set {      
+        Config.SetDelay(_2XSW_CONFIG_KEY, value)
+        this.m_2xsw := value
+      }
+    }
     AutoClickInterval {
       get {
         if (!IsSet(m_autoClickInterval)) {
@@ -373,6 +414,22 @@ class Config {
   }
   static SetRegion(key, value) {
     IniWrite(value.ToString(), CONFIG_FILE, REGION_SECTION, key)
+  }
+
+  ; Functions for the "toggle" section
+  static GetToggle(key) {
+    return IniRead(CONFIG_FILE, TOGGLE_SECTION, key)
+  }
+  static SetToggle(key, value) {
+    IniWrite(value, CONFIG_FILE, TOGGLE_SECTION, key)
+  }
+
+  ; Functions for the "random" section
+  static GetRandom(key) {
+    return IniRead(CONFIG_FILE, TOGGLE_SECTION, key)
+  }
+  static SetRandom(key, value) {
+    IniWrite(value, CONFIG_FILE, TOGGLE_SECTION, key)
   }
 
   static Get(key, section) {

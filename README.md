@@ -79,7 +79,9 @@ To change the auto click interval follow these steps:
 
 
 
+#### Developer Notes
 
+A function ending in `Safe` means it has built in mechanics to ensure the desired state is reached before returning.
 
 #### Process Stuff
 

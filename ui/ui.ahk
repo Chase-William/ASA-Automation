@@ -31,10 +31,10 @@ makeOverlay(controller) {
   autoBrewText := myOverlay.AddText("Hidden cWhite", "Auto Brew")
   autoEatText := myOverlay.AddText("Hidden cWhite", "Auto Eat")
   autoDrinkText := myOverlay.AddText("Hidden cWhite", "Auto Drink")
-  controller.OnEvent(AUTO_CLICKER_STATE_CHANGED, (sender, isOn) => autoClickerText.Visible := isOn)
-  controller.OnEvent(AUTO_BREW_STATE_CHANGED, (sender, isOn) => autoBrewText.Visible := isOn)
-  controller.OnEvent(AUTO_EAT_STATE_CHANGED, (sender, isOn) => autoEatText.Visible := isOn)
-  controller.OnEvent(AUTO_DRINK_STATE_CHANGED, (sender, isOn) => autoDrinkText.Visible := isOn)
+  controller.autoClick.OnEvent(AUTO_CLICKER_STATE_CHANGED, (sender, isOn) => autoClickerText.Visible := isOn)
+  controller.consume.OnEvent(AUTO_BREW_STATE_CHANGED, (sender, isOn) => autoBrewText.Visible := isOn)
+  controller.consume.OnEvent(AUTO_EAT_STATE_CHANGED, (sender, isOn) => autoEatText.Visible := isOn)
+  controller.consume.OnEvent(AUTO_DRINK_STATE_CHANGED, (sender, isOn) => autoDrinkText.Visible := isOn)
   
   ; SetTimer(UpdateOSD, 200)
   ; UpdateOSD()  ; Make the first update immediate rather than waiting for the timer.

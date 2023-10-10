@@ -1,5 +1,11 @@
 #Requires AutoHotkey v2.0
 
+USE_GIVE_ALL_STR_CONFIG_KEY := "useGiveAllFilter"
+USE_TAKE_ALL_STR_CONFIG_KEY := "useTakeAllFilter"
+
+USE_GIVE_ALL_STR_FIELD_NAME := "m_useGiveAllFilter"
+USE_TAKE_ALL_STR_FIELD_NAME := "m_useTakeAllFilter"
+
 class TransferController {
   __New(cfg, user) {
     this.cfg := cfg
@@ -9,13 +15,13 @@ class TransferController {
   }
   
   UseGiveAllFilter {
-    get => this.m_useGiveAllFilter
-    set => this.m_useGiveAllFilter := value
+    get => Config.GetMember(this, Config.GetToggle, USE_GIVE_ALL_STR_FIELD_NAME, USE_GIVE_ALL_STR_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetToggle, USE_GIVE_ALL_STR_FIELD_NAME, USE_GIVE_ALL_STR_CONFIG_KEY, value)
   }
 
   UseTakeAllFilter {
-    get => this.m_useTakeAllFilter
-    set => this.m_useTakeAllFilter := value
+    get => Config.GetMember(this, Config.GetToggle, USE_TAKE_ALL_STR_FIELD_NAME, USE_TAKE_ALL_STR_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetToggle, USE_TAKE_ALL_STR_FIELD_NAME, USE_TAKE_ALL_STR_CONFIG_KEY, value)
   }
 
   GiveAll() {

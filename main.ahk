@@ -6,11 +6,13 @@
 #requires AutoHotkey v2.0
 
 #include "LilxDHotkey.ahk"
-#include "controllers/LilxDController.ahk"
+#include "controllers/MiddlewareController.ahk"
 #include "GameUser.ahk"
 #include "ui/ui.ahk"
 
 ;#include "_JXON.ahk"
+
+SetKeyDelay(50)
 
 ; Get configs
 cfg := Config()
@@ -21,7 +23,7 @@ user := GameUser(
 )
 
 ; Create the hotkey controller
-controller := LilxDController(
+controller := MiddlewareController(
   cfg,
   user
   ; LilxDHotkey("capslock", "~"), ; Autoclick

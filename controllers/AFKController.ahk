@@ -23,10 +23,30 @@ class AFKController {
     Sleep this.cfg.delay.lw
     
     ; In the future filter food/water and take
+    this.user.SearchOtherInventory("pigs feet")
+    Sleep this.cfg.delay.mw
     this.user.TakeOtherFirstSlot()
-    Sleep this.cfg.delay.sw
+    Sleep this.cfg.delay.mw
+    this.user.ClearOtherSearchbar()
+    Sleep this.cfg.delay.lw
+    this.user.SearchOtherInventory("beatle juice")
+    Sleep this.cfg.delay.mw
     this.user.TakeOtherFirstSlot()
+    Sleep this.cfg.delay.mw
+    this.user.SearchSelfInventory("pigs feet")
+    Sleep this.cfg.delay.mw
+    this.user.SelectSelfFirstSlot()
     Sleep this.cfg.delay.sw
+    SendEvent "+8"
+    Sleep this.cfg.delay.lw
+    this.user.ClearSelfSearchbar()
+    Sleep this.cfg.delay.lw
+    this.user.SearchSelfInventory("beatle juice")
+    Sleep this.cfg.delay.mw
+    this.user.SelectSelfFirstSlot()
+    Sleep this.cfg.delay.sw
+    SendEvent "+0"
+    Sleep this.cfg.delay.lw
     this.user.toggleOtherInventory()
     Sleep this.cfg.delay.lw
     this.movement.Look(LOOK_UP, this.cfg.delay._2xlw)
@@ -49,14 +69,13 @@ class AFKController {
     ; Put food/water away in fridge
     this.user.ToggleOtherInventory()
     Sleep this.cfg.delay.xlw
-    this.user.GiveSelfFirstSlot()
-    Sleep this.cfg.delay.mw
-    this.user.GiveSelfFirstSlot()
+    this.user.GiveHotbarFoodAndDrink()
     Sleep this.cfg.delay.mw
     this.user.ToggleOtherInventory()
     Sleep this.cfg.delay.lw
     this.movement.Look(LOOK_DOWN, this.cfg.delay._2xlw)
     this.user.Use()
+    Sleep this.cfg.delay.lw
     ; Ready to teleport
   }
 }

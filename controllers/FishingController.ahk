@@ -36,13 +36,23 @@ class FishingController {
     this.m_c := ParseFishingArray(FISHING_LETTER_C_CONFIG_KEY)
     this.m_x := ParseFishingArray(FISHING_LETTER_X_CONFIG_KEY)
 
-    ; this.m_autoRecast := false
+    this.m_isAutoFishOn := false
+
+    this.autofishCallback := this.AutoFish.bind(this)
   }
 
-  ; AutoRecast {
-  ;   get => this.m_autoRecast
-  ;   set => this.m_autoRecast := value
-  ; }
+  IsAutoFishOn {
+    get => this.m_isAutoFishOn
+    set => this.m_isAutoFishOn := value
+  }
+
+  AutoFishToggle() {
+    if this.IsAutoFishOn := !this.IsAutoFishOn {
+      SetTimer(this.autoFishCallback, this.cfg.delay.mw)
+    } else {
+      Settimer(this.autoFishCallback, 0)
+    }
+  }
 
   AutoFish() {
     static centerX := 0
