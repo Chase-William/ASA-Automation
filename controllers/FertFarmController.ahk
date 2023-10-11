@@ -14,30 +14,29 @@ class FertFarmController {
     set => this.m_isAutoFertFarmOn := value
   }
 
-  AutoFertFarm(hotkey) {
+  AutoFertFarm() {
+    WinActivate(this.cfg.process.windowTitle)
     if this.IsAutoFertFarmOn := !this.IsAutoFertFarmOn {
-      SetTimer(this.fertCallback, 1000)
+      SetTimer(this.fertCallback, -1000)
     }
-    else Reload
   } 
 
   MainFertLoop() {
-    static count := 0
-    if count++ < 250 {
-      FertilizerFarm()
-    } else {
-      Reload
+    count := 0
+    While count++ < 250 {
+      this.FertilizerFarm()
     }
+    this.IsAutoFertFarmOn := false    
+  }
 
-    FertilizerFarm() {
-      this.user.Defecate()
-      Sleep this.cfg.delay.sw
-      this.user.ToggleInventory()
-      Sleep this.cfg.delay.mw
-      this.user.FlushToilet()
-      Sleep this.cfg.delay.sw
-      this.user.ToggleInventory()
-      Sleep this.cfg.delay.mw
-    }
+  FertilizerFarm() {
+    this.user.Defecate()
+    Sleep this.cfg.delay.sw
+    this.user.ToggleOtherInventory()
+    Sleep this.cfg.delay.mw
+    this.user.FlushToilet()
+    Sleep this.cfg.delay.sw
+    this.user.ToggleOtherInventory()
+    Sleep this.cfg.delay.mw
   }
 }

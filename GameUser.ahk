@@ -298,7 +298,7 @@ class GameUser {
 
   ; Triggers character defecation.
   Defecate() {
-    ControlSend(Format("{1}", this.DefecateKeybind),, this.cfg.process.windowTitle)
+    ControlSend(this.DefecateKeybind,, this.cfg.process.windowTitle)
   }
 
   ; Toggles the inventory open or close.
@@ -401,7 +401,7 @@ class GameUser {
 
   SearchSelfAndDropAll(text) {
     this.SearchSelfInventory(text)
-    Sleep this.cfg.delay._2xsw
+    Sleep this.cfg.delay.mw
     this.SelfDropAll()
   }
 
@@ -414,7 +414,7 @@ class GameUser {
 
   SearchSelfAndGiveAll(text) {
     this.SearchSelfInventory(text)
-    Sleep this.cfg.delay.mw
+    Sleep this.cfg.delay._2xsw
     this.GiveAll()
   }
 
@@ -447,6 +447,18 @@ class GameUser {
 
   LoopUntilFalse(action, check) {
     this.LoopUntilTrue(action, () => !check())
+  }
+
+  MedBrew() {
+    ControlSend(this.SelfHealKeybind,, this.cfg.process.windowTitle)
+  }
+
+  Eat() {
+    ControlSend(this.SelfEatKeybind,, this.cfg.process.windowTitle)
+  }
+
+  Drink() {
+    ControlSend(this.SelfDrinkKeybind,, this.cfg.process.windowTitle)
   }
 
   ; Focuses the searchbar, queries for a specific bed name, searches the screen's pixels

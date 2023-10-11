@@ -48,7 +48,7 @@ class FishingController {
 
   AutoFishToggle() {
     if this.IsAutoFishOn := !this.IsAutoFishOn {
-      SetTimer(this.autoFishCallback, this.cfg.delay.mw)
+      SetTimer(this.autoFishCallback, this.cfg.delay.lw)
     } else {
       Settimer(this.autoFishCallback, 0)
     }

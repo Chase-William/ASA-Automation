@@ -17,7 +17,7 @@ class Event {
   }
 
   ; Invokes the event causing all subscribed methods aka handlers to execute
-  Invoke(name, info) {
+  Invoke(name, value) {
     
     ; Error check if handlers were found
     if (!this.handlers.Has(name)) {
@@ -26,7 +26,7 @@ class Event {
 
     ; Call all functions in handler array
     For handler in this.handlers[name] {
-      handler(this.declaring, info)
+      handler(this.declaring, value)
     }
   }
 }

@@ -1,8 +1,8 @@
 ## Functions
 
-### AutoClicker
+### Auto Clicker
 
-Performs a left click every 50 milliseconds.
+By default performs a left click at a specified interval, but can configured to send keystrokes isntead of left click. To modify the keystroke sent, simply change and set a new keystroke in the *keystroke* hotkey box labeled *Keystroke:*.
 
 To change the auto click speed read <a href="#change_autoclick_interval">here</a>.
 

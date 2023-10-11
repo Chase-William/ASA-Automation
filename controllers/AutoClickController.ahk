@@ -11,6 +11,8 @@ class AutoClickController extends Observable {
     this.user := user
     
     this.m_isAutoClickerOn := false
+
+    this.keystrokeCallback := (*) => ControlSend(this.AutoClickKey,, this.cfg.process.windowTitle)
   }
 
   AutoClickKey {
@@ -21,22 +23,22 @@ class AutoClickController extends Observable {
   IsAutoClickerOn {
     get => this.m_isAutoClickerOn
     set {
-      this.m_isAutoClickerOn := value
-      ; super.StateChanged.Invoke(AUTO_CLICKER_STATE_CHANGED, value)
+      this.m_isAutoClickerOn := Value
+      this.StateChanged.Invoke(AUTO_CLICKER_STATE_CHANGED, value)
     }
   }
 
   AutoClickToggle() {
     if this.IsAutoClickerOn := !this.IsAutoClickerOn {
-      SetTimer(Click, this.cfg.delay.autoClickInterval)
+      SetTimer(this.GetSynthesizer(), this.cfg.delay.autoClickInterval)
     } else {
-      SetTimer(Click, 0)
-    }
+      SetTimer(this.GetSynthesizer(), 0)
+    } 
   }
 
   GetSynthesizer() {
-    if (!IsSet(AutoClickKey) || StrLen(AutoClickKey) == 0) {
-      return (*) => ControlSend(this.AutoClickKey,, this.cfg.process.windowTitle)
+    if (StrLen(this.AutoClickKey) != 0) {
+      return this.keystrokeCallback
     } else {
       return Click
     }

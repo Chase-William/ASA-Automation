@@ -22,9 +22,9 @@ class HotkeyTab {
     ; autoMetalFarmHotkey := myGui.AddHotkey("x+m")
     
     ; Auto Clicker
-    HotkeyControl(myGui, "Auto Clicker Hotkey:", this.controller.AutoClickHotkey,"XS w150", "x+m w100", "x+m")
+    HotkeyControl(myGui, "Auto Clicker Hotkey", this.controller.AutoClickHotkey,"XS w150", "x+m w100", "x+m")
     myGui.AddText("x+m", "Keystroke:")
-    this.keystrokeHotkey := myGui.AddHotkey("x+m", "") ; this.controller.autoClick.AutoClickKey
+    this.keystrokeHotkey := myGui.AddHotkey("x+m", this.controller.autoClick.AutoClickKey)
     keystrokeSetBtn := myGui.AddButton("x+m Hidden", "Set")
     this.keystrokeHotkey.OnEvent("Change", (*) => keystrokeSetBtn.Visible := true)
     keystrokeSetBtn.OnEvent("Click", this.AutoClickKeySetBtn_Clicked.bind(this))
@@ -32,7 +32,7 @@ class HotkeyTab {
     ; Auto Metal Farm
     HotkeyControl(myGui, "Auto Metal Farm", this.controller.AutoMetalFarmHotkey, "XS w150", "x+m w100", "x+m")
     ; Auto Metal Farm Drop Junk
-    HotkeyControl(myGui, "Handle Metal Farm Junk:", this.controller.DropMetalFarmJunkHotkey, "XS w150", "x+m w100", "x+m")
+    HotkeyControl(myGui, "Handle Metal Farm Junk", this.controller.DropMetalFarmJunkHotkey, "XS w150", "x+m w100", "x+m")
     
     ; Give All Functionality
     MyGui.AddGroupBox("XS Section w" (WINDOW_WIDTH - DEFAULT_MARGIN) " h85", "Transfer Items")
@@ -74,12 +74,12 @@ class HotkeyTab {
     ; otherAutoDropAllFilterCheckbox := myGui.AddCheckbox("x+m", "Auto")
     ; otherAutoDropAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.drop.UseOtherAutoDropWhenEncumbered := sender.Value)
 
-    ToggleControl(myGui, "Auto Self Meat Farm", (*) => this.controller.AutoSuicideMeatFarmToggle(), "Section XS")
-    ToggleControl(myGui, "Auto Brew", (*) => this.controller.AutoBrewToggle(), "Section XS")
-    ToggleControl(myGui, "Auto Eat", (*) => this.controller.AutoEatToggle(), "x+m")
-    ToggleControl(myGui, "Auto Eat", (*) => this.controller.AutoDrinkToggle(), "x+m")
-    ToggleControl(myGui, "Auto Fish", (*) => this.controller.AutoFishToggle(), "Section XS")
-
+    ToggleControl(myGui, "Auto Self Meat Farm", (*) => this.controller.suicide.AutoSuicideMeatFarmToggle(), "Section XS")
+    ToggleControl(myGui, "Auto Brew", (*) => this.controller.consume.AutoBrewToggle(), "Section XS")
+    ToggleControl(myGui, "Auto Eat", (*) => this.controller.consume.AutoEatToggle(), "x+m")
+    ToggleControl(myGui, "Auto Drink", (*) => this.controller.consume.AutoDrinkToggle(), "x+m")
+    ToggleControl(myGui, "Auto Fish", (*) => this.controller.fishing.AutoFishToggle(), "Section XS")
+    ToggleControl(myGui, "Auto Fert Farm", (*) => this.controller.fertFarm.AutoFertFarm(), "x+m")
     ToggleControl(myGui, "AFK", (*) => this.controller.bot.ActivateBot(), "Section XS")
 
     ToggleControl(myGui, "Test", (*) => this.Test(), "Section XS")

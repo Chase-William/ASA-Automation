@@ -4,27 +4,27 @@ class KeybindTab {
   __New(myGui, controller) {    
     onChangeClosure := this.Hotkey_OnChange.bind(this)
 
-    myGui.AddText("w200 Section", "Toggle Inventory")
+    myGui.AddText("w200 Section", "Toggle Inventory Key")
     this.selfInvent := myGui.AddHotkey("x+m", controller.user.SelfInventoryToggleKeybind)
     this.selfInvent.OnEvent("Change", onChangeClosure)
 
-    myGui.AddText("w200 XS Section", "Toggle Other Inventory")
+    myGui.AddText("w200 XS Section", "Toggle Other Inventory Key")
     this.otherInvent := myGui.AddHotkey("x+m", controller.user.OtherInventoryToggleKeybind)
     this.otherInvent.OnEvent("Change", onChangeClosure)
 
-    myGui.AddText("w200 XS Section", "Defecate")
+    myGui.AddText("w200 XS Section", "Defecate Key")
     this.defecate := myGui.AddHotkey("x+m", controller.user.DefecateKeybind)
     this.defecate.OnEvent("Change", onChangeClosure)
 
-    myGui.AddText("w200 XS Section", "Heal")
+    myGui.AddText("w200 XS Section", "Hotbar Heal Key")
     this.heal := myGui.AddHotkey("x+m", controller.user.SelfHealKeybind)
     this.heal.OnEvent("Change", onChangeClosure)
 
-    myGui.AddText("w200 XS Section", "Eat")
+    myGui.AddText("w200 XS Section", "Hotbar Eat Key")
     this.eat := myGui.AddHotkey("x+m", controller.user.SelfEatKeybind)
     this.eat.OnEvent("Change", onChangeClosure)
 
-    myGui.AddText("w200 XS Section", "Drink")
+    myGui.AddText("w200 XS Section", "Hotbar Drink Key")
     this.drink := myGui.AddHotkey("x+m", controller.user.SelfDrinkKeybind)
     this.drink.OnEvent("Change", onChangeClosure)
 

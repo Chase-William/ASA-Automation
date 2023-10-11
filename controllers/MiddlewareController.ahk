@@ -37,10 +37,9 @@ class MiddlewareController {
     this.cfg := cfg
     this.user := user
     this.autoClick := AutoClickController(cfg, user)
-    ; this.autoClick.base := Observable()
     this.metalFarm := MetalFarmController(cfg, user)
+    this.fertFarm := FertFarmController(cfg, user)
     this.consume := ConsumeController(cfg, user)
-    ; this.consume.base := Observable()
     this.fishing := FishingController(cfg, user)
     this.transfer := TransferController(cfg, user)
     this.drop := DropAllController(cfg, user)
@@ -48,8 +47,7 @@ class MiddlewareController {
     this.afk := AFKController(cfg, user, this.movement)
     this.paste := PasteFarmController(cfg, user, this.movement, this.afk)
     this.bot := BotController(cfg, this.afk, this.paste)
-    this.suicide := SuicideFarmController(cfg, this)
-    this.fert := FertFarmController(cfg, this)
+    this.suicide := SuicideFarmController(cfg, user)
 
     ; MsgBox "Test", this.autoClick.GetTest()
 
@@ -152,11 +150,29 @@ class MiddlewareController {
     if (restoreAutoClicker := this.autoClick.IsAutoClickerOn) {
       this.autoClick.AutoClickToggle()
     }
+    if (restoreAutoBrew := this.consume.IsAutoBrewOn) {
+      this.consume.AutoBrewToggle()
+    }
+    if (restoreAutoEat := this.consume.IsAutoEatOn) {
+      this.consume.AutoEatToggle()
+    }
+    if (restoreAutoDrink := this.consume.IsAutoDrinkOn) {
+      this.consume.AutoDrinkToggle()
+    }
     ; Perform requested function
     action()
     ; Perform restore and remove stored data
     if (restoreAutoClicker) {
       this.AutoClick.AutoClickToggle()
+    }
+    if (restoreAutoBrew) {
+      this.consume.AutoBrewToggle()
+    }
+    if (restoreAutoEat) {
+      this.consume.AutoEatToggle()
+    }
+    if (restoreAutoDrink) {
+      this.consume.AutoDrinkToggle()
     }
   }
 
@@ -173,7 +189,7 @@ class MiddlewareController {
     if (this.bot.IsBotOn ||
         this.paste.IsPasteBotOn ||
         this.suicide.IsSuicideFarmOn ||
-        this.fert.IsAutoFertFarmOn ||
+        this.fertFarm.IsAutoFertFarmOn ||
         this.transfer.IsTransferExecuting ||
         this.drop.IsDropAllExecuting
     ) {
@@ -183,52 +199,40 @@ class MiddlewareController {
   }
 
   GiveAllHotkey_Clicked(hotkey) {
-    if (this.CanExecute()) {
-      this.Interrupt(this.transfer.GiveAll.bind(this.transfer))
-    }
+    this.Run(this.transfer.GiveAll.bind(this.transfer))
   }
 
   TakeAllHotkey_Clicked(hotkey) {
-    this.transfer.TakeAll()
+    this.Run(this.transfer.TakeAll.bind(this.transfer))
   }
 
   SelfDropAllHotkey_Clicked(hotkey) {
-    this.drop.SelfDropAll()
+    this.Run(this.drop.SelfDropAll.bind(this.drop))
   }
 
   OtherDropAllHotkey_Clicked(hotkey) {
-    this.drop.OtherDropAll()
+    this.Run(this.drop.OtherDropAll.bind(this.drop))
   }
 
   AutoClickHotkey_Clicked(hotkey) {  
-    this.autoClick.AutoClickToggle()
+    if this.CanExecute() {
+      this.autoClick.AutoClickToggle()
+    }
+    ; this.Run(this.autoClick.AutoClickToggle.bind(this.autoClick))
   }
 
   AutoMetalFarmHotkey_Clicked(hotkey) {
-    this.metalFarm.AutoMetalFarmToggle()
+    this.Run(this.metalFarm.AutoMetalFarmToggle.bind(this.metalFarm))
   }
 
   DropMetalFarmJunkHotkey_Clicked(hotkey) {
-    this.metalFarm.HandleMetalRunItems()
-    ; SILENCE EXISTING AUTOCLICKERS IF RUNNING AND RESUME AFTER
-    ; if (this.IsAutoClickerOn) {
-    ;   this.m_silenceAutoClicker := true
-    ; }
-    ; else if (this.m_isAutoMetalFarmOn) {
-    ;   this.m_silenceAutoMetalFarm := true
-    ; } 
+    this.Run(this.metalFarm.HandleMetalRunItems.bind(this.metalFarm))
+  }
 
-    ; ; Perform drop
-    ; this.HandleMetalRunItems()
-    ; Sleep this.cfg.delay.sw
-
-    ; ; Unsilence silenced functions
-    ; if (this.m_silenceAutoClicker) {
-    ;   this.m_silenceAutoClicker := false
-    ; }
-    ; else if (this.m_silenceAutoMetalFarm) {
-    ;   this.m_silenceAutoMetalFarm := false
-    ; }
+  Run(action) {
+    if this.CanExecute() {
+      this.Interrupt(action)
+    }
   }
 
   ; AutoSuicideMeatFarmHotkey {
