@@ -25,7 +25,8 @@ By default performs a left click at a specified interval, but can be configured 
 
 1. Use default to level tank dino health
 2. Use keystroke `A` to afk spam craft
-3. Use kstroke `E` to afk spam heal carnivore by feeding raw meat
+3. Use keystroke `E` to afk spam heal carnivore by feeding raw meat
+4. Use keystroke `T` to afk feed a baby dinosaur
 
 | Interruptable & Resumable By |
 | --- |
@@ -65,6 +66,9 @@ Invokes the following to immediately run once:
 2. Drop all berries.
 3. Drop all stone.
 
+#### Example Use Cases:
+1. Drop all junk when farming metal while using normal auto clicker near the end of the farming run
+
 | Start State | End State |
 | --- | --- |
 | Not In Inventory | Not In Inventory |
@@ -72,6 +76,12 @@ Invokes the following to immediately run once:
 <a name="autoTransfer"></a>
 ### Auto Transfer
 Transfers all from a source inventory to a target inventory with optional filter usage.
+
+#### Example Use Cases:
+1. Take opponent's inventory after their defeat
+2. Give raw meat to baby dinos quickly
+3. Take all hide when farming meat
+4. Take all paste from your snails
 
 - ⬅️ **Take All**, takes items from other inventory
 ![auto-take-all-filtered](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/2a8c30d8-9135-47ab-bf15-6ddbfd4c931c)
@@ -85,6 +95,10 @@ Transfers all from a source inventory to a target inventory with optional filter
 <a name="autoDrop"></a>
 ### Auto Drop All ⬇️
 Drop all from an inventory with optional filter usage.
+
+#### Example Use Cases:
+1. Drop all thatch when farming wood
+2. Drop your baby dino on their head and get a mutation
 
 - **Self Drop All**, drops your items
 ![auto-self-drop-all](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/ccfc2a47-aad0-42f1-b1b1-38170be5ae4b)
