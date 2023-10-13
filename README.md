@@ -71,10 +71,12 @@ Invokes the following to immediately run once:
 
 <a name="autoTransfer"></a>
 ### Auto Transfer
-Transfers all from a source inventory to a target inventory witha an optional use of a filter.
+Transfers all from a source inventory to a target inventory with optional filter usage.
 
-- ⬅️ **Take All**, gives all items to other inventory
-- ➡️ **Give All**, takes all from other inventory
+- ⬅️ **Take All**, takes items from other inventory
+![auto-take-all-filtered](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/2a8c30d8-9135-47ab-bf15-6ddbfd4c931c)
+- ➡️ **Give All**, gives items to other inventory
+![auto-give-all-filtered](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/d0705ac9-582c-4e3e-af2d-eb7f61b87c55)
 
 | Start State | End State |
 | --- | --- |
@@ -82,9 +84,12 @@ Transfers all from a source inventory to a target inventory witha an optional us
 
 <a name="autoDrop"></a>
 ### Auto Drop All ⬇️
+Drop all from an inventory with optional filter usage.
 
-- **Self Drop All**, drops all of your items
-- **Other Drop All**, drops all of other's inventory items
+- **Self Drop All**, drops your items
+![auto-self-drop-all](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/ccfc2a47-aad0-42f1-b1b1-38170be5ae4b)
+- **Other Drop All**, drops other's inventory items
+![auto-other-drop-all](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/3182c72e-1a46-41ce-9e41-59b738a1472d)
 
 | Start State | End State |
 | --- | --- |
@@ -95,8 +100,11 @@ Transfers all from a source inventory to a target inventory witha an optional us
 Allows the automatic consumption of consumables once a threshold is reached.
 
 - 🩹 **AutoBrew**, consume med brews
+![auto-brew](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/ba685641-dd93-4a57-a9dd-b6d703e0f429)
 - 🥞 **AutoEat**, consume hunger based consumable
+![auto-eat](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/72dc97bf-6c8d-493e-9168-de668e82611d)
 - 🍹 **AutoDrink**, consume water base consumable
+![auto-drink](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/28a5b31f-f732-4190-b63c-cb4d0048b609)
 
 | Interruptable & Resumable By |
 | --- |
@@ -114,6 +122,7 @@ Goto <a href="#autoConsumptionMeta">here</a> to read how auto consumption works.
 
 <a name="autoFertilizer"></a>
 ### Auto Fertilizer 💩
+![auto-fert](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/61228977-4555-4e5b-9859-3c24221f2ee5)
 
 Produce slot caps of fertilizer by using a irrigated toilet. Character must be ready to defecate and be seated on an irrigated toilet.
 
@@ -121,7 +130,7 @@ Produce slot caps of fertilizer by using a irrigated toilet. Character must be r
 | --- | --- |
 | Not In Inventory | Not In Inventory |
 
-> **Note:** Will automatically stop at 250 fert and cannot be paused; you had Taco Bell.
+> **Note:** Will automatically stop at 250 fert and cannot be paused; you ate Taco Bell 🙏🏻.
 
 <a name="autoFish"></a>
 ### Auto Fish 🎣
