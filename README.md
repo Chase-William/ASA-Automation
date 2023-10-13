@@ -1,72 +1,139 @@
-## Functions
+## Function Index
 
-### Auto Clicker
+- <a href="#autoClicker">Auto Clicker</a>
+- <a href="#autoMetalFarm">Auto Metal Farm</a>
+- <a href="#handleMetalFarmJunk">Handle Metal Farm Junk</a>
+- <a href="#autoTransfer">Auto Transfer All</a> *(give & take)*
+- <a href="#autoDrop">Auto Drop All</a> *(self & other)*
+- <a href="#autoConsume">Auto Consume</a> *(healing, food, water)*
+- <a href="#autoFertilizer">Auto Fertilizer</a>
+- <a href="#autoFish">Auto Fish</a>
 
-By default performs a left click at a specified interval, but can configured to send keystrokes isntead of left click. To modify the keystroke sent, simply change and set a new keystroke in the *keystroke* hotkey box labeled *Keystroke:*.
+## Supported Resolutions 🖥️
+- 2560x1440, Fullscreen or Windowed Fullscreen
+- 1920x1080, Fullscreen or Windowed Fullscreen
 
-To change the auto click speed read <a href="#change_autoclick_interval">here</a>.
+## Functions 📜
+Listed below are all the functions or scripts supported in this application.
 
+<a name="autoClicker"></a>
+### Auto Clicker 🖱️
+
+By default performs a left click at a specified interval, but can be configured to send keystrokes instead. To send keystrokes, set a keystroke in the *keystroke* hotkey box labeled *Keystroke*. To return to default left click functionality, clear *Keystroke* input and set.
+
+#### Example use cases:
+
+1. Use default to level tank dino health
+2. Use keystroke `A` to afk spam craft
+3. Use kstroke `E` to afk spam heal carnivore by feeding raw meat
+
+| Interruptable & Resumable By |
+| --- |
+| Handle Metal Farm Junk |
+| Give All |
+| Take All |
+| Self Drop All |
+| Other Drop All |
+
+To read about function interrupt, go <a href="#functionInterrupt">here</a>.
+
+<a name="autoMetalFarm"></a>
 ### Auto Metal Farm
 
-Combines the auto clicker with automatic:
+Auto left clicks with periodic handling of resources gathered. Listed below describes the *handling* process:
 
 1. Take all of flint.
 2. Drop all berries.
 3. Drop all stone.
 
-To change the auto click speed read <a href="#change_autoclick_interval">here</a>.
+| Interruptable & Replaceable By |
+| --- |
+| Auto Clicker |
 
-> Dropping of items is triggered by a click threshold, therefore, adjusting *autoClickInterval* can have a side effect on this function.
+To read about function interrupt, go <a href="#functionInterrupt">here</a>.
 
-### Handle Metal Farm Junk
+| Start State | End State |
+| --- | --- |
+| Not In Inventory, On Dino | Not In Inventory, On Dino |
 
-Pauses any existing functions *(i.g., auto clicker)* running to perform the following before resuming paused functions.
+<a name="handleMetalFarmJunk"></a>
+### Handle Metal Farm Junk 🗑️
+
+Invokes the following to immediately run once:
 
 1. Take all of flint.
 2. Drop all berries.
 3. Drop all stone.
 
-> Do not trigger when inside the dino's inventory or yours.
+| Start State | End State |
+| --- | --- |
+| Not In Inventory | Not In Inventory |
 
-### Auto Self Meat Farm
+<a name="autoTransfer"></a>
+### Auto Transfer
+Transfers all from a source inventory to a target inventory witha an optional use of a filter.
 
-Produce meat by suiciding over campfires constantly.
+- ⬅️ **Take All**, gives all items to other inventory
+- ➡️ **Give All**, takes all from other inventory
 
-> Ensure Meat Farm Beds poisition is set to your beds to respawn at. I tried using image search and other options for automatically finding the beds after a query, but because of the large amount of iterations of this function; a fool proof approach was needed.
+| Start State | End State |
+| --- | --- |
+| Not In Inventory | Not In Inventory |
 
-### Auto Fertilizer
+<a name="autoDrop"></a>
+### Auto Drop All ⬇️
 
-Produce slot caps of fertilizer by using a irrigated toilet and this function. Your character must be ready to defecate and be seated on a irrigated toilet not within any inventory to begin.
+- **Self Drop All**, drops all of your items
+- **Other Drop All**, drops all of other's inventory items
 
-> Will automatically stop at 250 fert.
+| Start State | End State |
+| --- | --- |
+| Not In Inventory | Not In Inventory |
 
-### Auto Fish
+<a name="autoConsume"></a>
+## Auto Consumption
+Allows the automatic consumption of consumables once a threshold is reached.
 
-...
+- 🩹 **AutoBrew**, consume med brews
+- 🥞 **AutoEat**, consume hunger based consumable
+- 🍹 **AutoDrink**, consume water base consumable
 
-### Auto Take All
+| Interruptable & Resumable By |
+| --- |
+| Handle Metal Farm Junk |
+| Give All |
+| Take All |
+| Self Drop All |
+| Other Drop All |
 
-...
+> **Note:** Ensure your in-game hotbar keybinds for healing, eating, and drinking are set under the *In-Game Keybinds* tab.
 
-### Auto Brew
+To read about function interrupt, go <a href="#functionInterrupt">here</a>.
 
-...
+Goto <a href="#autoConsumptionMeta">here</a> to read how auto consumption works.
 
-### Auto Eat
+<a name="autoFertilizer"></a>
+### Auto Fertilizer 💩
 
-...
+Produce slot caps of fertilizer by using a irrigated toilet. Character must be ready to defecate and be seated on an irrigated toilet.
 
-### Auto Drink
+| Start State | End State |
+| --- | --- |
+| Not In Inventory | Not In Inventory |
 
-...
+> **Note:** Will automatically stop at 250 fert and cannot be paused; you had Taco Bell.
 
-### Auto Equip Scuba
+<a name="autoFish"></a>
+### Auto Fish 🎣
 
-...
+Automatically detects fishing prompts and fulfills them.
 
+Goto <a href="#autoFishMeta">here</a> to read about how Auto Fishing works.
+
+# Options & Supporting Functionalities
 
 <a name="change_autoclick_interval"></a>
-#### Change AutoClicker Interval
+### AutoClicker Interval
 
 To change the auto click interval follow these steps:
 
@@ -74,13 +141,15 @@ To change the auto click interval follow these steps:
 2. Find *autoClickInterval* under the *[delay]* section.
 3. Replace the default *50* with your interval in milliseconds.
 
+<a name="functionInterrupt"></a>
+### Function Interrupt ⏯️
+To make functions easier to use, they should be pauseable, resumeable, and replaceable to allow:
 
-## Developer Notes
-
-A function ending in `Safe` means it has built in mechanics to ensure the desired state is reached before returning.
-
-### Interrupt Logic
-To make functions easier to use, they should be interruptable, resumeable, and replaceable to allow long running processes and quick process to work together. Therefore, below is a map of rules all functions adhere to.
+1. Prevent unwanted function execution overlap
+2. Prevent user request being placed in a queue delaying execution
+3. Allow long running and quick task to work together
+  
+Therefore, the interrupt logic table has been defined below.
 
 #### Interruptible & Resumable Functions
 Functions that can be momentarily paused while another functions executes and later resumed afterwards automatically.
@@ -94,14 +163,14 @@ Functions that can be momentarily paused while another functions executes and la
 #### Interruptable & Replaceable Functions
 Functions that can be interrupted *(execution terminates)* and be replaced by another.
 
-1. Drop Metal Farm Junk
+1. Handle Metal Farm Junk, *(only effected by Auto Clicker)*
 
 #### Uninterruptable Functions
 Functions that cannot be interrupted by other functions and therefore, can only be enabled/disabled directly.
 
-1. Bot
-2. Paste Farm
-3. Suicide Farm
+1. Bot *(omitted from default application)*
+2. Paste Farm *(omitted from default application)*
+3. Suicide Farm *(omitted from default application)*
 4. Fert Farm
 5. Take All
 6. Give All
@@ -115,7 +184,17 @@ Functions that can interrupt other functions or fail to execute if an uninterrup
 2. Give All
 3. Self Drop All
 4. Other Drop All
-5. Drop Metal Farm Junk
+5. Handle Metal Farm Junk
+
+<a name="autoConsumptionMeta"></a>
+### Auto Consumption *(How it works)*
+
+<a name="autoFishMeta"></a>
+### Auto Fish *(How it works)*
+
+## Developer Notes
+
+A function ending in `Safe` means it has built in mechanics to ensure the desired state is reached before returning.
 
 #### Process Stuff
 
@@ -170,3 +249,13 @@ Health Had Image Mask: 131, 34, 165 == More opaque
 
 Health Lost Image Mask: 25, 5, 29 == More transparent
 ```
+
+
+
+## OMITTED FROM GENERAL RELEASE
+
+### Auto Self Meat Farm
+
+Produce meat by suiciding over campfires constantly.
+
+> Ensure Meat Farm Beds poisition is set to your beds to respawn at. I tried using image search and other options for automatically finding the beds after a query, but because of the large amount of iterations of this function; a fool proof approach was needed.
