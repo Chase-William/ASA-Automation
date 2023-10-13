@@ -25,7 +25,8 @@ By default performs a left click at a specified interval, but can be configured 
 
 1. Use default to level tank dino health
 2. Use keystroke `A` to afk spam craft
-3. Use kstroke `E` to afk spam heal carnivore by feeding raw meat
+3. Use keystroke `E` to afk spam heal carnivore by feeding raw meat
+4. Use keystroke `T` to afk feed a baby dinosaur
 
 | Interruptable & Resumable By |
 | --- |
@@ -65,16 +66,27 @@ Invokes the following to immediately run once:
 2. Drop all berries.
 3. Drop all stone.
 
+#### Example Use Cases:
+1. Drop all junk when farming metal while using normal auto clicker near the end of the farming run
+
 | Start State | End State |
 | --- | --- |
 | Not In Inventory | Not In Inventory |
 
 <a name="autoTransfer"></a>
 ### Auto Transfer
-Transfers all from a source inventory to a target inventory witha an optional use of a filter.
+Transfers all from a source inventory to a target inventory with optional filter usage.
 
-- ⬅️ **Take All**, gives all items to other inventory
-- ➡️ **Give All**, takes all from other inventory
+#### Example Use Cases:
+1. Take opponent's inventory after their defeat
+2. Give raw meat to baby dinos quickly
+3. Take all hide when farming meat
+4. Take all paste from your snails
+
+- ⬅️ **Take All**, takes items from other inventory
+![auto-take-all-filtered](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/2a8c30d8-9135-47ab-bf15-6ddbfd4c931c)
+- ➡️ **Give All**, gives items to other inventory
+![auto-give-all-filtered](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/d0705ac9-582c-4e3e-af2d-eb7f61b87c55)
 
 | Start State | End State |
 | --- | --- |
@@ -82,9 +94,16 @@ Transfers all from a source inventory to a target inventory witha an optional us
 
 <a name="autoDrop"></a>
 ### Auto Drop All ⬇️
+Drop all from an inventory with optional filter usage.
 
-- **Self Drop All**, drops all of your items
-- **Other Drop All**, drops all of other's inventory items
+#### Example Use Cases:
+1. Drop all thatch when farming wood
+2. Drop your baby dino on their head and get a mutation
+
+- **Self Drop All**, drops your items
+![auto-self-drop-all](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/ccfc2a47-aad0-42f1-b1b1-38170be5ae4b)
+- **Other Drop All**, drops other's inventory items
+![auto-other-drop-all](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/3182c72e-1a46-41ce-9e41-59b738a1472d)
 
 | Start State | End State |
 | --- | --- |
@@ -95,8 +114,11 @@ Transfers all from a source inventory to a target inventory witha an optional us
 Allows the automatic consumption of consumables once a threshold is reached.
 
 - 🩹 **AutoBrew**, consume med brews
+![auto-brew](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/ba685641-dd93-4a57-a9dd-b6d703e0f429)
 - 🥞 **AutoEat**, consume hunger based consumable
+![auto-eat](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/72dc97bf-6c8d-493e-9168-de668e82611d)
 - 🍹 **AutoDrink**, consume water base consumable
+![auto-drink](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/28a5b31f-f732-4190-b63c-cb4d0048b609)
 
 | Interruptable & Resumable By |
 | --- |
@@ -114,6 +136,7 @@ Goto <a href="#autoConsumptionMeta">here</a> to read how auto consumption works.
 
 <a name="autoFertilizer"></a>
 ### Auto Fertilizer 💩
+![auto-fert](https://github.com/Chase-William/ASA-Helping-Tools/assets/46757278/61228977-4555-4e5b-9859-3c24221f2ee5)
 
 Produce slot caps of fertilizer by using a irrigated toilet. Character must be ready to defecate and be seated on an irrigated toilet.
 
@@ -121,11 +144,11 @@ Produce slot caps of fertilizer by using a irrigated toilet. Character must be r
 | --- | --- |
 | Not In Inventory | Not In Inventory |
 
-> **Note:** Will automatically stop at 250 fert and cannot be paused; you had Taco Bell.
+> **Note:** Will automatically stop at 250 fert and cannot be paused; you ate Taco Bell 🙏🏻.
 
 <a name="autoFish"></a>
 ### Auto Fish 🎣
-
+![auto-fish](https://github.com/Chase-William/ASA-Automation/assets/46757278/dc28bb5b-bbe2-4488-8919-666a84bd14f1)
 Automatically detects fishing prompts and fulfills them.
 
 Goto <a href="#autoFishMeta">here</a> to read about how Auto Fishing works.
@@ -188,69 +211,57 @@ Functions that can interrupt other functions or fail to execute if an uninterrup
 
 <a name="autoConsumptionMeta"></a>
 ### Auto Consumption *(How it works)*
+In short, auto consumption functions based on the presence of the low health, food, and water mask. Below are samples of low health with different backgrounds that can be used to calculate ARK's mask low stat mask.
+
+![health3](https://github.com/Chase-William/ASA-Automation/assets/46757278/02ffec8d-c8a3-46bd-9cd2-0393b765b6f5)
+![health2](https://github.com/Chase-William/ASA-Automation/assets/46757278/3fb51732-d3f4-4251-bead-69fea13b43c0)
+![health](https://github.com/Chase-William/ASA-Automation/assets/46757278/6e8a3878-5153-4a22-8847-f70a3ce960c3)
+
+We cannot simply sample the color of a pixel to know if we have low health without calculating/checking the mask because of the transparency. Therefore, think of the mask as a pattern between the RGB *(red, green, blue)* channels that make up every pixel. The pixel can be any color, but a certain pattern will always exist between those channels, and if it doesn't, the characters stat is not low *(atleast not low enough to reach that pixel)*.
+
+To calculate the mask, first acquire the color of a pixel with the mask. In my calculations, I found the white background low health to have the color of `0x43CAED`. Taking the hex representation and breaking it down into it's individual RGB components yields:
+
+```
+Red Hex: 43
+Green Hex: CA
+Red Hex: ED
+```
+
+To start finding the mask, calculate the difference in color value between each color component like so:
+
+```
+*Math is all in Hex*
+CA - 43 = 16, difference between green and red
+ED - CA = 7, difference between blue and green
+ED - 43 = 1D, difference between blue and red
+```
+
+A more visual illustration of what we just did:
+
+![Frame 14](https://github.com/Chase-William/ASA-Automation/assets/46757278/cfa7e582-87cd-4d28-b58a-3ee0213fff15)
+
+Furthermore, combining the channels reveals our calculated mask value isn't far off.
+
+![Frame 15](https://github.com/Chase-William/ASA-Automation/assets/46757278/cfc2ffac-e8e6-4d15-b9d3-c9b4573afcaf)
+
+All that is left is too calculate the mask a few more times sampling different backgrounds before averaging them. Once that is done, provide compare the mask value found at runtime with the pre-determined with a desired level of variance and you're done.
 
 <a name="autoFishMeta"></a>
 ### Auto Fish *(How it works)*
+Two approaches were taken developing the auto fishing solution. The first, was using the `ImageSearch &OutputVarX, &OutputVarY, X1, Y1, X2, Y2, ImageFile` function to search for letters within a generalized screen space. Below are the images to be matched with:
 
-## Developer Notes
+![2560_1440_W_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/d4fc50c5-aba2-417d-bab3-1947a06532e0)
+![2560_1440_A_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/95d12d13-7a7b-425a-a006-e9b234fd87e8)
+![2560_1440_E_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/93d2d4f5-129d-4f04-84b5-7c611b112d01)
+![2560_1440_X_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/cb21bdaf-747e-4ad4-8369-340e599e4edc)
 
-A function ending in `Safe` means it has built in mechanics to ensure the desired state is reached before returning.
+They were emaciated as to reduce the extra white space needed to match against because ARK's prompt text is near pure white in the center of it's letters and lesser so closer to the edges. Therefore, matches were to be amde with the near pure white center of prompt text. However, this approach led to heavy CPU usage and to the point it made my custom PC stutter. To provide an analogy, my computer was looking for several needles in a hay stack every second... Moreover, it didn't work, but fret not, I had another card up my sleeve.
 
-#### Process Stuff
+Approach #2, the basis of this idea for text recognition came from my days working on the [Tribe Logger](https://github.com/Chase-William#tribe-logger) bot. In that application I used [Tesseract](https://github.com/tesseract-ocr/tesseract), an open source Optical Character Recognition *(OCR)* library for pulling text from images. It is then, I had the thought of how one *should* be able to discriminate between characters as shown below:
 
-```
------ Health Had
+![Letter Sequence](https://github.com/Chase-William/ASA-Automation/assets/46757278/f8cec99a-fe0e-4ec1-957d-5d22f7c7a28a)
 
-43-CA-ED - white wall
-red, green diff = 87 (hex) -> (decimal) 135
-green, blue diff = 23 -> 35
-red, blue diff = AA -> 170
-
-00-83-A6 - metal structure
-
-red, green diff = 83 -> 131
-green, blue diff = 23 -> 35
-red, blue diff = A6 -> 166
-
-00-7F-9F - fridge pale
-
-red, green diff = 7F -> 127
-green, blue diff = 20 -> 32
-red, blue diff = 9F -> 159
-
-average red,green diff = 131
-average green, blue diff = 34
-average red, blue diff = 165
-
-Health Had Image Mask: 131, 34, 165
-
------- Health Lost
-
-CDE3EA - white wall
-red, green diff = 16 -> 22
-green, blue diff = 7 -> 7
-red, blue diff = 1D -> 29
-
-33-50-56 - metal structure
-red, green diff = 1D -> 29
-green, blue diff = 6 -> 6
-red, blue diff = 23 -> 35
-
-21-3B-39 - fridge pale
-red, green diff = 1A -> 26
-green, blue diff = 2 -> 2
-red, blue diff = 18 -> 24
-
-Health Lost Image Mask: 25, 5, 29
-
-Results:
-
-Health Had Image Mask: 131, 34, 165 == More opaque
-
-Health Lost Image Mask: 25, 5, 29 == More transparent
-```
-
-
+This diagram describes the sequence characters are check in, and the locations that are checked in each iteration. Each red dot is a point checked during that iteration through the entire set of characters. In order for a given letter to be determined preset, each point check must return true *(AND gates all the way)*. After a character is found, a virtual key is sent to simulate user input and the entire process starts again at the specified `SetTimer` interval.
 
 ## OMITTED FROM GENERAL RELEASE
 
