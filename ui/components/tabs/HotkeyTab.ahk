@@ -12,14 +12,7 @@ class HotkeyTab {
     onTop := myGui.AddCheckbox("x+m", "Always on Top?")
     onTop.OnEvent("Click", this.AlwaysOnTop_OnChecked.bind(this))
 
-    ; myGui.AddText(, "Drop Metal Farm Junk")
-    ; myGui.AddHotkey("x+m")
-
-    ; myGui.AddText("Section w200", "Auto Clicker: ")
-    ; autoClickHotkey := myGui.AddHotkey("x+m")
-
-    ; myGui.AddText("Section XS w200", "Auto Metal Farmer:")
-    ; autoMetalFarmHotkey := myGui.AddHotkey("x+m")
+    myGui.AddLink("x+m x" (WINDOW_WIDTH - 100), '<a href="https://github.com/Chase-William/ASA-Automation#function-index">Documentation</a>')
     
     ; Auto Clicker
     HotkeyControl(myGui, "Auto Clicker Hotkey", this.controller.AutoClickHotkey,"XS w150", "x+m w100", "x+m")
@@ -62,67 +55,25 @@ class HotkeyTab {
     selfDropAllFilterEdit.OnEvent("Change", (sender, info) => controller.cfg.filter.SelfDropAllFilter := sender.Value)
     selfDropAllFilterCheckbox := myGui.AddCheckbox("x+m Checked" this.controller.drop.UseSelfDropAllFilter, "")
     selfDropAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.drop.UseSelfDropAllFilter := sender.Value)
-    ; selfAutoDropAllFilterCheckbox := myGui.AddCheckbox("x+m Checked" this.controller.drop.UseSelfAutoDropWhenEncumbered, "Auto")
-    ; selfAutoDropAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.drop.UseSelfAutoDropWhenEncumbered := sender.Value)
 
-    HotkeyControl(myGui, "Dino Drop All", this.controller.OtherDropAllHotkey, "XS x20 y275 w100", "x+m w90", "x+m")    
+    HotkeyControl(myGui, "Other Drop All", this.controller.OtherDropAllHotkey, "XS x20 y275 w100", "x+m w90", "x+m")    
     myGui.AddText("x+m", "Filter:")
     otherDropAllFilterEdit := myGui.AddEdit("x+m w80", controller.cfg.filter.OtherDropAllFilter)
     otherDropAllFilterEdit.OnEvent("Change", (sender, info) => controller.cfg.filter.OtherDropAllFilter := sender.Value)
     otherDropAllFilterCheckbox := myGui.AddCheckbox("x+m Checked" this.controller.drop.UseOtherDropAllFilter, "")
     otherDropAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.drop.UseOtherDropAllFilter := sender.Value)
-    ; otherAutoDropAllFilterCheckbox := myGui.AddCheckbox("x+m", "Auto")
-    ; otherAutoDropAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.drop.UseOtherAutoDropWhenEncumbered := sender.Value)
-
-    ToggleControl(myGui, "Auto Self Meat Farm", (*) => this.controller.suicide.AutoSuicideMeatFarmToggle(), "Section XS")
+ 
     ToggleControl(myGui, "Auto Brew", (*) => this.controller.consume.AutoBrewToggle(), "Section XS")
     ToggleControl(myGui, "Auto Eat", (*) => this.controller.consume.AutoEatToggle(), "x+m")
     ToggleControl(myGui, "Auto Drink", (*) => this.controller.consume.AutoDrinkToggle(), "x+m")
     ToggleControl(myGui, "Auto Fish", (*) => this.controller.fishing.AutoFishToggle(), "Section XS")
     ToggleControl(myGui, "Auto Fert Farm", (*) => this.controller.fertFarm.AutoFertFarm(), "x+m")
-    ToggleControl(myGui, "AFK", (*) => this.controller.bot.ActivateBot(), "Section XS")
-
-    ToggleControl(myGui, "Test", (*) => this.Test(), "Section XS")
-
-    ; HotkeyControl(myGui, "Nurture Dino", (*) => this.controll)
-    ; autoRecast := myGui.AddCheckbox("x+m", "Auto Recast")
-    ; autoRecast.OnEvent("Click", this.AutoRecastCheckbox_OnClick.bind(this))
-    
-
-    ; ToggleControl(myGui, "Auto Eat", this.controller., true,,)
-    ; ToggleControl(myGui, "Auto Drink", this.controller., true,,)
   }
 
   AutoClickKeySetBtn_Clicked(sender, info) {
-    MsgBox "Test", this.keystrokeHotkey.Value
     this.controller.autoClick.AutoClickKey := this.keystrokeHotkey.Value
     sender.Visible := false
   }
-
-  Test() {
-    WinActivate(this.controller.cfg.process.windowTitle)
-    Sleep 500
-    ; this.controller.user.ClearOtherSearchbar()
-    this.controller.afk.BeginAFK()
-    ; MsgBox Format("{1}", this.controller.user.IsInventoryOpen()), "Test"
-  }
-
-  BeginAFK(value) {
-    if (value) { ; Begin afking
-      WinActivate(this.controller.cfg.process.windowTitle)
-      Sleep this.controller.cfg.delay.mw
-      this.controller.afk.BeginAFK()
-    } else { ; End afking
-      WinActivate(this.controller.cfg.process.windowTitle)
-      Sleep this.controller.cfg.delay.mw
-      this.controller.afk.EndAFK()
-    }
-  }
-
-  ; AutoRecastCheckbox_OnClick(sender, info) {
-  ;   ; Toggle recast
-  ;   this.controller.fishing.AutoRecast := sender.Value
-  ; }
 
   ; Handles check for keeping the tool window above all others
   AlwaysOnTop_OnChecked(sender, info) {

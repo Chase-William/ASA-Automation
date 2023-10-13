@@ -52,15 +52,17 @@ makeOverlay(controller) {
 makeGui(controller) {
   windowTitle := LIL_XD_HELPER_TOOL_WINDOW_TITLE
 
+  TraySetIcon("assets/images/icon.png")
+
   width := "w" WINDOW_WIDTH
   height := "h" WINDOW_HEIGHT
   ; Create root gui object
   myGui := Gui(, windowTitle,)
-  ; MyGui.BackColor := "313338"
+  ; myGui.BackColor := "151414"
   
   ; WinSetTransColor("FFFFFF", MyGui)
   ; MyGui.Opt("ToolWindow")
-  MyGui.SetFont("q5", "Verdana")
+  myGui.SetFont("q5", "Verdana")
 
   ; Closing logic
   myGui.OnEvent("Close", (*) => ExitApp())

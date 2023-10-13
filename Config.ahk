@@ -31,7 +31,6 @@ XSW_CONFIG_KEY := "xsw"
 _2XSW_CONFIG_KEY := "2xsw"
 
 AUTO_CLICK_INTERVAL_CONFIG_KEY := "autoClickInterval"
-PIVOT_CAMERA_90_DEGREES_CONFIG_KEY := "pivotCamera90Degrees"
 
 STONE_STR_CONFIG_KEY := "stone"
 FLINT_STR_CONFIG_KEY := "flint"
@@ -46,12 +45,9 @@ GIVE_ALL_STR_FIELD_NAME := "m_giveAll"
 TAKE_ALL_STR_FIELD_NAME := "m_takeAll"
 SELF_DROP_ALL_STR_FIELD_NAME := "m_selfDropAll"
 OTHER_DROP_ALL_STR_FIELD_NAME := "m_otherDropAll"
-PIVOT_CAMERA_90_DEGREES_FIELD_NAME := "m_pivotCamera90Degrees"
 
 SPAWN_SCREEN_BED_CONFIG_KEY := "spawnScreenBedColor"
 STANDARD_UI_TEXT_COLOR_CONFIG_KEY := "standardUITextColor"
-
-; SPAWN_REGION_TEXT_REGION_CONFIG_KEY := "spawnRegionTextRegion"
 
 
 class Config {
@@ -62,21 +58,6 @@ class Config {
     this.color := Config.Color()
     ;this.region := Config.Region()
   }
-
-  ; class Region {
-  ;   SpawnRegionTextRegion {
-  ;     get {
-  ;       if (!IsSet(m_spawnRegionTextRegion)) {
-  ;         this.m_spawnRegionTextRegion := Config.GetRegion(SPAWN_REGION_TEXT_REGION_CONFIG_KEY)
-  ;       }
-  ;       return this.m_spawnRegionTextRegion
-  ;     }
-  ;     set {      
-  ;       Config.SetRegion(SPAWN_REGION_TEXT_REGION_CONFIG_KEY, value)
-  ;       this.m_spawnRegionTextRegion := value
-  ;     }
-  ;   }
-  ; }
 
   class Color {
     SpawnScreenBedColor {
@@ -345,10 +326,6 @@ class Config {
         Config.SetDelay(AUTO_CLICK_INTERVAL_CONFIG_KEY, value)
         this.m_autoClickInterval := value
       }
-    }
-    PivotCamera90Degrees {
-      get => Config.GetMember(this, Config.GetDelay, PIVOT_CAMERA_90_DEGREES_FIELD_NAME, PIVOT_CAMERA_90_DEGREES_CONFIG_KEY)
-      set => Config.SetMember(this, Config.SetDelay, PIVOT_CAMERA_90_DEGREES_FIELD_NAME, PIVOT_CAMERA_90_DEGREES_CONFIG_KEY, value)
     }
   }
 

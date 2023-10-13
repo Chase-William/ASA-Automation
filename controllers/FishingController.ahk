@@ -48,6 +48,7 @@ class FishingController {
 
   AutoFishToggle() {
     if this.IsAutoFishOn := !this.IsAutoFishOn {
+      WinActivate(this.cfg.process.windowTitle)
       SetTimer(this.autoFishCallback, this.cfg.delay.lw)
     } else {
       Settimer(this.autoFishCallback, 0)
@@ -63,21 +64,6 @@ class FishingController {
       centerX := centerX / 2
       centerY := centerY / 2
     }
-
-    ; Check to recast if enabled
-    ; if (this.AutoRecast) {
-    ;   rgb := HexToDecArray(PixelGetColor(centerX, centerY))
-    ;   if (rgb[RED_INDEX] < 15 AND
-    ;       rgb[GREEN_INDEX] > 205 AND rgb[GREEN_INDEX] < 235 AND
-    ;       rgb[BLUE_INDEX] > 205 AND rgb[BLUE_INDEX] < 235
-    ;     ) {
-    ;       Sleep this.cfg.delay._2xlw
-    ;       Click
-    ;       Sleep this.cfg.delay._2xlw
-    ;       Click
-    ;       return
-    ;   }
-    ; }
 
     ; Test each character in a specific order
     if (this.TestPixelColor(this.m_q)) {

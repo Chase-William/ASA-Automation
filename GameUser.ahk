@@ -20,9 +20,6 @@ OTHER_FIRST_SLOT_CONFIG_KEY := "otherFirstSlot"
 SELF_INVENTORY_TOGGLE_CONFIG_KEY := "toggleSelfInventory"
 OTHER_INVENTORY_TOGGLE_CONFIG_KEY := "toggleOtherInventory"
 DEFECATE_CONFIG_KEY := "defecate"
-MEAT_FARM_SPAWN_CONFIG_KEY := "meatFarmSpawn"
-AFK_CHAMBER_SPAWN_CONFIG_KEY := "afkChamberSpawn"
-PASTE_FARM_SPAWN_CONFIG_KEY := "pasteFarmSpawn"
 
 SPAWN_REGION_TEXT_REGION_CONFIG_KEY := "spawnRegionTextRegion"
 DETECT_INVENTORY_OPEN_REGION_TEXT_CONFIG_KEY := "detectInventoryOpenTextRegion"
@@ -51,9 +48,6 @@ OTHER_FIRST_SLOT_FIELD_NAME := "m_otherFirstSlot"
 SELF_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleSelfInventory"
 OTHER_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleOtherInventory"
 DEFECATE_FIELD_NAME := "m_defecate"
-MEAT_FARM_SPAWN_FIELD_NAME := "m_meatFarmSpawn"
-AFK_CHAMBER_SPAWN_FIELD_NAME := "m_afkChamberSpawn"
-PASTE_FARM_SPAWN_FIELD_NAME := "m_pasteFarmSpawn"
 
 SPAWN_REGION_TEXT_REGION_FIELD_NAME := "m_spawnRegionTextRegion"
 DETECT_INVENTORY_OPEN_REGION_TEXT_FIELD_NAME := "m_detectInventoryOpenTextRegion"
@@ -188,21 +182,6 @@ class GameUser {
     set => Config.SetMember(this, Config.SetPosition, OTHER_TRANSFER_ALL_FIELD_NAME, OTHER_TRANSFER_ALL_CONFIG_KEY, value)
   }
 
-  MeatFarmSpawnPosition {
-    get => Config.GetMember(this, Config.GetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY)
-    set => Config.SetMember(this, Config.SetPosition, MEAT_FARM_SPAWN_FIELD_NAME, MEAT_FARM_SPAWN_CONFIG_KEY, value)
-  }
-
-  AFKChamberSpawnPosition {
-    get => Config.GetMember(this, Config.GetPosition, AFK_CHAMBER_SPAWN_FIELD_NAME, AFK_CHAMBER_SPAWN_CONFIG_KEY)
-    set => Config.SetMember(this, Config.SetPosition, AFK_CHAMBER_SPAWN_FIELD_NAME, AFK_CHAMBER_SPAWN_CONFIG_KEY, value)
-  }
-
-  PasteFarmSpawnPosition {
-    get => Config.GetMember(this, Config.GetPosition, PASTE_FARM_SPAWN_FIELD_NAME, PASTE_FARM_SPAWN_CONFIG_KEY)
-    set => Config.SetMember(this, Config.SetPosition, PASTE_FARM_SPAWN_FIELD_NAME, PASTE_FARM_SPAWN_CONFIG_KEY, value)
-  }
-
   ;
   ;
   ; Needs to be added to UI!
@@ -211,16 +190,6 @@ class GameUser {
   OtherFirstSlotPosition {
     get => Config.GetMember(this, Config.GetPosition, OTHER_FIRST_SLOT_FIELD_NAME, OTHER_FIRST_SLOT_CONFIG_KEY)
     set => Config.SetMember(this, Config.SetPosition, OTHER_FIRST_SLOT_FIELD_NAME, OTHER_FIRST_SLOT_CONFIG_KEY, value)
-  }
-
-  GiveHotbarFoodAndDrink() {
-    Click(1590, 1370)
-    Click(1590, 1370)
-    Sleep this.cfg.delay.lw
-    Click(1830, 1370)
-    Click(1830, 1370)
-    Sleep this.cfg.delay.smw
-    this.GiveAll()
   }
 
   ; Clicks the respawn button on death screen.
@@ -280,15 +249,6 @@ class GameUser {
       this.cfg.color.StandardUITextColor, 
       10
     )
-  }
-
-  ; Selects the pre-determined self meat farm beds.
-  SelectMeatFarmBeds() {
-    Click(this.MeatFarmSpawnPosition.x, this.MeatFarmSpawnPosition.y)
-  }
-
-  SelectAFKChamberBeds() {
-    Click(this.AFKChamberSpawnPosition.x, this.AFKChamberSpawnPosition.y)
   }
 
   ; Flushes the toilet.
@@ -460,58 +420,4 @@ class GameUser {
   Drink() {
     ControlSend(this.SelfDrinkKeybind,, this.cfg.process.windowTitle)
   }
-
-  ; Focuses the searchbar, queries for a specific bed name, searches the screen's pixels
-  ; to find the beds, lastly focuses the found beds.
-  ; SearchBedsAndAutoSelect(text) {
-  ;   this.SearchBeds(text)
-  ;   Sleep this.cfg.smediumWait
-  ;   windowWidth := 0
-  ;   windowHeight := 0
-  ;   ; Get dimensions of the window
-  ;   WinGetPos ,, &windowWidth, &windowHeight, this.cfg.windowTitle
-
-  ;   ; Scan for pixel color of available beds with query active
-  ;   x := 0
-  ;   y := 0
-  ;   ; Search the entire window for bed color
-  ;   ; Added a little padding because beds should be more in the center of the screen *(optimization)
-  ;   widthPadding := (windowWidth / 5)
-  ;   heightPadding := (windowWidth / 5)
-  ;   ; If unable to locate either the normal bed icon or grayed bed icon, report and error.
-  ;   try {
-  ;     if (
-  ;       !ImageSearch(&x, &y, 100, 100, windowWidth, windowHeight, "*50 normal_bed_icon_v3.png") && 
-  ;       !ImageSearch(&x, &y, 100, 100, windowWidth, windowHeight, "*30 gray_bed_icon_v3.png")
-  ;     ) {
-  ;       MsgBox "Was unable to locate a bed for selection.", "Error"
-  ;     }
-  ;   }
-  ;   catch as e {
-  ;     MsgBox "Image for automatic bed detection failed to load.", "Error"
-  ;   }
-
-  ;   ; if (!PixelSearch(&x, &y, 100, 100, windowWidth - widthPadding, windowHeight - heightPadding, this.cfg.bedSearchColor, 0)) {
-  ;   ;   MsgBox "Was unable to located a bed for selection.", "Error"
-  ;   ; }
-  ;   ; Select bed
-  ;   Click x, y
-  ; }
-
-  ; SearchBedsAndSelectAtDeathMarker() {
-  ;    this.SearchBeds(text)
-  ;   Sleep this.cfg.smediumWait
-  ;   windowWidth := 0
-  ;   windowHeight := 0
-  ;   ; Get dimensions of the window
-  ;   WinGetPos ,, &windowWidth, &windowHeight, this.cfg.windowTitle
-
-  ;   ; Scan for pixel color of available beds with query active
-  ;   x := 0
-  ;   y := 0
-  ;   ; Search the entire window for bed color
-  ;   ; Added a little padding because beds should be more in the center of the screen *(optimization)
-  ;   widthPadding := (windowWidth / 5)
-  ;   heightPadding := (windowWidth / 5)
-  ; }
 }

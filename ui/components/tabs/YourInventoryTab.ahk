@@ -20,8 +20,6 @@ class YourInventoryTab {
     this.flushToilet := CoordinateInput(myGui, "Flush Toilet", user.FlushToiletPosition)
     this.spawnSearchbar := CoordinateInput(myGui, "Spawn Search Bar", user.SpawnSearchbarPosition)
     this.spawnBtn := CoordinateInput(myGui, "Spawn Button", user.SpawnButtonPosition)
-    this.meatFarmBeds := CoordinateInput(myGui, "Meat Farm Beds", user.MeatFarmSpawnPosition)
-
     this.spawnRegion := RegionInput(myGui, "Spawn Screen's `"Region`" text.", user.SpawnRegionTextRegion)
     
     saveSelfBtn := MyGui.AddButton("XS y+m w80","Save")
@@ -40,8 +38,6 @@ class YourInventoryTab {
     user.FlushToiletPosition := this.flushToilet.GetPoint()
     user.SpawnSearchbarPosition := this.spawnSearchbar.GetPoint()
     user.SpawnButtonPosition := this.spawnBtn.GetPoint()
-    user.MeatFarmSpawnPosition := this.meatFarmBeds.GetPoint()
-
     user.SpawnRegionTextRegion := this.spawnRegion.GetRegion()
   }
 }
