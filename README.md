@@ -134,7 +134,7 @@ Produce slot caps of fertilizer by using a irrigated toilet. Character must be r
 
 <a name="autoFish"></a>
 ### Auto Fish 🎣
-
+![auto-fish](https://github.com/Chase-William/ASA-Automation/assets/46757278/dc28bb5b-bbe2-4488-8919-666a84bd14f1)
 Automatically detects fishing prompts and fulfills them.
 
 Goto <a href="#autoFishMeta">here</a> to read about how Auto Fishing works.
@@ -200,6 +200,20 @@ Functions that can interrupt other functions or fail to execute if an uninterrup
 
 <a name="autoFishMeta"></a>
 ### Auto Fish *(How it works)*
+Two approaches were taken developing the auto fishing solution. The first, was using the `ImageSearch &OutputVarX, &OutputVarY, X1, Y1, X2, Y2, ImageFile` function to search for letters within a generalized screen space. Below are the images to be matched with:
+
+![2560_1440_W_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/d4fc50c5-aba2-417d-bab3-1947a06532e0)
+![2560_1440_A_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/95d12d13-7a7b-425a-a006-e9b234fd87e8)
+![2560_1440_E_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/93d2d4f5-129d-4f04-84b5-7c611b112d01)
+![2560_1440_X_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/cb21bdaf-747e-4ad4-8369-340e599e4edc)
+
+They were emaciated as to reduce the extra white space needed to match against because ARK's prompt text is near pure white in the center of it's letters and lesser so closer to the edges. Therefore, matches were to be amde with the near pure white center of prompt text. However, this approach led to heavy CPU usage and to the point it made my custom PC stutter. To provide an analogy, my computer was looking for several needles in a hay stack every second... Moreover, it didn't work, but fret not, I had another card up my sleeve.
+
+Approach #2, the basis of this idea for text recognition came from my days working on the [Tribe Logger](https://github.com/Chase-William#tribe-logger) bot. In that application I used [Tesseract](https://github.com/tesseract-ocr/tesseract), an open source Optical Character Recognition *(OCR)* library for pulling text from images. It is then, I had the thought of how one *should* be able to discriminate between characters as shown below:
+
+![Letter Sequence](https://github.com/Chase-William/ASA-Automation/assets/46757278/f8cec99a-fe0e-4ec1-957d-5d22f7c7a28a)
+
+This diagram describes the sequence characters are check in, and the locations that are checked in each iteration. Each red dot is a point checked during that iteration through the entire set of characters. In order for a given letter to be determined preset, each point check must return true *(AND gates all the way)*. After a character is found, a virtual key is sent to simulate user input and the entire process starts again at the specified `SetTimer` interval.
 
 ## Developer Notes
 
