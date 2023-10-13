@@ -197,6 +197,42 @@ Functions that can interrupt other functions or fail to execute if an uninterrup
 
 <a name="autoConsumptionMeta"></a>
 ### Auto Consumption *(How it works)*
+In short, auto consumption functions based on the presence of the low health, food, and water mask. Below are samples of low health with different backgrounds that can be used to calculate ARK's mask low stat mask.
+
+![health3](https://github.com/Chase-William/ASA-Automation/assets/46757278/02ffec8d-c8a3-46bd-9cd2-0393b765b6f5)
+![health2](https://github.com/Chase-William/ASA-Automation/assets/46757278/3fb51732-d3f4-4251-bead-69fea13b43c0)
+![health](https://github.com/Chase-William/ASA-Automation/assets/46757278/6e8a3878-5153-4a22-8847-f70a3ce960c3)
+
+We cannot simply sample the color of a pixel to know if we have low health without calculating/checking the mask because of the transparency. Therefore, think of the mask as a pattern between the RGB *(red, green, blue)* channels that make up every pixel. The pixel can be any color, but a certain pattern will always exist between those channels, and if it doesn't, the characters stat is not low *(atleast not low enough to reach that pixel)*.
+
+To calculate the mask, first acquire the color of a pixel with the mask. In my calculations, I found the white background low health to have the color of `0x43CAED`. Taking the hex representation and breaking it down into it's individual RGB components yields:
+
+```
+Red Hex: 43
+Green Hex: CA
+Red Hex: ED
+```
+
+To start finding the mask, calculate the difference in color value between each color component like so:
+
+```
+*Math is all in Hex*
+CA - 43 = 16, difference between green and red
+ED - CA = 7, difference between blue and green
+ED - 43 = 1D, difference between blue and red
+```
+
+A more visual illustration of what we just did:
+
+![Frame 14](https://github.com/Chase-William/ASA-Automation/assets/46757278/cfa7e582-87cd-4d28-b58a-3ee0213fff15)
+
+
+
+
+CDE3EA - white wall
+red, green diff = 16 -> 22
+green, blue diff = 7 -> 7
+red, blue diff = 1D -> 29
 
 <a name="autoFishMeta"></a>
 ### Auto Fish *(How it works)*
