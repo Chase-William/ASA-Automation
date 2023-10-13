@@ -226,13 +226,11 @@ A more visual illustration of what we just did:
 
 ![Frame 14](https://github.com/Chase-William/ASA-Automation/assets/46757278/cfa7e582-87cd-4d28-b58a-3ee0213fff15)
 
+Furthermore, combining the channels reveals our calculated mask value isn't far off.
 
+![Frame 15](https://github.com/Chase-William/ASA-Automation/assets/46757278/cfc2ffac-e8e6-4d15-b9d3-c9b4573afcaf)
 
-
-CDE3EA - white wall
-red, green diff = 16 -> 22
-green, blue diff = 7 -> 7
-red, blue diff = 1D -> 29
+All that is left is too calculate the mask a few more times sampling different backgrounds before averaging them. Once that is done, provide compare the mask value found at runtime with the pre-determined with a desired level of variance and you're done.
 
 <a name="autoFishMeta"></a>
 ### Auto Fish *(How it works)*
@@ -250,66 +248,6 @@ Approach #2, the basis of this idea for text recognition came from my days worki
 ![Letter Sequence](https://github.com/Chase-William/ASA-Automation/assets/46757278/f8cec99a-fe0e-4ec1-957d-5d22f7c7a28a)
 
 This diagram describes the sequence characters are check in, and the locations that are checked in each iteration. Each red dot is a point checked during that iteration through the entire set of characters. In order for a given letter to be determined preset, each point check must return true *(AND gates all the way)*. After a character is found, a virtual key is sent to simulate user input and the entire process starts again at the specified `SetTimer` interval.
-
-## Developer Notes
-
-A function ending in `Safe` means it has built in mechanics to ensure the desired state is reached before returning.
-
-#### Process Stuff
-
-```
------ Health Had
-
-43-CA-ED - white wall
-red, green diff = 87 (hex) -> (decimal) 135
-green, blue diff = 23 -> 35
-red, blue diff = AA -> 170
-
-00-83-A6 - metal structure
-
-red, green diff = 83 -> 131
-green, blue diff = 23 -> 35
-red, blue diff = A6 -> 166
-
-00-7F-9F - fridge pale
-
-red, green diff = 7F -> 127
-green, blue diff = 20 -> 32
-red, blue diff = 9F -> 159
-
-average red,green diff = 131
-average green, blue diff = 34
-average red, blue diff = 165
-
-Health Had Image Mask: 131, 34, 165
-
------- Health Lost
-
-CDE3EA - white wall
-red, green diff = 16 -> 22
-green, blue diff = 7 -> 7
-red, blue diff = 1D -> 29
-
-33-50-56 - metal structure
-red, green diff = 1D -> 29
-green, blue diff = 6 -> 6
-red, blue diff = 23 -> 35
-
-21-3B-39 - fridge pale
-red, green diff = 1A -> 26
-green, blue diff = 2 -> 2
-red, blue diff = 18 -> 24
-
-Health Lost Image Mask: 25, 5, 29
-
-Results:
-
-Health Had Image Mask: 131, 34, 165 == More opaque
-
-Health Lost Image Mask: 25, 5, 29 == More transparent
-```
-
-
 
 ## OMITTED FROM GENERAL RELEASE
 
