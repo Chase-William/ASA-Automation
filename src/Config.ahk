@@ -13,6 +13,7 @@ COLOR_SECTION := "color"
 REGION_SECTION := "region"
 TOGGLE_SECTION := "toggle"
 RANDOM_SECTION := "random"
+CROSSHAIR_SECTION := "crosshair"
 
 PROCESS_NAME_CONFIG_KEY := "procName"
 WINDOW_TITLE_CONFIG_KEY := "windowTitle"
@@ -430,6 +431,14 @@ class Config {
   }
   static SetRandom(key, value) {
     IniWrite(value, Config.ConfigFilePath, RANDOM_SECTION, key)
+  }
+
+  ; Functions for the "crosshair" section
+  static GetCrosshair(key) {
+    return IniRead(Config.ConfigFilePath, CROSSHAIR_SECTION, key)
+  }
+  static SetCrosshair(key, value) {
+    IniWrite(value, Config.ConfigFilePath, CROSSHAIR_SECTION, key)
   }
 
   static Get(key, section) {

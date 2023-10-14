@@ -68,11 +68,23 @@ class HotkeyTab {
     otherDropAllFilterCheckbox := myGui.AddCheckbox("x+m Checked" this.controller.drop.UseOtherDropAllFilter, "")
     otherDropAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.drop.UseOtherDropAllFilter := sender.Value)
  
-    ToggleControl(myGui, "Auto Brew", (*) => this.controller.consume.AutoBrewToggle(), "Section XS")
-    ToggleControl(myGui, "Auto Eat", (*) => this.controller.consume.AutoEatToggle(), "x+m")
-    ToggleControl(myGui, "Auto Drink", (*) => this.controller.consume.AutoDrinkToggle(), "x+m")
-    ToggleControl(myGui, "Auto Fish", (*) => this.controller.fishing.AutoFishToggle(), "Section XS")
-    ToggleControl(myGui, "Auto Fert Farm", (*) => this.controller.fertFarm.AutoFertFarm(), "x+m")
+    ToggleControl(myGui, "Auto Brew", false, (*) => this.controller.consume.AutoBrewToggle(), "Section XS")
+    ToggleControl(myGui, "Auto Eat", false, (*) => this.controller.consume.AutoEatToggle(), "x+m")
+    ToggleControl(myGui, "Auto Drink", false, (*) => this.controller.consume.AutoDrinkToggle(), "x+m")
+    ToggleControl(myGui, "Auto Fish", false, (*) => this.controller.fishing.AutoFishToggle(), "Section XS")
+    ToggleControl(myGui, "Auto Fert Farm", false, (*) => this.controller.fertFarm.AutoFertFarm(), "x+m")
+
+    toggleCrosshair := ToggleControl(
+      myGui, 
+      "Custom Crosshair",
+      this.controller.crosshair.IsVisible,
+      (self, sender, info) => (sender.Value ? this.controller.crosshair.Show.bind(this.controller.crosshair) : this.controller.crosshair.Hide.bind(this.controller.crosshair))(), 
+      "XS")
+
+    this.controller.crosshair.OnEvent(CROSSHAIR_VISIBILITY_CHANGED, (*) => toggleCrosshair.CheckBox.Value := this.controller.crosshair.IsVisible)
+
+    crosshairSettingsBtn := myGui.AddButton("x+m", "Crosshair Settings")
+    crosshairSettingsBtn.OnEvent("Click", (*) => this.controller.crosshair.ShowSettings())
   }
 
   AutoClickKeySetBtn_Clicked(sender, info) {

@@ -49,10 +49,10 @@ makeOverlay(controller) {
   ; }
 }
 
-makeGui(controller) {
+makeGui(app) {
+  controller := app.controller
   windowTitle := LIL_XD_HELPER_TOOL_WINDOW_TITLE
-
-  TraySetIcon("assets/images/icon.png")
+  TraySetIcon(APP_ICON)
 
   width := "w" WINDOW_WIDTH
   height := "h" WINDOW_HEIGHT

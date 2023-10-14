@@ -8,6 +8,7 @@
 #include "MovementController.ahk"
 #include "FertFarmController.ahk"
 #include "DropAllController.ahk"
+#include "CustomCrosshairController.ahk"
 #include "../structures/Event.ahk"
 
 AUTO_CLICK_HOTKEY_CONFIG_KEY := "autoClick"
@@ -25,10 +26,7 @@ AUTO_EAT_STATE_CHANGED := "AutoEat"
 AUTO_DRINK_STATE_CHANGED := "AutoDrink"
 
 class MiddlewareController {
-  __New(
-  cfg,
-  user
-  ) {
+  __New(cfg, user) {
     ; Set instance variables
     this.cfg := cfg
     this.user := user
@@ -40,6 +38,7 @@ class MiddlewareController {
     this.transfer := TransferController(cfg, user)
     this.drop := DropAllController(cfg, user)
     this.movement := MovementController(cfg, user)
+    this.crosshair := CustomCrosshairController()
 
     ; autoclicker
     this.m_autoClickHotkey := LilxDHotkey(AUTO_CLICK_HOTKEY_CONFIG_KEY, this.AutoClickHotkey_Clicked.bind(this))
