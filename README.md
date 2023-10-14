@@ -1,3 +1,6 @@
+## How To Run
+To run this program, double click the `run.ahk` file.
+
 ## Function Index
 
 - <a href="#autoClicker">Auto Clicker</a>
