@@ -29,15 +29,15 @@ class YourInventoryTab {
   ; Event Handler for save button clicked
   SaveButton_OnClick(sender, info) {
     ; Save to user object which updates .ini
-    user.SelfInventorySearchbarPosition := this.searchBar.GetPoint()
-    user.SelfDropAllPosition := this.dropAll.GetPoint()
-    user.SelfFirstSlotPosition := this.firstSlot.GetPoint()
-    user.SelfTransferAllPosition := this.transferAll.GetPoint()
-    user.SplitStacksPosition := this.splitStack.GetPoint()
-    user.SplitAllPosition := this.splitAll.GetPoint()
-    user.FlushToiletPosition := this.flushToilet.GetPoint()
-    user.SpawnSearchbarPosition := this.spawnSearchbar.GetPoint()
-    user.SpawnButtonPosition := this.spawnBtn.GetPoint()
-    user.SpawnRegionTextRegion := this.spawnRegion.GetRegion()
+    this.user.SelfInventorySearchbarPosition := this.searchBar.GetPoint()
+    this.user.SelfDropAllPosition := this.dropAll.GetPoint()
+    this.user.SelfFirstSlotPosition := this.firstSlot.GetPoint()
+    this.user.SelfTransferAllPosition := this.transferAll.GetPoint()
+    this.user.SplitStacksPosition := this.splitStack.GetPoint()
+    this.user.SplitAllPosition := this.splitAll.GetPoint()
+    this.user.FlushToiletPosition := this.flushToilet.GetPoint()
+    this.user.SpawnSearchbarPosition := this.spawnSearchbar.GetPoint()
+    this.user.SpawnButtonPosition := this.spawnBtn.GetPoint()
+    this.user.SpawnRegionTextRegion := this.spawnRegion.GetRegion()
   }
 }

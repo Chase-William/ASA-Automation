@@ -15,8 +15,8 @@ class FertFarmController {
   }
 
   AutoFertFarm() {
-    WinActivate(this.cfg.process.windowTitle)
     if this.IsAutoFertFarmOn := !this.IsAutoFertFarmOn {
+      WinActivate(this.cfg.process.windowTitle)
       SetTimer(this.fertCallback, -1000)
     }
   } 

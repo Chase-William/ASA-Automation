@@ -157,9 +157,7 @@ class MiddlewareController {
   ; 8. Self Drop All
   ; 9. Other Drop All
   CanExecute() {
-    if (this.paste.IsPasteBotOn ||
-        this.suicide.IsSuicideFarmOn ||
-        this.fertFarm.IsAutoFertFarmOn ||
+    if (this.fertFarm.IsAutoFertFarmOn ||
         this.transfer.IsTransferExecuting ||
         this.drop.IsDropAllExecuting
     ) {

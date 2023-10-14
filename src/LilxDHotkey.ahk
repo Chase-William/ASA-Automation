@@ -27,10 +27,10 @@ class LilxDHotkey {
     }
     ; Should only be called from within this class
     set {
-      ; if (StrLen(value) == 0) {
-      ;   this.m_key := ""
-      ;   return
-      ; }
+      if (StrLen(value) == 0) {
+        this.m_key := ""
+        return
+      }
       dataArray := StrSplit(value, ["#", "!", "^", "+", "&", "<", ">", "<^>!", "*", "~", "$", "UP"],)
       key := dataArray[dataArray.Length]
       ; MsgBox "Test", key
@@ -38,7 +38,13 @@ class LilxDHotkey {
     }
   }
 
+  UnregisterHotkey() {
+    if (StrLen(this.HotkeyStr) > 0)
+      Hotkey this.HotkeyStr,, "Off"
+  }
+
   RegisterHotkey() {
-    Hotkey(this.HotkeyStr, this.m_actionCallback)
+    if (StrLen(this.HotkeyStr) > 0)
+      Hotkey(this.HotkeyStr, this.m_actionCallback)
   }
 }

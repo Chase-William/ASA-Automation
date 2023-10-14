@@ -3,7 +3,6 @@
 #include "structures/Point.ahk"
 #include "structures/Region.ahk"
 
-CONFIG_FILE := "config.ini"
 PROCESS_SECTION := "process"
 DELAY_SECTION := "delay"
 FILTER_SECTION := "filter"
@@ -49,14 +48,38 @@ OTHER_DROP_ALL_STR_FIELD_NAME := "m_otherDropAll"
 SPAWN_SCREEN_BED_CONFIG_KEY := "spawnScreenBedColor"
 STANDARD_UI_TEXT_COLOR_CONFIG_KEY := "standardUITextColor"
 
+; Gets the config needed for the current user's display size
+; Return, valid filePath or empty string as user display size not supported
+GetRequiredConfigFilePath() {
+  options := Array()
+  Loop Files "*.ini", "R" {
+    ; Do not include the config.ini in the root directory
+    if (StrLen(A_LoopFileDir) > 0) {
+      sizeArray := StrSplit(StrSplit(A_LoopFileDir, "\")[2], "x")
+      if (sizeArray[1] == A_ScreenWidth && sizeArray[2] == A_ScreenHeight) {
+        return A_LoopFilePath
+      }
+    }
+  }
+
+  return ""
+}
 
 class Config {
-  __New() {
+  __New(configFilePath) {
+    Config.m_configFilePath := configFilePath
     this.delay := Config.Delay()
     this.filter := Config.Filter()
     this.process := Config.Process()
     this.color := Config.Color()
     ;this.region := Config.Region()
+  }
+
+  static m_configFilePath := ""
+
+  static ConfigFilePath {
+    get => this.m_configFilePath
+    set => this.m_configFilePath := value
   }
 
   class Color {
@@ -331,86 +354,86 @@ class Config {
 
   ; Functions for the "process" section
   static GetProcess(key) {
-    return IniRead(CONFIG_FILE, PROCESS_SECTION, key) 
+    return IniRead(Config.ConfigFilePath, PROCESS_SECTION, key) 
   }
   static SetProcess(key, value) {
-    IniWrite(value, CONFIG_FILE, PROCESS_SECTION, key)
+    IniWrite(value, Config.ConfigFilePath, PROCESS_SECTION, key)
   }
 
   ; Functions for the "delay" section
   static GetDelay(key) {
-    return IniRead(CONFIG_FILE, DELAY_SECTION, key) 
+    return IniRead(Config.ConfigFilePath, DELAY_SECTION, key) 
   }
   static SetDelay(key, value) {
-    IniWrite(value, CONFIG_FILE, DELAY_SECTION, key)
+    IniWrite(value, Config.ConfigFilePath, DELAY_SECTION, key)
   }
 
   ; Functions for the "filter" section
   static GetFilter(key) {
-    return IniRead(CONFIG_FILE, FILTER_SECTION, key) 
+    return IniRead(Config.ConfigFilePath, FILTER_SECTION, key) 
   }
   static SetFilter(key, value) {
-    IniWrite(value, CONFIG_FILE, FILTER_SECTION, key)
+    IniWrite(value, Config.ConfigFilePath, FILTER_SECTION, key)
   }
 
   ; Functions for the "position" section
   static GetPosition(key) {
-    return Point.From(IniRead(CONFIG_FILE, POSITION_SECTION, key))
+    return Point.From(IniRead(Config.ConfigFilePath, POSITION_SECTION, key))
   }
   static SetPosition(key, value) {
-    IniWrite(value.ToString(), CONFIG_FILE, POSITION_SECTION, key)
+    IniWrite(value.ToString(), Config.ConfigFilePath, POSITION_SECTION, key)
   }
 
   ; Functions for the "keybind" section
   static GetKeybind(key) {
-    return IniRead(CONFIG_FILE, KEYBIND_SECTION, key)
+    return IniRead(Config.ConfigFilePath, KEYBIND_SECTION, key)
   }
   static SetKeybind(key, value) {
-    IniWrite(value, CONFIG_FILE, KEYBIND_SECTION, key)
+    IniWrite(value, Config.ConfigFilePath, KEYBIND_SECTION, key)
   }
 
   ; Functions for the "hotkey" section
   static GetHotkey(key) {
-    return IniRead(CONFIG_FILE, HOTKEY_SECTION, key)
+    return IniRead(Config.ConfigFilePath, HOTKEY_SECTION, key)
   }
   static SetHotkey(key, value) {
-    IniWrite(value, CONFIG_FILE, HOTKEY_SECTION, key)
+    IniWrite(value, Config.ConfigFilePath, HOTKEY_SECTION, key)
   }
 
   ; Functions for the "color" section
   static GetColor(key) {
-    return IniRead(CONFIG_FILE, COLOR_SECTION, key)
+    return IniRead(Config.ConfigFilePath, COLOR_SECTION, key)
   }
   static SetColor(key, value) {
-    IniWrite(value, CONFIG_FILE, COLOR_SECTION, key)
+    IniWrite(value, Config.ConfigFilePath, COLOR_SECTION, key)
   } 
 
   ; Functions for the "region" section
   static GetRegion(key) {
-    return Region.From(IniRead(CONFIG_FILE, REGION_SECTION, key))
+    return Region.From(IniRead(Config.ConfigFilePath, REGION_SECTION, key))
   }
   static SetRegion(key, value) {
-    IniWrite(value.ToString(), CONFIG_FILE, REGION_SECTION, key)
+    IniWrite(value.ToString(), Config.ConfigFilePath, REGION_SECTION, key)
   }
 
   ; Functions for the "toggle" section
   static GetToggle(key) {
-    return IniRead(CONFIG_FILE, TOGGLE_SECTION, key)
+    return IniRead(Config.ConfigFilePath, TOGGLE_SECTION, key)
   }
   static SetToggle(key, value) {
-    IniWrite(value, CONFIG_FILE, TOGGLE_SECTION, key)
+    IniWrite(value, Config.ConfigFilePath, TOGGLE_SECTION, key)
   }
 
   ; Functions for the "random" section
   static GetRandom(key) {
-    return IniRead(CONFIG_FILE, RANDOM_SECTION, key)
+    return IniRead(Config.ConfigFilePath, RANDOM_SECTION, key)
   }
   static SetRandom(key, value) {
-    IniWrite(value, CONFIG_FILE, RANDOM_SECTION, key)
+    IniWrite(value, Config.ConfigFilePath, RANDOM_SECTION, key)
   }
 
   static Get(key, section) {
-    return IniRead(CONFIG_FILE, section, key)
+    return IniRead(Config.ConfigFilePath, section, key)
   }
 
   ; Used as the getter for properties

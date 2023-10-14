@@ -104,6 +104,8 @@ makeGui(controller) {
   myGui.Show(width " " height)
 
   makeOverlay(controller)
+
+  return myGui
 }
   ; AddToolsTab(myGui, myTabs) {
   ;   ; Use "Toggles Tab"

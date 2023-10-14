@@ -35,12 +35,12 @@ class KeybindTab {
 
   ; Save keybinds
   SaveKeybindsBtn_OnClick(sender, info) {
-    controller.user.SelfInventoryToggleKeybind := this.selfInvent.Value
-    controller.user.OtherInventoryToggleKeybind := this.otherInvent.Value
-    controller.user.DefecateKeybind := this.defecate.Value
-    controller.user.SelfHealKeybind := this.heal.Value
-    controller.user.SelfEatKeybind := this.eat.Value
-    controller.user.SelfDrinkKeybind := this.drink.Value
+    this.controller.user.SelfInventoryToggleKeybind := this.selfInvent.Value
+    this.controller.user.OtherInventoryToggleKeybind := this.otherInvent.Value
+    this.controller.user.DefecateKeybind := this.defecate.Value
+    this.controller.user.SelfHealKeybind := this.heal.Value
+    this.controller.user.SelfEatKeybind := this.eat.Value
+    this.controller.user.SelfDrinkKeybind := this.drink.Value
     this.saveBtn.Visible := false
   }
 

@@ -30,7 +30,7 @@ class HotkeyControl {
 
   ; Perform the actual hotkey update with the OS
   SetBtn_OnClick(sender, info) {
-    Hotkey this.m_myHotkey.HotkeyStr,, "Off"
+    this.m_myHotkey.UnregisterHotkey()
     this.m_myHotkey.HotkeyStr := this.HotkeyStr
     this.m_myHotkey.RegisterHotkey()
     sender.Visible := false

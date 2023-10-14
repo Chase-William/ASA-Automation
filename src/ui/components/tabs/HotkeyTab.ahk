@@ -2,6 +2,7 @@
 
 #include "../HotkeyControl.ahk"
 #include "../ToggleControl.ahk"
+#include "../../../Util.ahk"
 
 class HotkeyTab {
   __New(myGui, controller) {
@@ -11,6 +12,10 @@ class HotkeyTab {
 
     onTop := myGui.AddCheckbox("x+m", "Always on Top?")
     onTop.OnEvent("Click", this.AlwaysOnTop_OnChecked.bind(this))
+
+    ; myGui.AddText(, "Resolution")
+    ; configOptions := GetConfigOptions()
+    ; configComboBox := myGui.AddComboBox(, configOptions)
 
     myGui.AddLink("x+m x" (WINDOW_WIDTH - 100), '<a href="https://github.com/Chase-William/ASA-Automation#function-index">Documentation</a>')
     
