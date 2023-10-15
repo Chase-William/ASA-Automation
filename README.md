@@ -1,4 +1,12 @@
-## How To Run
+## Why I Made This
+
+I have played Ark Survival Evolved for a long time and I have been on the receiving end of almost every cheat at some point in time short of being *wizarded - cheater force joins tribe and claims all as owner*. I have been dev wiped twice as collateral when playing in mega-tribe and lost two different Shadow Caves bases via meshing; once after successfully defending against a large tribe for several days only to be meshed before the next attack. If Ark players can't beat you legitimately, they will resort to cheating; a time proven tale.
+
+Cheating aside, I enjoy the game and it provides a medium for my friends and I to play together. I recall back to 2016 living on 10/10, an iceberg base, wishing I had an alt account to ride my ankylo so that I may individually farm metal with my quetzal. That was 7 years ago, and I still play Ark, but now, now I have the ability to do what I wished then.
+
+This program aims to provide myself and others the ability to do the things I wish I could have back in my younger days, to improve the quality of life in a game that often needs it. To address those who call this cheating, play the game longer, Youtube *chanceware ark* and you'll see the horrors Gaijin has most likely forced Studio Wildcard to permit. Youtube the tribe *TEA on ark*, see how tribes of players get unjustifiably banned, Youtube videos about Mek and capped Tek Suit duping in Ark. In a game that takes ridiculous effort and time where all can be lost overnight as you sleep to cheats previously mentioned, this quality of life application is not a problem.
+
+# How To Run
 To run this program, double click the `run.ahk` file.
 
 ## Function Index
