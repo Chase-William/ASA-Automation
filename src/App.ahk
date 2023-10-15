@@ -12,9 +12,9 @@ APP_ICON := "assets/images/icon.png"
 class App {
   __New(configFilePath := "") {
     if (configFilePath == "")
-      this.configFilePath := GetRequiredConfigFilePath()
+      configFilePath := GetRequiredConfigFilePath()
 
-    this.cfg := Config(this.configFilePath)
+    this.cfg := Config(configFilePath)
     this.user := GameUser(this.cfg)
     this.m_controller := MiddlewareController(this.cfg, this.user)
     this.myGui := makeGui(this)
