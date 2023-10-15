@@ -67,13 +67,12 @@ GetRequiredConfigFilePath() {
 }
 
 class Config {
-  __New(configFilePath) {
+  __New(configFilePath, delay?, filter?, process?, color?) {
     Config.m_configFilePath := configFilePath
-    this.delay := Config.Delay()
-    this.filter := Config.Filter()
-    this.process := Config.Process()
-    this.color := Config.Color()
-    ;this.region := Config.Region()
+    this.delay := IsSet(delay) ? delay : Config.Delay()
+    this.filter := IsSet(filter) ? filter : Config.Filter()
+    this.process := IsSet(process) ? process : Config.Process()
+    this.color := IsSet(color) ? color : Config.Color()
   }
 
   static m_configFilePath := ""
