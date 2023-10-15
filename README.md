@@ -1,7 +1,25 @@
-## How To Run
+<br/>
+<br/>
+
+<p align="center">
+  <img src="assets/images/icon.png" width="400px"/>
+</p>
+
+<br/>
+<br/>
+
+## Why I Made `ASA-Automation`
+
+I have played Ark Survival Evolved for a long time and I have been on the receiving end of almost every cheat at some point in time short of being *wizarded - cheater force joins tribe and claims all as owner*. I have been dev wiped twice as collateral when playing in mega-tribe and lost two different Shadow Caves bases via meshing; once after successfully defending against a large tribe for several days only to be meshed before the next attack. If Ark players can't beat you legitimately, they will resort to cheating; a time proven tale.
+
+Cheating aside, I enjoy the game and it provides a medium for my friends and I to play together. I recall back to 2016 living on 10/10, an iceberg base, wishing I had an alt account to ride my ankylo so that I may individually farm metal with my quetzal. That was 7 years ago, and I still play Ark, but now, now I have the ability to do what I wished then.
+
+This program aims to provide myself and others the ability to do the things I wish I could have back in my younger days, to improve the quality of life in a game that often needs it. To address those who call this cheating, play the game longer, Youtube *chanceware ark* and you'll see the horrors Gaijin has most likely forced Studio Wildcard to permit. Youtube the tribe *TEA on ark*, see how tribes of players get unjustifiably banned, Youtube videos about Mek and capped Tek Suit duping in Ark. In a game that takes ridiculous effort and time where all can be lost overnight as you sleep to cheats, this quality of life application is not the problem.
+
+# How To Run
 To run this program, double click the `run.ahk` file.
 
-## Function Index
+## Functions
 
 - <a href="#autoClicker">Auto Clicker</a>
 - <a href="#autoMetalFarm">Auto Metal Farm</a>
@@ -15,6 +33,11 @@ To run this program, double click the `run.ahk` file.
 ## Supported Resolutions 🖥️
 - 2560x1440, Fullscreen or Windowed Fullscreen
 - 1920x1080, Fullscreen or Windowed Fullscreen
+
+### Other Requirements
+
+- UI Slot Scale must be 100%.
+- Gamma must be default value; type: `gamma` in ARK's cmd prompt to set as default.
 
 ## Functions 📜
 Listed below are all the functions or scripts supported in this application.
@@ -220,7 +243,7 @@ In short, auto consumption functions based on the presence of the low health, fo
 ![health2](https://github.com/Chase-William/ASA-Automation/assets/46757278/3fb51732-d3f4-4251-bead-69fea13b43c0)
 ![health](https://github.com/Chase-William/ASA-Automation/assets/46757278/6e8a3878-5153-4a22-8847-f70a3ce960c3)
 
-We cannot simply sample the color of a pixel to know if we have low health without calculating/checking the mask because of the transparency. Therefore, think of the mask as a pattern between the RGB *(red, green, blue)* channels that make up every pixel. The pixel can be any color, but a certain pattern will always exist between those channels, and if it doesn't, the characters stat is not low *(atleast not low enough to reach that pixel)*.
+We cannot simply sample the color of a pixel to know if we have low health without calculating/checking the mask because of transparency. Therefore, think of the mask as a pattern between the RGB *(red, green, blue)* channels that make up every pixel. The pixel can be any color, but a certain pattern will always exist between those channels, and if it doesn't, the characters health, food, or water stat is not low.
 
 To calculate the mask, first acquire the color of a pixel with the mask. In my calculations, I found the white background low health to have the color of `0x43CAED`. Taking the hex representation and breaking it down into it's individual RGB components yields:
 
@@ -243,33 +266,25 @@ A more visual illustration of what we just did:
 
 ![Frame 14](https://github.com/Chase-William/ASA-Automation/assets/46757278/cfa7e582-87cd-4d28-b58a-3ee0213fff15)
 
-Furthermore, combining the channels reveals our calculated mask value isn't far off.
+Moreover, combining the channels reveals our calculated mask value isn't far off.
 
 ![Frame 15](https://github.com/Chase-William/ASA-Automation/assets/46757278/cfc2ffac-e8e6-4d15-b9d3-c9b4573afcaf)
 
-All that is left is too calculate the mask a few more times sampling different backgrounds before averaging them. Once that is done, provide compare the mask value found at runtime with the pre-determined with a desired level of variance and you're done.
+All that is left is to calculate the mask a few more times sampling different backgrounds before averaging them. Once that is done, compare the mask value found at runtime with the pre-determined including a level of permitted variance and you're done.
 
 <a name="autoFishMeta"></a>
 ### Auto Fish *(How it works)*
-Two approaches were taken developing the auto fishing solution. The first, was using the `ImageSearch &OutputVarX, &OutputVarY, X1, Y1, X2, Y2, ImageFile` function to search for letters within a generalized screen space. Below are the images to be matched with:
+Two separate approaches were used in developing the auto fishing solution. The first, was using the `ImageSearch &OutputVarX, &OutputVarY, X1, Y1, X2, Y2, ImageFile` function to search for letters within a generalized screen space. Below are a few of the images that were to be matched with:
 
 ![2560_1440_W_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/d4fc50c5-aba2-417d-bab3-1947a06532e0)
 ![2560_1440_A_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/95d12d13-7a7b-425a-a006-e9b234fd87e8)
 ![2560_1440_E_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/93d2d4f5-129d-4f04-84b5-7c611b112d01)
 ![2560_1440_X_EDIT](https://github.com/Chase-William/ASA-Automation/assets/46757278/cb21bdaf-747e-4ad4-8369-340e599e4edc)
 
-They were emaciated as to reduce the extra white space needed to match against because ARK's prompt text is near pure white in the center of it's letters and lesser so closer to the edges. Therefore, matches were to be amde with the near pure white center of prompt text. However, this approach led to heavy CPU usage and to the point it made my custom PC stutter. To provide an analogy, my computer was looking for several needles in a hay stack every second... Moreover, it didn't work, but fret not, I had another card up my sleeve.
+They were emaciated as to reduce the extra white space needed to match against because ARK's prompt text is near pure white in the center of it's letters and lesser so closer to the edges. Therefore, matches were to be made with the near pure white center of prompt text. This approach led to heavy CPU usage and made my PC stutter. In short, my computer was looking for several needles in a hay stack every second. Even more so, it didn't work, but fret not, I had another card up my sleeve.
 
 Approach #2, the basis of this idea for text recognition came from my days working on the [Tribe Logger](https://github.com/Chase-William#tribe-logger) bot. In that application I used [Tesseract](https://github.com/tesseract-ocr/tesseract), an open source Optical Character Recognition *(OCR)* library for pulling text from images. It is then, I had the thought of how one *should* be able to discriminate between characters as shown below:
 
 ![Letter Sequence](https://github.com/Chase-William/ASA-Automation/assets/46757278/f8cec99a-fe0e-4ec1-957d-5d22f7c7a28a)
 
 This diagram describes the sequence characters are check in, and the locations that are checked in each iteration. Each red dot is a point checked during that iteration through the entire set of characters. In order for a given letter to be determined preset, each point check must return true *(AND gates all the way)*. After a character is found, a virtual key is sent to simulate user input and the entire process starts again at the specified `SetTimer` interval.
-
-## OMITTED FROM GENERAL RELEASE
-
-### Auto Self Meat Farm
-
-Produce meat by suiciding over campfires constantly.
-
-> Ensure Meat Farm Beds poisition is set to your beds to respawn at. I tried using image search and other options for automatically finding the beds after a query, but because of the large amount of iterations of this function; a fool proof approach was needed.
