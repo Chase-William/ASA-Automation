@@ -1,4 +1,11 @@
-## Why I Made This
+<p align="center">
+  <img src="assets/images/icon.png" width="400px"/>
+</p>
+
+<br/>
+<br/>
+
+## Why I Made `ASA-Automation`
 
 I have played Ark Survival Evolved for a long time and I have been on the receiving end of almost every cheat at some point in time short of being *wizarded - cheater force joins tribe and claims all as owner*. I have been dev wiped twice as collateral when playing in mega-tribe and lost two different Shadow Caves bases via meshing; once after successfully defending against a large tribe for several days only to be meshed before the next attack. If Ark players can't beat you legitimately, they will resort to cheating; a time proven tale.
 
@@ -9,7 +16,7 @@ This program aims to provide myself and others the ability to do the things I wi
 # How To Run
 To run this program, double click the `run.ahk` file.
 
-## Function Index
+## Functions
 
 - <a href="#autoClicker">Auto Clicker</a>
 - <a href="#autoMetalFarm">Auto Metal Farm</a>
