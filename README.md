@@ -16,6 +16,11 @@ To run this program, double click the `run.ahk` file.
 - 2560x1440, Fullscreen or Windowed Fullscreen
 - 1920x1080, Fullscreen or Windowed Fullscreen
 
+### Other Requirements
+
+- UI Slot Scale must be 100%.
+- Gamma must be default value; type: `gamma` in ARK's cmd prompt to set as default.
+
 ## Functions 📜
 Listed below are all the functions or scripts supported in this application.
 
