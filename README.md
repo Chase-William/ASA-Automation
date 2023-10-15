@@ -1,3 +1,6 @@
+<br/>
+<br/>
+
 <p align="center">
   <img src="assets/images/icon.png" width="400px"/>
 </p>
