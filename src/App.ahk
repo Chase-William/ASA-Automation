@@ -10,9 +10,9 @@ APP_ICON := "assets/images/icon.png"
 #include "ui/ui.ahk"
 
 class App {
-  __New() {
-    this.configFilePath := GetRequiredConfigFilePath()
-    ; MsgBox configFilePath, "Asd"
+  __New(configFilePath := "") {
+    if (configFilePath == "")
+      this.configFilePath := GetRequiredConfigFilePath()
 
     this.cfg := Config(this.configFilePath)
     this.user := GameUser(this.cfg)

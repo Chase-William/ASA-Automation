@@ -1,7 +1,8 @@
 #Requires AutoHotkey v2.0
 
 class KeybindTab {
-  __New(myGui, controller) {    
+  __New(myGui, controller) {
+    this.controller := controller
     onChangeClosure := this.Hotkey_OnChange.bind(this)
 
     myGui.AddText("w200 Section", "Toggle Inventory Key")
