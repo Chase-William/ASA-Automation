@@ -10,13 +10,10 @@ APP_ICON := "assets/images/icon.png"
 #include "ui/ui.ahk"
 
 class App {
-  __New(configFilePath := "") {
-    if (configFilePath == "")
-      configFilePath := GetRequiredConfigFilePath()
-
-    this.cfg := Config(configFilePath)
-    this.user := GameUser(this.cfg)
-    this.m_controller := MiddlewareController(this.cfg, this.user)
+  __New(cfg?, user?, controller?) {
+    this.cfg := IsSet(cfg) ? cfg : Config(GetRequiredConfigFilePath())
+    this.user := IsSet(user) ? user : GameUser(this.cfg)
+    this.m_controller := IsSet(controller) ? controller : MiddlewareController(this.cfg, this.user)
     this.myGui := makeGui(this)
   }
 

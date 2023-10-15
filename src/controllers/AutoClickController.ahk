@@ -1,12 +1,13 @@
 #Requires AutoHotkey v2.0
 
+#include "../structures/Observable.ahk"
+
 AUTO_CLICK_KEY_CONFIG_KEY := "autoClickKey"
 
 AUTO_CLICK_KEY_FIELD_NAME := "m_autoClickKey"
 
 class AutoClickController extends Observable {
   __New(cfg, user) { 
-    this.base.base.__New() 
     this.cfg := cfg
     this.user := user
     

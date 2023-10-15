@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#include "../structures/Observable.ahk"
+
 CROSSHAIR_SIZE_CONFIG_KEY := "size"
 CROSSHAIR_BACK_COLOR_CONFIG_KEY := "backColor"
 CROSSHAIR_ENABLED_CONFIG_KEY := "enabled"
@@ -12,7 +14,7 @@ CROSSHAIR_FILE_PATH_FIELD_NAME := "m_crosshairFilePath"
 
 CROSSHAIR_VISIBILITY_CHANGED := "CrosshairVisibilityChanged"
 
-class CustomCrosshairController Extends Observable {
+class CustomCrosshairController extends Observable {
   __New() {
     this.base.base.__New() 
     ; windowWidth := 100
