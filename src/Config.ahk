@@ -209,7 +209,7 @@ class Config {
     _5xlw {
       get {
         if (!IsSet(m_5xlw)) {
-          this.m_5xlw := Config.GetDelay(STONE_STR_CONFIG_KEY)
+          this.m_5xlw := Config.GetDelay(_5XLW_CONFIG_KEY)
         }
         return this.m_5xlw
       }
