@@ -34,13 +34,13 @@ class TransferController {
   GiveAll() {
     this.IsTransferExecuting := true
     this.user.ToggleOtherInventory()
-    Sleep this.cfg.delay.lw
+    Sleep this.cfg.delay.mw
     if (this.UseGiveAllFilter) {
       this.user.SearchSelfAndGiveAll(this.cfg.filter.GiveAllFilter)
     } else {
       this.user.GiveAll()
     }
-    Sleep this.cfg.delay.lw
+    Sleep this.cfg.delay.mw
     this.user.ToggleOtherInventory()
     this.IsTransferExecuting := false
   }
@@ -48,13 +48,13 @@ class TransferController {
   TakeAll() {
     this.IsTransferExecuting := true
     this.user.ToggleOtherInventory()
-    Sleep this.cfg.delay.lw
+    Sleep this.cfg.delay.mw
     if (this.UseTakeAllFilter) {
       this.user.SearchOtherAndTakeAll(this.cfg.filter.TakeAllFilter)
     } else {
       this.user.TakeAll()
     }
-    Sleep this.cfg.delay.lw
+    Sleep this.cfg.delay.mw
     this.user.ToggleOtherInventory()
     this.IsTransferExecuting := false
   }

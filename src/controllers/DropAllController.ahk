@@ -61,7 +61,7 @@ class DropAllController {
     this.IsDropAllExecuting := true
     this.user.ToggleOtherInventory()
     Sleep this.cfg.delay.mw
-    if (this.UseSelfDropAllFilter) {
+    if (this.UseOtherDropAllFilter) {
       this.user.SearchOtherAndDropAll(this.cfg.filter.OtherDropAllFilter)
     } else {
       this.user.OtherDropAll()

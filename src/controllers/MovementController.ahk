@@ -18,7 +18,6 @@ class MovementController {
   ; direction - left, foward, right, reverse
   ; duration - time in milliseconds
   Move(direction, duration) {
-    Sleep 2000
     ControlSend("{" direction " down}",, this.cfg.process.windowTitle)
     Sleep duration
     ControlSend("{" direction " up}",, this.cfg.process.windowTitle)
