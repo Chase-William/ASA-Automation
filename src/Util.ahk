@@ -22,3 +22,11 @@ HexToDecArray(hex) {
 
   return [red, green, blue]
 }
+
+; Returns a boolean indicating if a number was given and if it is above the min threshold
+IsValidNumber(text) {
+  if (!IsNumber(text) || text < 50) {
+    return false
+  }
+  return true
+}

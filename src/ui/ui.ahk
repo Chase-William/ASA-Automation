@@ -4,6 +4,7 @@
 #include "components/tabs/OtherInventoryTab.ahk"
 #include "components/tabs/YourInventoryTab.ahk"
 #include "components/tabs/HotkeyTab.ahk"
+#include "components/tabs/DelaysTab.ahk"
 
 LIL_XD_HELPER_TOOL_WINDOW_TITLE := "Lil xD's Helping Tools"
 
@@ -73,7 +74,8 @@ makeGui(app) {
     "Hotkeys",
     "In-Game Keybinds",
     "Your Invent Pos",
-    "Other's Invent Pos"
+    "Other's Invent Pos",
+    "Delays"
   ])
   ; Needed for some reason to prevent tabs for rendering vertically
   myTabs.UseTab()
@@ -99,6 +101,9 @@ makeGui(app) {
   ; Use "Other's Inventory Positions" tab
   myTabs.UseTab(4)
   OtherInventoryTab(myGui, controller)
+
+  myTabs.UseTab(5)
+  DelaysTab(myGui, controller)
 
   ; Present content
   myGui.Show(width " " height)
