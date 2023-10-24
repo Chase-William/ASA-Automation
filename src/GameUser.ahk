@@ -282,6 +282,7 @@ class GameUser {
   ClearSelfSearchbar(focus := true) {
     if (focus) {
       this.FocusSelfSearchbar()
+      Sleep this.cfg.delay.sw
     }
     this.ClearSearchbar()
   }
@@ -289,6 +290,7 @@ class GameUser {
   ClearOtherSearchbar(focus := true) {
     if (focus) {
       this.FocusOtherSearchbar()
+      Sleep this.cfg.delay.sw
     }
     this.ClearSearchbar()
   }
@@ -342,39 +344,39 @@ class GameUser {
 
   SearchOtherInventory(text) {
     this.FocusOtherSearchbar()
-    Sleep this.cfg.delay._2xsw
+    Sleep this.cfg.delay.sw
     ControlSendText text,, this.cfg.process.windowTitle
   }
 
   SearchSelfInventory(text) {
     this.FocusSelfSearchbar()
-    Sleep this.cfg.delay._2xsw
+    Sleep this.cfg.delay.sw
     ControlSendText text,, this.cfg.process.windowTitle
   }
 
   ; Automatically focuses the searchbarPos, queries and performs a take all.
   SearchOtherAndTakeAll(text) {
     this.SearchOtherInventory(text)
-    Sleep this.cfg.delay._2xsw
+    Sleep this.cfg.delay.sw
     this.TakeAll()
   }  
 
   SearchSelfAndDropAll(text) {
     this.SearchSelfInventory(text)
-    Sleep this.cfg.delay.mw
+    Sleep this.cfg.delay.sw
     this.SelfDropAll()
   }
 
   ; Automatically focues the searchbarPos, queries and performs a drop all.
   SearchOtherAndDropAll(text) {
     this.SearchOtherInventory(text)
-    Sleep this.cfg.delay.mw
+    Sleep this.cfg.delay.smw
     this.OtherDropAll()
   }
 
   SearchSelfAndGiveAll(text) {
     this.SearchSelfInventory(text)
-    Sleep this.cfg.delay._2xsw
+    Sleep this.cfg.delay.smw
     this.GiveAll()
   }
 

@@ -5,10 +5,16 @@ USE_OTHER_DROP_ALL_FILTER_CONFIG_KEY := "useOtherDropAllFilter"
 USE_AUTO_SELF_DROP_ALL_FILTER_CONFIG_KEY := "useSelfAutoDropWhenEncumbered"
 USE_AUTO_OTHER_DROP_ALL_FILTER_CONFIG_KEY := "useOtherAutoDropWhenEncumbered"
 
+SELF_DROP_ALL_STR_CONFIG_KEY := "selfDropAllFilter"
+OTHER_DROP_ALL_STR_CONFIG_KEY := "otherDropAllFilter"
+
 USE_SELF_DROP_ALL_FILTER_FIELD_NAME := "m_useOtherDropAllFilter"
 USE_OTHER_DROP_ALL_FILTER_FIELD_NAME := "m_useOtherDropAllFilter"
 USE_AUTO_SELF_DROP_ALL_FILTER_FIELD_NAME := "m_useSelfAutoDropWhenEncumbered"
 USE_AUTO_OTHER_DROP_ALL_FILTER_FIELD_NAME := "m_useOtherAutoDropWhenEncumbered"
+
+SELF_DROP_ALL_STR_FIELD_NAME := "m_selfDropAllFilter"
+OTHER_DROP_ALL_STR_FIELD_NAME := "m_otherDropAllFilter"
 
 class DropAllController {
   __New(cfg, user) {
@@ -33,26 +39,28 @@ class DropAllController {
     set => Config.SetMember(this, Config.SetToggle, USE_OTHER_DROP_ALL_FILTER_FIELD_NAME, USE_OTHER_DROP_ALL_FILTER_CONFIG_KEY, value)
   }
 
-  ; UseSelfAutoDropWhenEncumbered {
-  ;   get => Config.GetMember(this, Config.GetToggle, USE_AUTO_SELF_DROP_ALL_FILTER_FIELD_NAME, USE_AUTO_SELF_DROP_ALL_FILTER_CONFIG_KEY)
-  ;   set => Config.SetMember(this, Config.SetToggle, USE_AUTO_SELF_DROP_ALL_FILTER_FIELD_NAME, USE_AUTO_SELF_DROP_ALL_FILTER_CONFIG_KEY, value)
-  ; }
-
-  ; UseOtherAutoDropWhenEncumbered {
-  ;   get => Config.GetMember(this, Config.GetToggle, USE_AUTO_OTHER_DROP_ALL_FILTER_FIELD_NAME, USE_AUTO_OTHER_DROP_ALL_FILTER_CONFIG_KEY)
-  ;   set => Config.SetMember(this, Config.SetToggle, USE_AUTO_OTHER_DROP_ALL_FILTER_FIELD_NAME, USE_AUTO_OTHER_DROP_ALL_FILTER_CONFIG_KEY, value)
-  ; }
+  SelfDropAllFilter {
+    get => Config.GetMember(this, Config.GetFilter, SELF_DROP_ALL_STR_FIELD_NAME, SELF_DROP_ALL_STR_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetFilter, SELF_DROP_ALL_STR_FIELD_NAME, SELF_DROP_ALL_STR_CONFIG_KEY, value)
+  }
+  OtherDropAllFilter {
+    get => Config.GetMember(this, Config.GetFilter, OTHER_DROP_ALL_STR_FIELD_NAME, OTHER_DROP_ALL_STR_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetFilter, OTHER_DROP_ALL_STR_FIELD_NAME, OTHER_DROP_ALL_STR_CONFIG_KEY, value)
+  }
 
   SelfDropAll() {
     this.IsDropAllExecuting := true
     this.user.ToggleSelfInventory()
     Sleep this.cfg.delay.mw
     if (this.UseSelfDropAllFilter) {
-      this.user.SearchSelfAndDropAll(this.cfg.filter.SelfDropAllFilter)
+      For filter in this.SelfDropAllFilter {
+        this.user.SearchSelfAndDropAll(filter)
+        Sleep this.cfg.delay.mw
+      }      
     } else {
       this.user.SelfDropAll()
-    }
-    Sleep this.cfg.delay.mw
+      Sleep this.cfg.delay.mw
+    }    
     this.user.ToggleSelfInventory()
     this.IsDropAllExecuting := false
   }
@@ -62,11 +70,14 @@ class DropAllController {
     this.user.ToggleOtherInventory()
     Sleep this.cfg.delay.mw
     if (this.UseOtherDropAllFilter) {
-      this.user.SearchOtherAndDropAll(this.cfg.filter.OtherDropAllFilter)
+      For filter in this.OtherDropAllFilter {
+        this.user.SearchOtherAndDropAll(filter)
+        Sleep this.cfg.delay.mw
+      }
     } else {
       this.user.OtherDropAll()
-    }
-    Sleep this.cfg.delay.mw
+      Sleep this.cfg.delay.mw
+    }    
     this.user.ToggleOtherInventory()
     this.IsDropAllExecuting := false
   }

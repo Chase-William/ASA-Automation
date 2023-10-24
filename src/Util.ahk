@@ -30,3 +30,18 @@ IsValidNumber(text) {
   }
   return true
 }
+
+DeserializeToArray(str) {
+  return StrSplit(str, ",")
+}
+
+SerializeArray(arr) {
+  str := ""
+  for text in arr {
+    if (A_Index == arr.Length)
+      str := str text
+    else
+      str := str text ","
+  }
+  return str
+}

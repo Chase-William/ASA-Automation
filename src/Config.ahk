@@ -2,6 +2,7 @@
 
 #include "structures/Point.ahk"
 #include "structures/Region.ahk"
+#include "Util.ahk"
 
 PROCESS_SECTION := "process"
 DELAY_SECTION := "delay"
@@ -30,21 +31,9 @@ SW_CONFIG_KEY := "sw"
 XSW_CONFIG_KEY := "xsw"
 _2XSW_CONFIG_KEY := "2xsw"
 
+TRANSFER_ALL_COOLDOWN_CONFIG_KEY := "transferAllCooldown"
+TRANSFER_ALL_COOLDOWN_FIELD_NAME := "m_" TRANSFER_ALL_COOLDOWN_CONFIG_KEY
 AUTO_CLICK_INTERVAL_CONFIG_KEY := "autoClickInterval"
-
-STONE_STR_CONFIG_KEY := "stone"
-FLINT_STR_CONFIG_KEY := "flint"
-BERRY_STR_CONFIG_KEY := "berry"
-RAW_MEAT_STR_CONFIG_KEY := "rawMeat"
-GIVE_ALL_STR_CONFIG_KEY := "giveAll"
-TAKE_ALL_STR_CONFIG_KEY := "takeAll"
-SELF_DROP_ALL_STR_CONFIG_KEY := "selfDropAll"
-OTHER_DROP_ALL_STR_CONFIG_KEY := "otherDropAll"
-
-GIVE_ALL_STR_FIELD_NAME := "m_giveAll"
-TAKE_ALL_STR_FIELD_NAME := "m_takeAll"
-SELF_DROP_ALL_STR_FIELD_NAME := "m_selfDropAll"
-OTHER_DROP_ALL_STR_FIELD_NAME := "m_otherDropAll"
 
 SPAWN_SCREEN_BED_CONFIG_KEY := "spawnScreenBedColor"
 STANDARD_UI_TEXT_COLOR_CONFIG_KEY := "standardUITextColor"
@@ -139,70 +128,7 @@ class Config {
   }
 
   class Filter {
-    StoneStr {
-      get {
-        if (!IsSet(m_stone)) {
-          this.m_stone := Config.GetFilter(STONE_STR_CONFIG_KEY)
-        }
-        return this.m_stone
-      }
-      set {      
-        Config.SetFilter(STONE_STR_CONFIG_KEY, value)
-        this.m_stone := value
-      }
-    }
-    FlintStr {
-      get {
-        if (!IsSet(m_flint)) {
-          this.m_flint := Config.GetFilter(FLINT_STR_CONFIG_KEY)
-        }
-        return this.m_flint
-      }
-      set {      
-        Config.SetFilter(FLINT_STR_CONFIG_KEY, value)
-        this.m_flint := value
-      }
-    }
-    BerryStr {
-      get {
-        if (!IsSet(m_berry)) {
-          this.m_berry := Config.GetFilter(BERRY_STR_CONFIG_KEY)
-        }
-        return this.m_berry
-      }
-      set {      
-        Config.SetFilter(BERRY_STR_CONFIG_KEY, value)
-        this.m_berry := value
-      }
-    }
-    RawMeatStr {
-      get {
-        if (!IsSet(m_rawMeat)) {
-          this.m_rawMeat := Config.GetFilter(RAW_MEAT_STR_CONFIG_KEY)
-        }
-        return this.m_rawMeat
-      }
-      set {      
-        Config.SetFilter(RAW_MEAT_STR_CONFIG_KEY, value)
-        this.m_rawMeat := value
-      }
-    }
-    GiveAllFilter {
-      get => Config.GetMember(this, Config.GetFilter, GIVE_ALL_STR_FIELD_NAME, GIVE_ALL_STR_CONFIG_KEY)
-      set => Config.SetMember(this, Config.SetFilter, GIVE_ALL_STR_FIELD_NAME, GIVE_ALL_STR_CONFIG_KEY, value)
-    }
-    TakeAllFilter {
-      get => Config.GetMember(this, Config.GetFilter, TAKE_ALL_STR_FIELD_NAME, TAKE_ALL_STR_CONFIG_KEY)
-      set => Config.SetMember(this, Config.SetFilter, TAKE_ALL_STR_FIELD_NAME, TAKE_ALL_STR_CONFIG_KEY, value)    
-    }
-    SelfDropAllFilter {
-      get => Config.GetMember(this, Config.GetFilter, SELF_DROP_ALL_STR_FIELD_NAME, SELF_DROP_ALL_STR_CONFIG_KEY)
-      set => Config.SetMember(this, Config.SetFilter, SELF_DROP_ALL_STR_FIELD_NAME, SELF_DROP_ALL_STR_CONFIG_KEY, value)
-    }
-    OtherDropAllFilter {
-      get => Config.GetMember(this, Config.GetFilter, OTHER_DROP_ALL_STR_FIELD_NAME, OTHER_DROP_ALL_STR_CONFIG_KEY)
-      set => Config.SetMember(this, Config.SetFilter, OTHER_DROP_ALL_STR_FIELD_NAME, OTHER_DROP_ALL_STR_CONFIG_KEY, value)
-    }
+    
   }
 
   class Delay {
@@ -338,6 +264,10 @@ class Config {
         this.m_2xsw := value
       }
     }
+    TransferAllCooldown {
+      get => Config.GetMember(this, Config.GetDelay, TRANSFER_ALL_COOLDOWN_FIELD_NAME, TRANSFER_ALL_COOLDOWN_CONFIG_KEY)
+      set => Config.SetMember(this, Config.SetDelay, TRANSFER_ALL_COOLDOWN_FIELD_NAME, TRANSFER_ALL_COOLDOWN_CONFIG_KEY, value)
+    }
     AutoClickInterval {
       get {
         if (!IsSet(m_autoClickInterval)) {
@@ -370,10 +300,16 @@ class Config {
 
   ; Functions for the "filter" section
   static GetFilter(key) {
-    return IniRead(Config.ConfigFilePath, FILTER_SECTION, key) 
+    return DeserializeToArray(IniRead(Config.ConfigFilePath, FILTER_SECTION, key))
   }
   static SetFilter(key, value) {
-    IniWrite(value, Config.ConfigFilePath, FILTER_SECTION, key)
+    ; If type is a string it likely comes from UI as comma seperated input string
+    if (type(value)=='String') {
+      IniWrite(value, Config.ConfigFilePath, FILTER_SECTION, key)
+    } else {
+      ; Otherwise, serialize the array
+      IniWrite(SerializeArray(value), Config.ConfigFilePath, FILTER_SECTION, key)
+    }
   }
 
   ; Functions for the "position" section
@@ -456,5 +392,5 @@ class Config {
   static SetMember(self, setter, memberName, configKey, value) {
     setter(self, configKey, value)
     self.%memberName% := value
-  }
+  }  
 }

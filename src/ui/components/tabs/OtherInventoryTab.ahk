@@ -11,6 +11,7 @@ class OtherInventoryTab {
     this.searchbar := CoordinateInput(myGui, "Search Bar", user.OtherInventorySearchbarPosition, false)
     this.dropAll := CoordinateInput(myGui, "Drop All", user.OtherDropAllPosition)
     this.transferAll := CoordinateInput(myGui, "Transfer All", user.OtherTransferAllPosition)
+    this.otherFirstSlot := CoordinateInput(myGui, "First Slot", user.OtherFirstSlotPosition)
 
     saveOtherBtn := MyGui.AddButton("XS y+m w80","Save")
     saveOtherBtn.OnEvent("Click", this.SaveButton_OnClick.bind(this))
@@ -20,5 +21,6 @@ class OtherInventoryTab {
     this.controller.user.OtherInventorySearchbarPosition := this.searchbar.GetPoint()
     this.controller.user.OtherDropAllPosition := this.dropAll.GetPoint()
     this.controller.user.OtherTransferAllPosition := this.transferAll.GetPoint()    
+    this.controller.user.OtherFirstSlotPosition := this.otherFirstSlot.GetPoint()    
   }
 }

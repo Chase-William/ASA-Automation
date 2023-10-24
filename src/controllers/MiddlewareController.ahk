@@ -1,7 +1,7 @@
 #include "../LilxDHotkey.ahk"
 #include "../Util.ahk"
 #include "AutoClickController.ahk"
-#include "MetalFarmController.ahk"
+#include "AutoFarmController.ahk"
 #include "ConsumeController.ahk"
 #include "FishingController.ahk"
 #include "TransferController.ahk"
@@ -12,8 +12,8 @@
 #include "../structures/Event.ahk"
 
 AUTO_CLICK_HOTKEY_CONFIG_KEY := "autoClick"
-DROP_METAL_FARM_JUNK_CONFIG_KEY := "dropMetalFarmJunk"
-AUTO_METAL_FARM_CONFIG_KEY := "autoMetalFarm"
+HANDLE_FARM_CONFIG_KEY := "handleFarm"
+AUTO_FARM_CONFIG_KEY := "autoFarm"
 ; AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY := "autoSuicideMeatFarm"
 GIVE_ALL_CONFIG_KEY := "giveAll"
 TAKE_ALL_CONFIG_KEY := "takeAll"
@@ -31,7 +31,7 @@ class MiddlewareController {
     this.cfg := cfg
     this.user := user
     this.autoClick := AutoClickController(cfg, user)
-    this.metalFarm := MetalFarmController(cfg, user)
+    this.farm := AutoFarmController(cfg, user)
     this.fertFarm := FertFarmController(cfg, user)
     this.consume := ConsumeController(cfg, user)
     this.fishing := FishingController(cfg, user)
@@ -45,12 +45,12 @@ class MiddlewareController {
     this.m_autoClickHotkey.RegisterHotkey()
 
     ; auto metal farmer
-    this.m_autoMetalFarmHotkey := LilxDHotkey(AUTO_METAL_FARM_CONFIG_KEY, this.AutoMetalFarmHotkey_Clicked.bind(this))
-    this.m_autoMetalFarmHotkey.RegisterHotkey()
+    this.m_autoFarmHotkey := LilxDHotkey(AUTO_FARM_CONFIG_KEY, this.AutoFarmHotkey_Clicked.bind(this))
+    this.m_autoFarmHotkey.RegisterHotkey()
 
     ; metal farm junk dropper
-    this.m_dropMetalFarmJunkHotkey := LilxDHotkey(DROP_METAL_FARM_JUNK_CONFIG_KEY, this.DropMetalFarmJunkHotkey_Clicked.bind(this))
-    this.m_dropMetalFarmJunkHotkey.RegisterHotkey()
+    this.m_handleFarmHotkey := LilxDHotkey(HANDLE_FARM_CONFIG_KEY, this.HandleFarmHotkey_Clicked.bind(this))
+    this.m_handleFarmHotkey.RegisterHotkey()
 
     ; Give all from self to other
     this.m_giveAll := LilxDHotkey(GIVE_ALL_CONFIG_KEY, this.GiveAllHotkey_Clicked.bind(this))
@@ -78,14 +78,14 @@ class MiddlewareController {
     set => this.m_autoClickHotkey := value
   }
 
-  AutoMetalFarmHotkey {
-    get => this.m_autoMetalFarmHotkey
-    set => this.m_autoMetalFarmHotkey := value
+  AutoFarmHotkey {
+    get => this.m_autoFarmHotkey
+    set => this.m_autoFarmHotkey := value
   }
 
-  DropMetalFarmJunkHotkey {
-    get => this.m_dropMetalFarmJunkHotkey
-    set => this.m_dropMetalFarmJunkHotkey := value
+  HandleFarmHotkey {
+    get => this.m_handleFarmHotkey
+    set => this.m_handleFarmHotkey := value
   }
 
   GiveAllHotkey {
@@ -108,7 +108,7 @@ class MiddlewareController {
     set => this.m_otherDropAll := value
   }
 
-  ; Pauses the following functions if needed
+  ; Interrupts the following functions if needed
   ; 1. Auto Clicker
   ; 2. Auto Brew
   ; 3. Auto Eat
@@ -131,7 +131,7 @@ class MiddlewareController {
     }
     if (restoreAutoDrink := this.consume.IsAutoDrinkOn) {
       this.consume.AutoDrinkToggle()
-    }
+    }        
     ; Perform requested function
     action()
     ; Perform restore and remove stored data
@@ -183,16 +183,20 @@ class MiddlewareController {
 
   AutoClickHotkey_Clicked(hotkey) {  
     if this.CanExecute() {
+      ; Override and replace auto-farm if active
+      if (this.farm.IsAutoFarmOn && !this.farm.InInventory) {
+        this.farm.AutoFarmToggle()      
+      }
       this.autoClick.AutoClickToggle()
     }
   }
 
-  AutoMetalFarmHotkey_Clicked(hotkey) {
-    this.Run(this.metalFarm.AutoMetalFarmToggle.bind(this.metalFarm))
+  AutoFarmHotkey_Clicked(hotkey) {
+    this.Run(this.farm.AutoFarmToggle.bind(this.farm))
   }
 
-  DropMetalFarmJunkHotkey_Clicked(hotkey) {
-    this.Run(this.metalFarm.HandleMetalRunItems.bind(this.metalFarm))
+  HandleFarmHotkey_Clicked(hotkey) {
+    this.Run(this.farm.HandleFarmRunItems.bind(this.farm))
   }
 
   Run(action) {

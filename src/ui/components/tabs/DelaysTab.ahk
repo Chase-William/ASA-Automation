@@ -9,40 +9,40 @@ class DelaysTab {
     myGui.AddText(, "All delays are in milliseconds (1 second = 1000 milliseconds)")
 
     myGui.AddText("Section w120", "5x Delay:")
-    this._5xlwEdit := myGui.AddEdit("x+m w40", controller.cfg.delay._5xlw)
+    this._5xlwEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay._5xlw)
 
     myGui.AddText("Section XS w120", "4x Delay:")
-    this._4xlwEdit := myGui.AddEdit("x+m w40", controller.cfg.delay._4xlw)
+    this._4xlwEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay._4xlw)
 
     myGui.AddText("Section XS w120", "3x Delay:")
-    this._3xlwEdit := myGui.AddEdit("x+m w40", controller.cfg.delay._3xlw)
+    this._3xlwEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay._3xlw)
 
     myGui.AddText("Section XS w120", "2x Delay:")
-    this._2xlwEdit := myGui.AddEdit("x+m w40", controller.cfg.delay._2xlw)
+    this._2xlwEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay._2xlw)
 
-    myGui.AddText("Section XS w120", "1x Delay:")
-    this.xlwEdit := myGui.AddEdit("x+m w40", controller.cfg.delay.xlw)
+    myGui.AddText("Section XS w120", "Extra Long Delay:")
+    this.xlwEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay.xlw)
 
     myGui.AddText("Section XS w120", "Long Delay:")
-    this.lwEdit := myGui.AddEdit("x+m w40", controller.cfg.delay.lw)
+    this.lwEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay.lw)
 
     myGui.AddText("Section XS w120", "Medium Delay:")
-    this.mwEdit := myGui.AddEdit("x+m w40", controller.cfg.delay.mw)
+    this.mwEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay.mw)
 
     myGui.AddText("Section XS w120", "Smedium Delay:")
-    this.smwEdit := myGui.AddEdit("x+m w40", controller.cfg.delay.smw)
+    this.smwEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay.smw)
 
     myGui.AddText("Section XS w120", "Small Delay:")
-    this.swEdit := myGui.AddEdit("x+m w40", controller.cfg.delay.sw)
+    this.swEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay.sw)
 
-    myGui.AddText("Section XS w120", "1x Small Delay:")
-    this.xswEdit := myGui.AddEdit("x+m w40", controller.cfg.delay.xsw)
+    myGui.AddText("Section XS w120", "Extra Small Delay:")
+    this.xswEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay.xsw)
 
     myGui.AddText("Section XS w120", "2x Small Delay:")
-    this._2xswEdit := myGui.AddEdit("x+m w40", controller.cfg.delay._2xsw)
+    this._2xswEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay._2xsw)
 
     myGui.AddText("Section XS w120", "Auto Click Delay:")
-    this.autoClickIntervalEdit := myGui.AddEdit("x+m w40", controller.cfg.delay.AutoClickInterval)
+    this.autoClickIntervalEdit := myGui.AddEdit("x+m w40 Number", controller.cfg.delay.AutoClickInterval)
 
     saveBtn := myGui.AddButton(, "Save")
     saveBtn.OnEvent("Click", this.OnSaveBtn_Clicked.bind(this))

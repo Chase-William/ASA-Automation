@@ -10,19 +10,19 @@ class RegionInput {
     myGui.AddText((XS ? "XS " : "") "Section", title)
 
     myGui.AddText("XS", "left:")
-    this.editLeft := myGui.AddEdit("x+m w50",)
+    this.editLeft := myGui.AddEdit("x+m w50 Number",)
     this.editLeft.Value := rect.left
 
     myGui.AddText("x+m", "top:")
-    this.editTop := myGui.AddEdit("x+m w50",)
+    this.editTop := myGui.AddEdit("x+m w50 Number",)
     this.editTop.Value := rect.top
 
     myGui.AddText("x+m", "right:")
-    this.editRight := myGui.AddEdit("x+m w50",)
+    this.editRight := myGui.AddEdit("x+m w50 Number",)
     this.editRight.Value := rect.right
 
     myGui.AddText("x+m", "bottom:")
-    this.editBottom := myGui.AddEdit("x+m w50",)
+    this.editBottom := myGui.AddEdit("x+m w50 Number",)
     this.editBottom.Value := rect.bottom
   }
 

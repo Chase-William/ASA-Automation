@@ -6,7 +6,7 @@
 #include "components/tabs/HotkeyTab.ahk"
 #include "components/tabs/DelaysTab.ahk"
 
-LIL_XD_HELPER_TOOL_WINDOW_TITLE := "Lil xD's Helping Tools"
+MAIN_WINDOW_TITLE := "Automation"
 
 WINDOW_WIDTH := 575
 WINDOW_HEIGHT := 450
@@ -52,7 +52,7 @@ makeOverlay(controller) {
 
 makeGui(app) {
   controller := app.controller
-  windowTitle := LIL_XD_HELPER_TOOL_WINDOW_TITLE
+  windowTitle := MAIN_WINDOW_TITLE
   TraySetIcon(APP_ICON)
 
   width := "w" WINDOW_WIDTH

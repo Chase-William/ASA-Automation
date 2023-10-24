@@ -9,10 +9,10 @@ class CoordinateInput {
   __New(myGui, title, position, XS := true) {
     myGui.AddText((XS ? "XS " : "") "Section w200", title)
     myGui.AddText("x+m", "x:")
-    this.editX := myGui.AddEdit("x+5 w50",)
+    this.editX := myGui.AddEdit("x+5 w50 Number",)
     this.editX.Value := position.x
     myGui.AddText("x+m", "y:")
-    this.editY := myGui.AddEdit("x+5 w50",)
+    this.editY := myGui.AddEdit("x+5 w50 Number",)
     this.editY.Value := position.y    
   }  
 
