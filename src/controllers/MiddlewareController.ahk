@@ -26,12 +26,12 @@ AUTO_EAT_STATE_CHANGED := "AutoEat"
 AUTO_DRINK_STATE_CHANGED := "AutoDrink"
 
 class MiddlewareController {
-  __New(cfg, user) {
+  __New(cfg, user, farm := AutoFarmController(cfg, user)) {
     ; Set instance variables
     this.cfg := cfg
     this.user := user
     this.autoClick := AutoClickController(cfg, user)
-    this.farm := AutoFarmController(cfg, user)
+    this.farm := farm
     this.fertFarm := FertFarmController(cfg, user)
     this.consume := ConsumeController(cfg, user)
     this.fishing := FishingController(cfg, user)
