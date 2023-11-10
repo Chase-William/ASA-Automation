@@ -73,10 +73,10 @@ class TransferController {
     if (this.UseTakeAllFilter) {
       For filter in this.TakeAllFilter {        
         this.user.SearchOtherAndTakeAll(filter)
-        if (this.GiveAllFilter.Length == A_Index)
-          Sleep this.cfg.delay.mw
+        if (this.TakeAllFilter.Length == A_Index)
+          Sleep this.cfg.delay.sw
         else
-          Sleep this.cfg.delay.TransferAllCooldown 
+          Sleep this.cfg.delay.TransferAllCooldown                
       }      
     } else {
       this.user.TakeAll()
