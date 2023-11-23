@@ -12,6 +12,7 @@ SELF_FOOD_THRESHOLD_CONFIG_KEY := "selfFoodThreshold"
 SELF_WATER_THRESHOLD_CONFIG_KEY := "selfWaterThreshold"
 FLUSH_TOILET_CONFIG_KEY := "flushToilet"
 SPAWN_SEARCHBAR_CONFIG_KEY := "spawnSearchBar"
+TELEPORT_SEARCH_BAR_POSITION_CONFIG_KEY := "teleportSearchBar"
 SPAWN_BUTTON_CONFIG_KEY := "spawnButton"
 OTHER_INVENTORY_SEARCHBAR_CONFIG_KEY := "otherInventorySearchBar"
 OTHER_DROP_ALL_CONFIG_KEY := "otherDropAll"
@@ -48,6 +49,7 @@ OTHER_FIRST_SLOT_FIELD_NAME := "m_otherFirstSlot"
 SELF_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleSelfInventory"
 OTHER_INVENTORY_TOGGLE_FIELD_NAME := "m_toggleOtherInventory"
 DEFECATE_FIELD_NAME := "m_defecate"
+TELEPORT_SEARCH_BAR_POSITION_FIELD_NAME := "m_teleportSearchBar"
 
 SPAWN_REGION_TEXT_REGION_FIELD_NAME := "m_spawnRegionTextRegion"
 DETECT_INVENTORY_OPEN_REGION_TEXT_FIELD_NAME := "m_detectInventoryOpenTextRegion"
@@ -192,6 +194,11 @@ class GameUser {
     set => Config.SetMember(this, Config.SetPosition, OTHER_FIRST_SLOT_FIELD_NAME, OTHER_FIRST_SLOT_CONFIG_KEY, value)
   }
 
+  TeleportSearchBarPosition {
+    get => Config.GetMember(this, Config.GetPosition, TELEPORT_SEARCH_BAR_POSITION_FIELD_NAME, TELEPORT_SEARCH_BAR_POSITION_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetPosition, TELEPORT_SEARCH_BAR_POSITION_FIELD_NAME, TELEPORT_SEARCH_BAR_POSITION_CONFIG_KEY, value)
+  }
+
   ; Clicks the respawn button on death screen.
   Spawn() {
     Click this.SpawnButtonPosition.x, this.SpawnButtonPosition.y
@@ -202,10 +209,17 @@ class GameUser {
     Click this.SpawnSearchbarPosition.x, this.SpawnSearchbarPosition.y
   }
 
+  FocusTeleportingSearchbar() {
+    Click this.TeleportSearchBarPosition.x, this.TeleportSearchBarPosition.y
+  }
+
   ; Focuses the searchbar, queries for a specific bed name.
-  SearchBeds(text) {
-    this.FocusSpawnSearchbar()
-    Sleep this.cfg.delay.smw
+  SearchBeds(text, isTeleporting := false) {
+    if (isTeleporting)
+      this.FocusTeleportingSearchbar()
+    else
+      this.FocusSpawnSearchbar()
+    Sleep this.cfg.delay.mw
     ; Enter bed name
     ControlSendText text,, this.cfg.process.windowTitle
   }

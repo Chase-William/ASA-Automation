@@ -67,22 +67,31 @@ class FishingController {
 
     ; Test each character in a specific order
     if (this.TestPixelColor(this.m_q)) {
+      ;MsgBox "q", "q" 
       ControlSend("q",, this.cfg.process.windowTitle)
     } else if (this.TestPixelColor(this.m_w)) {
+      ;MsgBox "w", "w" 
       ControlSend("w",, this.cfg.process.windowTitle)
     } else if (this.TestPixelColor(this.m_a)) {
+      ;MsgBox "a", "a" 
       ControlSend("a",, this.cfg.process.windowTitle)
     } else if (this.TestPixelColor(this.m_s)) {
+      ;MsgBox "s", "s" 
       ControlSend("s",, this.cfg.process.windowTitle)
     } else if (this.TestPixelColor(this.m_z)) {
+      ;MsgBox "z", "z" 
       ControlSend("z",, this.cfg.process.windowTitle)
     } else if (this.TestPixelColor(this.m_e)) {
+      ;MsgBox "E", "E" 
       ControlSend("e",, this.cfg.process.windowTitle)
     } else if (this.TestPixelColor(this.m_d)) {
+      ;MsgBox "D", "D"      
       ControlSend("d",, this.cfg.process.windowTitle)
     } else if (this.TestPixelColor(this.m_c)) {
+      ;MsgBox "c", "c" 
       ControlSend("c",, this.cfg.process.windowTitle)
     } else if (this.TestPixelColor(this.m_x)) {
+      ;MsgBox "x", "x" 
       ControlSend("x",, this.cfg.process.windowTitle)
     } else {
       return ; No letter found

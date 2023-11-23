@@ -48,7 +48,7 @@ class TransferController {
   GiveAll() {
     this.IsTransferExecuting := true
     this.user.ToggleOtherInventory()
-    Sleep this.cfg.delay.mw
+    Sleep this.cfg.delay.xlw
     if (this.UseGiveAllFilter) {
       For filter in this.GiveAllFilter {
         this.user.SearchSelfAndGiveAll(filter)
@@ -69,7 +69,7 @@ class TransferController {
   TakeAll() {
     this.IsTransferExecuting := true
     this.user.ToggleOtherInventory()
-    Sleep this.cfg.delay.mw
+    Sleep this.cfg.delay.xlw
     if (this.UseTakeAllFilter) {
       For filter in this.TakeAllFilter {        
         this.user.SearchOtherAndTakeAll(filter)
