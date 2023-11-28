@@ -23,10 +23,12 @@ class HotkeyTab {
     ; Auto Clicker
     HotkeyControl(myGui, "Auto Clicker", this.controller.AutoClickHotkey,"XS w100", "x+m w100", "x+m")
     myGui.AddText("x+m", "Keystroke:")
-    this.keystrokeHotkey := myGui.AddHotkey("x+m", this.controller.autoClick.AutoClickKey)
+    this.keystrokeHotkey := myGui.AddHotkey("x+m w80", this.controller.autoClick.AutoClickKey)
     keystrokeSetBtn := myGui.AddButton("x+m Hidden", "Set")
     this.keystrokeHotkey.OnEvent("Change", (*) => keystrokeSetBtn.Visible := true)
     keystrokeSetBtn.OnEvent("Click", this.AutoClickKeySetBtn_Clicked.bind(this))
+    rightClickCheckBox := myGui.AddCheckbox("x+m Checked" "this.controller.autoClick.UseRightClick", "Right Click")
+    rightClickCheckBox.OnEvent("Click", (sender, info) => this.controller.autoClick.UseRightClick := sender.Value)
 
     ; Auto Metal Farm
     HotkeyControl(myGui, "Auto Farm", this.controller.AutoFarmHotkey, "XS w100", "x+m w100", "x+m")

@@ -3,8 +3,10 @@
 #include "../structures/Observable.ahk"
 
 AUTO_CLICK_KEY_CONFIG_KEY := "autoClickKey"
+USE_RIGHT_CLICK_CONFIG_KEY := "useRightClick"
 
 AUTO_CLICK_KEY_FIELD_NAME := "m_autoClickKey"
+USE_RIGHT_CLICK_FIELD_NAME := "m_useRightClick"
 
 class AutoClickController extends Observable {
   __New(cfg, user) { 
@@ -14,6 +16,12 @@ class AutoClickController extends Observable {
     this.m_isAutoClickerOn := false
 
     this.keystrokeCallback := (*) => ControlSend(this.AutoClickKey,, this.cfg.process.windowTitle)
+    this.rightClickCallback := (*) => Click("Right")
+  }
+
+  UseRightClick {
+    get => Config.GetMember(this, Config.GetToggle, USE_RIGHT_CLICK_FIELD_NAME, USE_RIGHT_CLICK_CONFIG_KEY)
+    set => Config.SetMember(this, Config.SetToggle, USE_RIGHT_CLICK_FIELD_NAME, USE_RIGHT_CLICK_CONFIG_KEY, value)
   }
 
   AutoClickKey {
@@ -38,10 +46,14 @@ class AutoClickController extends Observable {
   }
 
   GetSynthesizer() {
+    if (this.UseRightClick) {
+      return this.rightClickCallback
+    }
+
     if (StrLen(this.AutoClickKey) != 0) {
       return this.keystrokeCallback
-    } else {
-      return Click
     }
+
+    return Click
   }
 }
