@@ -246,6 +246,10 @@ class GameUser {
     )
   }
 
+  IsInventoryClosed() {
+    return !this.IsInventoryOpen()
+  }
+
   IsInventoryOpen() {
     px := 0
     py := 0
@@ -394,35 +398,36 @@ class GameUser {
     this.GiveAll()
   }
 
-  OpenOtherInventorySafe() {
-    this.LoopUntilTrue(this.ToggleOtherInventory.bind(this), this.IsInventoryOpen.bind(this))
+  TryOpenOtherInventory(maxAttempts) {
+    return this.TryUntil(this.ToggleOtherInventory.bind(this), this.IsInventoryOpen.bind(this), maxAttempts)
   }
 
-  CloseOtherInventorySafe() {
-    this.LoopUntilFalse(this.ToggleOtherInventory.bind(this), this.IsInventoryOpen.bind(this))
+  TryCloseOtherInventory(maxAttempts) {
+    return this.TryUntil(this.ToggleOtherInventory.bind(this), this.IsInventoryClosed.bind(this), maxAttempts)
   }
 
-  OpenSelfInventorySafe() {
-    this.LoopUntilTrue(this.ToggleSelfInventory.bind(this), this.IsInventoryOpen.bind(this))
+  TryOpenSelfInventory(maxAttempts) {
+    return this.TryUntil(this.ToggleSelfInventory.bind(this), this.IsInventoryOpen.bind(this), maxAttempts)
   }
 
-  CloseSelfInventorySafe() {
-    this.LoopUntilFalse(this.ToggleSelfInventory.bind(this), this.IsInventoryOpen.bind(this))
+  TryCloseSelfInventory(maxAttempts) {
+    return this.TryUntil(this.ToggleSelfInventory.bind(this), this.IsInventoryClosed.bind(this), maxAttempts)
   }
 
-  LoopUntilTrue(action, check) {
-    static delay := this.cfg.delay.mw
-    Loop {
+  TryUntil(action, check, maxAttempts) {
+    delay := this.cfg.delay._2xlw    
+    Loop maxAttempts {
       action()
-      Sleep delay := delay * 2
-      ; delay := delay * 2 ; Each iteration double the wait time (helps with lag of operating in different locations)
-    } Until check()
+      Sleep delay
+      if check() {
+        return true
+      }
+      ; double delay for next iteration
+      delay := delay * 2
+    }
     ; Reset
-    delay := this.cfg.delay.xlw
-  }
-
-  LoopUntilFalse(action, check) {
-    this.LoopUntilTrue(action, () => !check())
+    ; delay := this.cfg.delay.xlw    
+    return false
   }
 
   MedBrew() {
