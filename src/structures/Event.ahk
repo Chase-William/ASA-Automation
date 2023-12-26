@@ -21,7 +21,8 @@ class Event {
     
     ; Error check if handlers were found
     if (!this.handlers.Has(name)) {
-      throw Error("Error. Event " Format("{1}", name) " does not exist. Subscribe() was never called for this event.")
+      ; throw Error("Error. Event " Format("{1}", name) " does not exist. Subscribe() was never called for this event.")
+      return
     }
 
     ; Call all functions in handler array

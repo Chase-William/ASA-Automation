@@ -8,17 +8,20 @@
 #include "MovementController.ahk"
 #include "FertFarmController.ahk"
 #include "DropAllController.ahk"
+#include "AutoWalkController.ahk"
 #include "CustomCrosshairController.ahk"
 #include "../structures/Event.ahk"
 
 AUTO_CLICK_HOTKEY_CONFIG_KEY := "autoClick"
 HANDLE_FARM_CONFIG_KEY := "handleFarm"
 AUTO_FARM_CONFIG_KEY := "autoFarm"
+AUTO_WALK_HOTKEY_CONFIG_KEY := "autoWalk"
 ; AUTO_SUICIDE_MEAT_FARM_CONFIG_KEY := "autoSuicideMeatFarm"
 GIVE_ALL_CONFIG_KEY := "giveAll"
 TAKE_ALL_CONFIG_KEY := "takeAll"
 SELF_DROP_ALL_CONFIG_KEY := "selfDropAll"
 OTHER_DROP_ALL_CONFIG_KEY := "otherDropAll"
+
 
 AUTO_CLICKER_STATE_CHANGED := "AutoClicker"
 AUTO_BREW_STATE_CHANGED := "AutoBrew"
@@ -39,6 +42,7 @@ class MiddlewareController {
     this.drop := DropAllController(cfg, user)
     this.movement := MovementController(cfg, user)
     this.crosshair := CustomCrosshairController()
+    this.autoWalk := AutoWalkController(cfg)
 
     ; autoclicker
     this.m_autoClickHotkey := LilxDHotkey(AUTO_CLICK_HOTKEY_CONFIG_KEY, this.AutoClickHotkey_Clicked.bind(this))
@@ -67,6 +71,9 @@ class MiddlewareController {
     ; Drop all from other inventory
     this.m_otherDropAll := LilxDHotkey(OTHER_DROP_ALL_CONFIG_KEY, this.OtherDropAllHotkey_Clicked.bind(this))
     this.m_otherDropAll.RegisterHotkey()
+
+    this.m_autoWalk := LilxDHotkey(AUTO_WALK_HOTKEY_CONFIG_KEY, this.AutoWalkHotkey_Clicked.bind(this))
+    this.m_autoWalk.RegisterHotkey()
   }
   
   ;
@@ -106,6 +113,11 @@ class MiddlewareController {
   OtherDropAllHotkey {
     get => this.m_otherDropAll
     set => this.m_otherDropAll := value
+  }
+
+  AutoWalkHotkey {
+    get => this.m_autoWalk
+    set => this.m_autoWalk := value
   }
 
   ; Interrupts the following functions if needed
@@ -197,6 +209,10 @@ class MiddlewareController {
 
   HandleFarmHotkey_Clicked(hotkey) {
     this.Run(this.farm.HandleFarmRunItems.bind(this.farm))
+  }
+
+  AutoWalkHotkey_Clicked(hotkey) {
+    this.Run(this.autoWalk.AutoWalkToggle.bind(this.autoWalk))
   }
 
   Run(action) {

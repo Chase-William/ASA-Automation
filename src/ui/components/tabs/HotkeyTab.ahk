@@ -27,21 +27,25 @@ class HotkeyTab {
     keystrokeSetBtn := myGui.AddButton("x+m Hidden", "Set")
     this.keystrokeHotkey.OnEvent("Change", (*) => keystrokeSetBtn.Visible := true)
     keystrokeSetBtn.OnEvent("Click", this.AutoClickKeySetBtn_Clicked.bind(this))
-    rightClickCheckBox := myGui.AddCheckbox("x+m Checked" "this.controller.autoClick.UseRightClick", "Right Click")
+    rightClickCheckBox := myGui.AddCheckbox("x+m Checked" this.controller.autoClick.UseRightClick, "Right Click")
     rightClickCheckBox.OnEvent("Click", (sender, info) => this.controller.autoClick.UseRightClick := sender.Value)
 
+    HotkeyControl(myGui, "Auto Walk", this.controller.AutoWalkHotkey, "XS w100", "x+m w100", "x+m")
+    sprintCheckBox := myGui.AddCheckbox("x+m Checked" this.controller.autoWalk.UseSprint, "Sprint")
+    sprintCheckBox.OnEvent("Click", (sender, info) => this.controller.autoWalk.UseSprint := sender.Value)
+
     ; Auto Metal Farm
-    HotkeyControl(myGui, "Auto Farm", this.controller.AutoFarmHotkey, "XS w100", "x+m w100", "x+m")
-    configureFarmBtn := myGui.AddButton("x+m", "Configure")
-    configureFarmBtn.OnEvent("Click", (*) => this.controller.farm.AutoFarmWindow.Visibility := !this.controller.farm.AutoFarmWindow.Visibility)
+    ; HotkeyControl(myGui, "Auto Farm", this.controller.AutoFarmHotkey, "XS w100", "x+m w100", "x+m")
+    ; configureFarmBtn := myGui.AddButton("x+m", "Configure")
+    ; configureFarmBtn.OnEvent("Click", (*) => this.controller.farm.AutoFarmWindow.Visibility := !this.controller.farm.AutoFarmWindow.Visibility)
 
     ; Auto Metal Farm Drop Junk
-    HotkeyControl(myGui, "Handle Farm", this.controller.HandleFarmHotkey, "XS w100", "x+m w100", "x+m")
+    ; HotkeyControl(myGui, "Handle Farm", this.controller.HandleFarmHotkey, "XS w100", "x+m w100", "x+m")
     
     ; Give All Functionality
     MyGui.AddGroupBox("XS Section w" (WINDOW_WIDTH - DEFAULT_MARGIN) " h85", "Transfer Items")
 
-    HotkeyControl(myGui, "Give All", this.controller.GiveAllHotkey, "XS x20 y155 w60", "x+m w90", "x+m")
+    HotkeyControl(myGui, "Give All", this.controller.GiveAllHotkey, "XS x20 y130 w60", "x+m w90", "x+m")
     myGui.AddText("x+m", "Filter:")
     giveAllFilterEdit := myGui.AddEdit("x+m w200", SerializeArray(controller.transfer.GiveAllFilter))
     giveAllFilterEdit.OnEvent("Change", (sender, info) => controller.transfer.GiveAllFilter := DeserializeToArray(sender.Value))
@@ -49,7 +53,7 @@ class HotkeyTab {
     giveAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.transfer.UseGiveAllFilter := sender.Value)
 
     ; Take All Functionality
-    HotkeyControl(myGui, "Take All", this.controller.TakeAllHotkey, "XS x20 y185 w60", "x+m w90", "x+m")
+    HotkeyControl(myGui, "Take All", this.controller.TakeAllHotkey, "XS x20 y160 w60", "x+m w90", "x+m")
     myGui.AddText("x+m", "Filter:")
     takeAllFilterEdit := myGui.AddEdit("x+m w200", SerializeArray(controller.transfer.TakeAllFilter))
     takeAllFilterEdit.OnEvent("Change", (sender, info) => controller.transfer.TakeAllFilter := DeserializeToArray(sender.Value))
@@ -60,25 +64,25 @@ class HotkeyTab {
     MyGui.AddGroupBox("XS Section w" (WINDOW_WIDTH - DEFAULT_MARGIN) " h85", "Drop Items")
 
     ; Drop All Functionality
-    HotkeyControl(myGui, "Player Drop All", this.controller.SelfDropAllHotkey, "XS x20 y245 w100", "x+m w90", "x+m")
+    HotkeyControl(myGui, "Player Drop All", this.controller.SelfDropAllHotkey, "XS x20 y220 w100", "x+m w90", "x+m")
     myGui.AddText("x+m", "Filter:")
     selfDropAllFilterEdit := myGui.AddEdit("x+m w200", SerializeArray(controller.drop.SelfDropAllFilter))
     selfDropAllFilterEdit.OnEvent("Change", (sender, info) => controller.drop.SelfDropAllFilter := DeserializeToArray(sender.Value))
     selfDropAllFilterCheckbox := myGui.AddCheckbox("x+m Checked" this.controller.drop.UseSelfDropAllFilter, "")
     selfDropAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.drop.UseSelfDropAllFilter := sender.Value)
 
-    HotkeyControl(myGui, "Other Drop All", this.controller.OtherDropAllHotkey, "XS x20 y275 w100", "x+m w90", "x+m")    
+    HotkeyControl(myGui, "Other Drop All", this.controller.OtherDropAllHotkey, "XS x20 y250 w100", "x+m w90", "x+m")    
     myGui.AddText("x+m", "Filter:")
     otherDropAllFilterEdit := myGui.AddEdit("x+m w200", SerializeArray(controller.drop.OtherDropAllFilter))
     otherDropAllFilterEdit.OnEvent("Change", (sender, info) => controller.drop.OtherDropAllFilter := DeserializeToArray(sender.Value))
     otherDropAllFilterCheckbox := myGui.AddCheckbox("x+m Checked" this.controller.drop.UseOtherDropAllFilter, "")
     otherDropAllFilterCheckbox.OnEvent("Click", (sender, info) => this.controller.drop.UseOtherDropAllFilter := sender.Value)
  
-    ToggleControl(myGui, "Auto Brew", false, (*) => this.controller.consume.AutoBrewToggle(), "Section XS")
-    ToggleControl(myGui, "Auto Eat", false, (*) => this.controller.consume.AutoEatToggle(), "x+m")
-    ToggleControl(myGui, "Auto Drink", false, (*) => this.controller.consume.AutoDrinkToggle(), "x+m")
-    ToggleControl(myGui, "Auto Fish", false, (*) => this.controller.fishing.AutoFishToggle(), "Section XS")
-    ToggleControl(myGui, "Auto Fert Farm", false, (*) => this.controller.fertFarm.AutoFertFarm(), "x+m")
+    ; ToggleControl(myGui, "Auto Brew", false, (*) => this.controller.consume.AutoBrewToggle(), "Section XS")
+    ; ToggleControl(myGui, "Auto Eat", false, (*) => this.controller.consume.AutoEatToggle(), "x+m")
+    ; ToggleControl(myGui, "Auto Drink", false, (*) => this.controller.consume.AutoDrinkToggle(), "x+m")
+    ; ToggleControl(myGui, "Auto Fish", false, (*) => this.controller.fishing.AutoFishToggle(), "Section XS")
+    ; ToggleControl(myGui, "Auto Fert Farm", false, (*) => this.controller.fertFarm.AutoFertFarm(), "x+m")
 
     toggleCrosshair := ToggleControl(
       myGui, 
