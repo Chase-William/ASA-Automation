@@ -55,7 +55,7 @@ makeOverlay(controller) {
 makeGui(app) {
   controller := app.controller
   windowTitle := MAIN_WINDOW_TITLE
-  TraySetIcon(APP_ICON)
+  ; TraySetIcon(APP_ICON)
 
   width := "w" WINDOW_WIDTH
   height := "h" WINDOW_HEIGHT

@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#include "Event.ahk"
+
 class Observable {
   __New() {
     this.m_stateChanged := Event(this)
