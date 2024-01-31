@@ -8,6 +8,8 @@ USE_RIGHT_CLICK_CONFIG_KEY := "useRightClick"
 AUTO_CLICK_KEY_FIELD_NAME := "m_autoClickKey"
 USE_RIGHT_CLICK_FIELD_NAME := "m_useRightClick"
 
+AUTO_CLICKER_STATE_CHANGED := "autoClickStateChanged"
+
 class AutoClickController extends Observable {
   __New(cfg, user) { 
     this.cfg := cfg

@@ -30,26 +30,16 @@ makeOverlay(controller) {
   ; myOverlay.AddText(, isOn ? "On" : "Off")
   autoClickerText := myOverlay.AddText("Hidden cWhite", "Auto Clicker")
   autoWalkText := myOverlay.AddText("Hidden cWhite", "Auto Walk/Sprint")
-  autoBrewText := myOverlay.AddText("Hidden cWhite", "Auto Brew")
-  autoEatText := myOverlay.AddText("Hidden cWhite", "Auto Eat")
-  autoDrinkText := myOverlay.AddText("Hidden cWhite", "Auto Drink")
+;   autoBrewText := myOverlay.AddText("Hidden cWhite", "Auto Brew")
+;   autoEatText := myOverlay.AddText("Hidden cWhite", "Auto Eat")
+;   autoDrinkText := myOverlay.AddText("Hidden cWhite", "Auto Drink")
   controller.autoClick.OnEvent(AUTO_CLICKER_STATE_CHANGED, (sender, isOn) => autoClickerText.Visible := isOn)
   controller.autoWalk.OnEvent(AUTO_WALK_STATE_CHANGED, (sender, isOn) => autoWalkText.Visible := isOn)
-  controller.consume.OnEvent(AUTO_BREW_STATE_CHANGED, (sender, isOn) => autoBrewText.Visible := isOn)
-  controller.consume.OnEvent(AUTO_EAT_STATE_CHANGED, (sender, isOn) => autoEatText.Visible := isOn)
-  controller.consume.OnEvent(AUTO_DRINK_STATE_CHANGED, (sender, isOn) => autoDrinkText.Visible := isOn)
+;   controller.consume.OnEvent(AUTO_BREW_STATE_CHANGED, (sender, isOn) => autoBrewText.Visible := isOn)
+;   controller.consume.OnEvent(AUTO_EAT_STATE_CHANGED, (sender, isOn) => autoEatText.Visible := isOn)
+;   controller.consume.OnEvent(AUTO_DRINK_STATE_CHANGED, (sender, isOn) => autoDrinkText.Visible := isOn)
   
-  ; SetTimer(UpdateOSD, 200)
-  ; UpdateOSD()  ; Make the first update immediate rather than waiting for the timer.
   myOverlay.Show("x5 y" centerY - height / 2 " w" width " h" height " NoActivate")  ; NoActivate avoids deactivating the currently active window.
-
-  ; Must move after Show()
-  ; myOverlay.Move(5, centerY - height / 2, width, height)
-  ; UpdateOSD(*)
-  ; {
-  ;   MouseGetPos &MouseX, &MouseY
-  ;   CoordText.Value := "X" MouseX ", Y" MouseY
-  ; }
 }
 
 makeGui(app) {
@@ -86,8 +76,7 @@ makeGui(app) {
   ; Use "Toggles Tab"
   myTabs.UseTab(1)
   HotkeyTab(myGui, controller)
-  ; Setup "Active Toggles" tab
-  ; this.AddToggleTools(myGui, myTabs)
+
   ; Setup "In-Game Keybinds" tab
   myTabs.UseTab(2)
   KeybindTab(myGui, controller)
@@ -97,7 +86,6 @@ makeGui(app) {
   ; Use "Your Inventory Positions"
   myTabs.UseTab(3)
   YourInventoryTab(myGui, controller)
-  ; this.AddYourInventoryTab(myGui, myTabs)
 
   ; Setup "Other" tab
   ; Use "Other's Inventory Positions" tab
@@ -114,61 +102,3 @@ makeGui(app) {
 
   return myGui
 }
-  ; AddToolsTab(myGui, myTabs) {
-  ;   ; Use "Toggles Tab"
-  ;   myTabs.UseTab(1)
-
-  ; }
-
-  ; AddInGameKeybindsTab(myGui, myTabs) {
-  ;   ; Use "In-Game Keybinds" tab
-  ;   myTabs.UseTab(2)
-
-  ;   myGui.AddText("w200 Section", "Toggle Inventory")
-  ;   myGui.AddHotkey("x+m")
-  ;   myGui.AddText("w200 XS Section", "Defecate")
-  ;   myGui.AddHotkey("x+m")
-
-  ;   saveBtn := myGui.AddButton("XS y+m w80", "Save")
-  ;   saveBtn.OnEvent("Click", this.SaveKeybindsBtn_OnClick.bind(this))
-  ; }
-
-  ; AddYourInventoryTab(myGui, myTabs) {
-  ;   ; Use "Your Inventory Positions"
-  ;   myTabs.UseTab(3)
-
-
-  ; }
-
-  ; AddOtherInventoryTab(myGui, myTabs) {
-  ;   ; Use "Other's Inventory Positions" tab
-  ;   myTabs.UseTab(4)
-
-  ;   otherTitle := myGui.AddText("w200 XS y+20", "Other's Inventory")
-  ;   otherTitle.SetFont("Bold")
-  ;   myGui.AddText(, "Contains info required for interaction with other entity's inventory.")
-
-  ;   CoordinateInput(myGui, "Search Bar", controller.user.OtherInventorySearchbarPosition, false)
-  ;   CoordinateInput(myGui, "Drop All", controller.user.OtherDropAllPosition)
-  ;   CoordinateInput(myGui, "Transfer All", controller.user.OtherTransferAllPosition)
-
-  ;   saveOtherBtn := MyGui.AddButton("XS y+m w80","Save")
-  ;   saveOtherBtn.OnEvent("Click", this.SaveButton_OnClick.bind(this))
-  ; }
-
-  ; AutoClickCheckBox_OnChecked(sender, info) {
-  ;   ; Determine if checked or not
-  ;   if (sender.Value) {
-  ;     ; When enabling through check box, set window to always be ontop to protect user
-  ;     WinSetAlwaysOnTop True, this.windowTitle
-  ;     controller.AutoClick()
-
-  ;     ; MsgBox "Checked", "Checked"
-  ;   } else {
-  ;     WinSetAlwaysOnTop False, this.windowTitle
-  ;     controller.AutoClick()
-
-  ;     ; MsgBox "Not Checked", "Not Checked"
-  ;   }
-  ; }
-; }

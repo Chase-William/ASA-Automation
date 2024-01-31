@@ -18,8 +18,9 @@ class HotkeyTab {
     ; configOptions := GetConfigOptions()
     ; configComboBox := myGui.AddComboBox(, configOptions)
 
-    myGui.AddLink("x+m x" (WINDOW_WIDTH - 100), '<a href="https://discord.gg/kwg69tty">Docs/Discord</a>')
-    
+    ; myGui.AddLink("x+m x", '<a href="https://discord.gg/kwg69tty">Docs/Discord</a>')
+    myGui.AddText("x+m x" (WINDOW_WIDTH - 100), "Discord: lilxdiest")
+
     ; Auto Clicker
     HotkeyControl(myGui, "Auto Clicker", this.controller.AutoClickHotkey,"XS w100", "x+m w100", "x+m")
     myGui.AddText("x+m", "Keystroke:")
