@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
-#include "components/tabs/KeybindTab.ahk"
-#include "components/tabs/OtherInventoryTab.ahk"
-#include "components/tabs/YourInventoryTab.ahk"
+; #include "components/tabs/KeybindTab.ahk"
+; #include "components/tabs/OtherInventoryTab.ahk"
+; #include "components/tabs/YourInventoryTab.ahk"
 #include "components/tabs/HotkeyTab.ahk"
 #include "components/tabs/DelaysTab.ahk"
 
@@ -29,12 +29,14 @@ makeOverlay(controller) {
   WinSetTransColor(myOverlay.BackColor " 150", myOverlay)
   ; myOverlay.AddText(, isOn ? "On" : "Off")
   autoClickerText := myOverlay.AddText("Hidden cWhite", "Auto Clicker")
-  autoWalkText := myOverlay.AddText("Hidden cWhite", "Auto Walk/Sprint")
+  geforceAutoClickerText := myOverlay.AddText("Hidden cWhite", "Geforce Auto Clicker")
+;   autoWalkText := myOverlay.AddText("Hidden cWhite", "Auto Walk/Sprint")
 ;   autoBrewText := myOverlay.AddText("Hidden cWhite", "Auto Brew")
 ;   autoEatText := myOverlay.AddText("Hidden cWhite", "Auto Eat")
 ;   autoDrinkText := myOverlay.AddText("Hidden cWhite", "Auto Drink")
   controller.autoClick.OnEvent(AUTO_CLICKER_STATE_CHANGED, (sender, isOn) => autoClickerText.Visible := isOn)
-  controller.autoWalk.OnEvent(AUTO_WALK_STATE_CHANGED, (sender, isOn) => autoWalkText.Visible := isOn)
+  controller.geforceAutoClick.OnEvent(GEFORCE_AUTO_CLICKER_STATE_CHANGED, (sender, isOn) => geforceAutoClickerText.Visible := isOn)
+;   controller.autoWalk.OnEvent(AUTO_WALK_STATE_CHANGED, (sender, isOn) => autoWalkText.Visible := isOn)
 ;   controller.consume.OnEvent(AUTO_BREW_STATE_CHANGED, (sender, isOn) => autoBrewText.Visible := isOn)
 ;   controller.consume.OnEvent(AUTO_EAT_STATE_CHANGED, (sender, isOn) => autoEatText.Visible := isOn)
 ;   controller.consume.OnEvent(AUTO_DRINK_STATE_CHANGED, (sender, isOn) => autoDrinkText.Visible := isOn)
@@ -64,9 +66,9 @@ makeGui(app) {
   ; Create tabs
   myTabs := myGui.AddTab3("x0 y0 " width " " height, [
     "Hotkeys",
-    "In-Game Keybinds",
-    "Your Invent Pos",
-    "Other's Invent Pos",
+    ; "In-Game Keybinds",
+    ; "Your Invent Pos",
+    ; "Other's Invent Pos",
     "Delays"
   ])
   ; Needed for some reason to prevent tabs for rendering vertically
@@ -78,21 +80,21 @@ makeGui(app) {
   HotkeyTab(myGui, controller)
 
   ; Setup "In-Game Keybinds" tab
-  myTabs.UseTab(2)
-  KeybindTab(myGui, controller)
+  ; myTabs.UseTab(2)
+  ; KeybindTab(myGui, controller)
   ; this.AddInGameKeybindsTab(myGui, myTabs)
 
   ; Setup "Self" tab
   ; Use "Your Inventory Positions"
-  myTabs.UseTab(3)
-  YourInventoryTab(myGui, controller)
+  ; myTabs.UseTab(3)
+  ; YourInventoryTab(myGui, controller)
 
   ; Setup "Other" tab
   ; Use "Other's Inventory Positions" tab
-  myTabs.UseTab(4)
-  OtherInventoryTab(myGui, controller)
+  ; myTabs.UseTab(4)
+  ; OtherInventoryTab(myGui, controller)
 
-  myTabs.UseTab(5)
+  myTabs.UseTab(2)
   DelaysTab(myGui, controller)
 
   ; Present content

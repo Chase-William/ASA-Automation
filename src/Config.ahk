@@ -18,6 +18,7 @@ CROSSHAIR_SECTION := "crosshair"
 
 PROCESS_NAME_CONFIG_KEY := "procName"
 WINDOW_TITLE_CONFIG_KEY := "windowTitle"
+GEFORCE_WINDOW_TITLE_CONFIG_KEY := "geforceWindowTitle"
 
 _5XLW_CONFIG_KEY := "5xlw"
 _4XLW_CONFIG_KEY := "4xlw"
@@ -41,18 +42,19 @@ STANDARD_UI_TEXT_COLOR_CONFIG_KEY := "standardUITextColor"
 ; Gets the config needed for the current user's display size
 ; Return, valid filePath or empty string as user display size not supported
 GetRequiredConfigFilePath() {
-  options := Array()
-  Loop Files "*.ini", "R" {
-    ; Do not include the config.ini in the root directory
-    if (StrLen(A_LoopFileDir) > 0) {
-      sizeArray := StrSplit(StrSplit(A_LoopFileDir, "\")[2], "x")
-      if (sizeArray[1] == A_ScreenWidth && sizeArray[2] == A_ScreenHeight) {
-        return A_LoopFilePath
-      }
-    }
-  }
+    return "./configurations/config.ini"
+;   options := Array()
+;   Loop Files "*.ini", "R" {
+;     ; Do not include the config.ini in the root directory
+;     if (StrLen(A_LoopFileDir) > 0) {
+;       sizeArray := StrSplit(StrSplit(A_LoopFileDir, "\")[2], "x")
+;       if (sizeArray[1] == A_ScreenWidth && sizeArray[2] == A_ScreenHeight) {
+;         return A_LoopFilePath
+;       }
+;     }
+;   }
 
-  return ""
+;  return ""
 }
 
 class Config {
@@ -125,6 +127,19 @@ class Config {
         this.m_windowTitle := value
       }
     }
+
+    GeforceWindowTitle {
+        get {
+          if (!IsSet(m_geforceWindowTitle)) {
+            this.m_geforceWindowTitle := Config.GetProcess(GEFORCE_WINDOW_TITLE_CONFIG_KEY)
+          }
+          return this.m_geforceWindowTitle
+        }
+        set {      
+          Config.SetProcess(GEFORCE_WINDOW_TITLE_CONFIG_KEY, value)
+          this.m_geforceWindowTitle := value
+        }
+      }
   }
 
   class Filter {
